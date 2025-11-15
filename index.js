@@ -47,9 +47,32 @@ app.post("/linnworks/orders", (req, res) => {
 
 // Inventory update endpoint (real logic added later)
 app.post("/linnworks/inventory-update", (req, res) => {
-  console.log("Inventory update received:", req.body);
+  const body = req.body;
+
+  console.log("Inventory update received:", JSON.stringify(body, null, 2));
+
+  if (!body.items || !Array.isArray(body.items)) {
+    return res.status(400).json({ success: false, message: "Missing items array" });
+  }
+
+  // Loop through each item and decide availability
+  body.items.forEach(item => {
+    const sku = item.sku || item.channelSKU || "UNKNOWN";
+    const stockLevel = item.stockLevel ?? item.stock ?? 0;
+
+    const available = stockLevel > 0;
+
+    // This is where we will later call Deliveroo's API.
+    // For now we just log what we WOULD do.
+    console.log(
+      `Would update Deliveroo item for SKU ${sku}: ` +
+      `stockLevel=${stockLevel}, available=${available}`
+    );
+  });
+
   res.json({ success: true });
 });
+
 
 // Deliveroo webhook endpoint (orders)
 app.post("/deliveroo/order-webhook", (req, res) => {
