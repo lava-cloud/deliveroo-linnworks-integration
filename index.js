@@ -1,5 +1,41 @@
 const express = require("express");
 const app = express();
+const DELIV_AUTH_URL = "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
+
+async function getDeliverooAccessToken() {
+  const clientId = process.env.DELIV_CLIENT_ID;
+  const clientSecret = process.env.DELIV_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    console.error("Missing Deliveroo credentials in environment variables");
+    throw new Error("Deliveroo credentials not configured");
+  }
+
+  const params = new URLSearchParams();
+  params.append("grant_type", "client_credentials");
+  params.append("client_id", clientId);
+  params.append("client_secret", clientSecret);
+
+  const response = await fetch(DELIV_AUTH_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Accept": "application/json"
+    },
+    body: params
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("Failed to get Deliveroo token:", response.status, text);
+    throw new Error("Deliveroo auth failed");
+  }
+
+  const data = await response.json();
+  console.log("Got Deliveroo access token (expires_in:", data.expires_in, "seconds)");
+  return data.access_token;
+}
+
 
 app.use(express.json());
 
