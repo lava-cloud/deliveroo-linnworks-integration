@@ -82,7 +82,7 @@ app.post("/linnworks/orders", (req, res) => {
 });
 
 // Inventory update endpoint (real logic added later)
-app.post("/linnworks/inventory-update", (req, res) => {
+app.post("/linnworks/inventory-update", async (req, res) => {
   const body = req.body;
 
   console.log("Inventory update received:", JSON.stringify(body, null, 2));
@@ -91,22 +91,29 @@ app.post("/linnworks/inventory-update", (req, res) => {
     return res.status(400).json({ success: false, message: "Missing items array" });
   }
 
-  // Loop through each item and decide availability
-  body.items.forEach(item => {
-    const sku = item.sku || item.channelSKU || "UNKNOWN";
-    const stockLevel = item.stockLevel ?? item.stock ?? 0;
+  try {
+    // 1) Get a Deliveroo token for this batch of updates
+    const accessToken = await getDeliverooAccessToken();
 
-    const available = stockLevel > 0;
+    // 2) Loop through each item and decide availability
+    for (const item of body.items) {
+      const sku = item.sku || item.channelSKU || "UNKNOWN";
+      const stockLevel = item.stockLevel ?? item.stock ?? 0;
+      const available = stockLevel > 0;
 
-    // This is where we will later call Deliveroo's API.
-    // For now we just log what we WOULD do.
-    console.log(
-      `Would update Deliveroo item for SKU ${sku}: ` +
-      `stockLevel=${stockLevel}, available=${available}`
-    );
-  });
+      // 👉 This is where we will later call the real Deliveroo Catalogue/Menu API.
+      // For now, just log what we WOULD send, including that we have a token.
+      console.log(
+        `With token ${accessToken.slice(0, 10)}... would update Deliveroo item for SKU ${sku}: ` +
+        `stockLevel=${stockLevel}, available=${available}`
+      );
+    }
 
-  res.json({ success: true });
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error in inventory-update handler:", err.message);
+    res.status(500).json({ success: false, message: "Error talking to Deliveroo" });
+  }
 });
 
 
