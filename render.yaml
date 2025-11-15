@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: deliveroo-linnworks-integration
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
