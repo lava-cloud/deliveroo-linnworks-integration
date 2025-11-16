@@ -1,6 +1,10 @@
+const skuMap = require("./sku-map.json");
+
 const express = require("express");
 const app = express();
-const DELIV_AUTH_URL = "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
+
+const DELIV_AUTH_URL =
+  "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
 
 async function getDeliverooAccessToken() {
   const clientId = process.env.DELIV_CLIENT_ID;
@@ -20,9 +24,9 @@ async function getDeliverooAccessToken() {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "Accept": "application/json"
+      Accept: "application/json",
     },
-    body: params
+    body: params,
   });
 
   if (!response.ok) {
@@ -32,10 +36,13 @@ async function getDeliverooAccessToken() {
   }
 
   const data = await response.json();
-  console.log("Got Deliveroo access token (expires_in:", data.expires_in, "seconds)");
+  console.log(
+    "Got Deliveroo access token (expires_in:",
+    data.expires_in,
+    "seconds)"
+  );
   return data.access_token;
 }
-
 
 app.use(express.json());
 
@@ -77,45 +84,70 @@ app.post("/linnworks/config-test", (req, res) => {
 app.post("/linnworks/orders", (req, res) => {
   res.json({
     hasMoreOrders: false,
-    orders: []
+    orders: [],
   });
 });
 
-// Inventory update endpoint (real logic added later)
+// Inventory update endpoint (now using sku-map.json + Deliveroo token)
 app.post("/linnworks/inventory-update", async (req, res) => {
   const body = req.body;
 
   console.log("Inventory update received:", JSON.stringify(body, null, 2));
 
   if (!body.items || !Array.isArray(body.items)) {
-    return res.status(400).json({ success: false, message: "Missing items array" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Missing items array" });
   }
 
   try {
     // 1) Get a Deliveroo token for this batch of updates
     const accessToken = await getDeliverooAccessToken();
 
-    // 2) Loop through each item and decide availability
-    for (const item of body.items) {
-      const sku = item.sku || item.channelSKU || "UNKNOWN";
-      const stockLevel = item.stockLevel ?? item.stock ?? 0;
-      const available = stockLevel > 0;
+    // 2) Build list of items to send to Deliveroo using mapping
+    const itemsForDeliveroo = body.items
+      .map((item) => {
+        const sku = item.sku || item.channelSKU || "UNKNOWN";
+        const stockLevel = item.stockLevel ?? item.stock ?? 0;
+        const available = stockLevel > 0;
 
-      // 👉 This is where we will later call the real Deliveroo Catalogue/Menu API.
-      // For now, just log what we WOULD send, including that we have a token.
-      console.log(
-        `With token ${accessToken.slice(0, 10)}... would update Deliveroo item for SKU ${sku}: ` +
-        `stockLevel=${stockLevel}, available=${available}`
-      );
-    }
+        // Look up Deliveroo item ID from sku-map.json
+        const itemId = skuMap[sku];
+
+        if (!itemId) {
+          console.warn(
+            `⚠️ No Deliveroo item mapping found for SKU '${sku}'. Skipping.`
+          );
+          return null; // item skipped
+        }
+
+        console.log(
+          `Preparing Deliveroo update for SKU ${sku}: ` +
+            `mapped Deliveroo itemId=${itemId}, stockLevel=${stockLevel}, available=${available}`
+        );
+
+        return { itemId, available, sku, stockLevel };
+      })
+      .filter((it) => it !== null); // remove skipped items
+
+    console.log(
+      `With token ${accessToken.slice(
+        0,
+        10
+      )}... would update Deliveroo items:`,
+      JSON.stringify(itemsForDeliveroo, null, 2)
+    );
+
+    // Later we'll call the real Deliveroo Catalogue API here using itemsForDeliveroo
 
     res.json({ success: true });
   } catch (err) {
     console.error("Error in inventory-update handler:", err.message);
-    res.status(500).json({ success: false, message: "Error talking to Deliveroo" });
+    res
+      .status(500)
+      .json({ success: false, message: "Error talking to Deliveroo" });
   }
 });
-
 
 // Deliveroo webhook endpoint (orders)
 app.post("/deliveroo/order-webhook", (req, res) => {
