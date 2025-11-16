@@ -84,25 +84,56 @@ app.post("/linnworks/config-test", (req, res) => {
   res.json({ success: true, message: "Config test OK" });
 });
 
-// ----- Linnworks Orders endpoint (now returns pending Deliveroo orders) -----
+// ----- Linnworks Orders endpoint (now more structured) -----
 app.post("/linnworks/orders", (req, res) => {
   console.log(
     "Linnworks requested orders. Pending Deliveroo orders:",
     pendingDeliverooOrders.length
   );
 
-  // Basic, channel-agnostic shape for now.
-  // We will later adjust this to match Linnworks' exact order schema.
-  const ordersToSend = pendingDeliverooOrders.map((o) => ({
-    OrderId: o.orderId, // external/channel order ID
-    ReferenceNumber: o.orderId,
-    Source: "Deliveroo",
-    ReceivedAt: o.receivedAt,
-    // Raw payload from Deliveroo - useful while we’re developing the mapping
-    RawJson: o.raw,
-  }));
+  const ordersToSend = pendingDeliverooOrders.map((entry) => {
+    const raw = entry.raw || {};
+    const orderId =
+      raw.id ||
+      raw.order_id ||
+      raw.orderId ||
+      raw.orderReference ||
+      entry.orderId ||
+      `unknown-${Date.now()}`;
 
-  // Clear the queue once sent (Linnworks has "picked them up")
+    const customerName =
+      (raw.customer && raw.customer.name) ||
+      raw.customer_name ||
+      null;
+
+    const totalPrice =
+      raw.total_price ??
+      raw.total ??
+      null;
+
+    const itemsArray = Array.isArray(raw.items) ? raw.items : [];
+
+    const lines = itemsArray.map((item, index) => ({
+      LineNumber: index + 1,
+      SKU: item.sku || item.code || null,
+      Title: item.name || item.title || "Item",
+      Quantity: item.quantity ?? item.qty ?? 1,
+      Price: item.price ?? item.unit_price ?? null,
+    }));
+
+    return {
+      OrderId: orderId,
+      ReferenceNumber: orderId,
+      Source: "Deliveroo",
+      ReceivedAt: entry.receivedAt,
+      CustomerName: customerName,
+      TotalPrice: totalPrice,
+      Lines: lines,
+      RawJson: raw, // keep full payload for debugging / mapping
+    };
+  });
+
+  // Clear the queue once sent
   pendingDeliverooOrders = [];
 
   res.json({
@@ -175,7 +206,6 @@ app.post("/linnworks/inventory-update", async (req, res) => {
 app.post("/deliveroo/order-webhook", (req, res) => {
   const order = req.body || {};
 
-  // Try to find some kind of ID in the payload
   const orderId =
     order.id ||
     order.order_id ||
@@ -191,7 +221,6 @@ app.post("/deliveroo/order-webhook", (req, res) => {
     JSON.stringify(order, null, 2)
   );
 
-  // Store in memory for Linnworks to fetch later
   pendingDeliverooOrders.push({
     orderId,
     receivedAt,
@@ -206,3 +235,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
+
