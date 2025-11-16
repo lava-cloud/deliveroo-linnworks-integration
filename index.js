@@ -6,6 +6,10 @@ const app = express();
 const DELIV_AUTH_URL =
   "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
 
+// In-memory store for Deliveroo orders (simple first version)
+let pendingDeliverooOrders = [];
+
+// ----- Deliveroo auth helper -----
 async function getDeliverooAccessToken() {
   const clientId = process.env.DELIV_CLIENT_ID;
   const clientSecret = process.env.DELIV_CLIENT_SECRET;
@@ -46,12 +50,12 @@ async function getDeliverooAccessToken() {
 
 app.use(express.json());
 
-// Health check endpoint
+// ----- Health check -----
 app.get("/", (req, res) => {
   res.json({ message: "Deliveroo–Linnworks integration is running" });
 });
 
-// Linnworks required endpoints (stub versions)
+// ----- Linnworks required endpoints (stubs for now) -----
 app.post("/linnworks/add-new-user", (req, res) => {
   res.json({ success: true, message: "Add new user stub" });
 });
@@ -80,15 +84,34 @@ app.post("/linnworks/config-test", (req, res) => {
   res.json({ success: true, message: "Config test OK" });
 });
 
-// Order endpoint (real logic will be added later)
+// ----- Linnworks Orders endpoint (now returns pending Deliveroo orders) -----
 app.post("/linnworks/orders", (req, res) => {
+  console.log(
+    "Linnworks requested orders. Pending Deliveroo orders:",
+    pendingDeliverooOrders.length
+  );
+
+  // Basic, channel-agnostic shape for now.
+  // We will later adjust this to match Linnworks' exact order schema.
+  const ordersToSend = pendingDeliverooOrders.map((o) => ({
+    OrderId: o.orderId, // external/channel order ID
+    ReferenceNumber: o.orderId,
+    Source: "Deliveroo",
+    ReceivedAt: o.receivedAt,
+    // Raw payload from Deliveroo - useful while we’re developing the mapping
+    RawJson: o.raw,
+  }));
+
+  // Clear the queue once sent (Linnworks has "picked them up")
+  pendingDeliverooOrders = [];
+
   res.json({
     hasMoreOrders: false,
-    orders: [],
+    orders: ordersToSend,
   });
 });
 
-// Inventory update endpoint (now using sku-map.json + Deliveroo token)
+// ----- Linnworks Inventory Update endpoint -----
 app.post("/linnworks/inventory-update", async (req, res) => {
   const body = req.body;
 
@@ -101,24 +124,22 @@ app.post("/linnworks/inventory-update", async (req, res) => {
   }
 
   try {
-    // 1) Get a Deliveroo token for this batch of updates
     const accessToken = await getDeliverooAccessToken();
 
-    // 2) Build list of items to send to Deliveroo using mapping
+    // Build the list of items to send to Deliveroo using SKU mapping
     const itemsForDeliveroo = body.items
       .map((item) => {
         const sku = item.sku || item.channelSKU || "UNKNOWN";
         const stockLevel = item.stockLevel ?? item.stock ?? 0;
         const available = stockLevel > 0;
 
-        // Look up Deliveroo item ID from sku-map.json
         const itemId = skuMap[sku];
 
         if (!itemId) {
           console.warn(
             `⚠️ No Deliveroo item mapping found for SKU '${sku}'. Skipping.`
           );
-          return null; // item skipped
+          return null;
         }
 
         console.log(
@@ -128,7 +149,7 @@ app.post("/linnworks/inventory-update", async (req, res) => {
 
         return { itemId, available, sku, stockLevel };
       })
-      .filter((it) => it !== null); // remove skipped items
+      .filter((it) => it !== null);
 
     console.log(
       `With token ${accessToken.slice(
@@ -138,7 +159,8 @@ app.post("/linnworks/inventory-update", async (req, res) => {
       JSON.stringify(itemsForDeliveroo, null, 2)
     );
 
-    // Later we'll call the real Deliveroo Catalogue API here using itemsForDeliveroo
+    // Later we will call the actual Deliveroo Catalogue/Menu API here
+    // using itemsForDeliveroo and your Brand/Catalogue/Site IDs.
 
     res.json({ success: true });
   } catch (err) {
@@ -149,13 +171,37 @@ app.post("/linnworks/inventory-update", async (req, res) => {
   }
 });
 
-// Deliveroo webhook endpoint (orders)
+// ----- Deliveroo webhook endpoint (orders) -----
 app.post("/deliveroo/order-webhook", (req, res) => {
-  console.log("Deliveroo webhook received:", req.body);
+  const order = req.body || {};
+
+  // Try to find some kind of ID in the payload
+  const orderId =
+    order.id ||
+    order.order_id ||
+    order.orderId ||
+    order.orderReference ||
+    `unknown-${Date.now()}`;
+
+  const receivedAt = new Date().toISOString();
+
+  console.log(
+    "Deliveroo webhook received for order",
+    orderId,
+    JSON.stringify(order, null, 2)
+  );
+
+  // Store in memory for Linnworks to fetch later
+  pendingDeliverooOrders.push({
+    orderId,
+    receivedAt,
+    raw: order,
+  });
+
   res.status(200).send("OK");
 });
 
-// Start app on Render-assigned port
+// ----- Start app -----
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
