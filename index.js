@@ -230,7 +230,27 @@ app.post("/linnworks/orders", async (req, res) => {
 // ----- Despatch: Linnworks tells us an order shipped (acknowledge) -----
 app.post("/linnworks/despatch", (req, res) => {
   console.log("[lw] Despatch notification received.");
+  const orders = (req.body && req.body.Orders) || [];
+  res.json({
+    Error: null,
+    Orders: orders.map((o) => ({
+      OrderId: o.OrderId || o.ReferenceNumber,
+      Error: null,
+    })),
+  });
+});
+
+// ----- Cancel / Refund / PostSaleOptions: acknowledge -----
+app.post("/linnworks/cancel", (req, res) => {
+  console.log("[lw] Cancel request received.");
   res.json({ Error: null });
+});
+app.post("/linnworks/refund", (req, res) => {
+  console.log("[lw] Refund request received.");
+  res.json({ Error: null });
+});
+app.post("/linnworks/post-sale-options", (req, res) => {
+  res.json({ Error: null, Options: [] });
 });
 
 // ----- Products: list channel products for mapping -----
