@@ -147,4 +147,34 @@ async function listSites(brandId) {
   return apiGet(`/site/v1/brands/${brandId}/sites`);
 }
 
-module.exports = { getAccessToken, updateAvailability, listBrands, listSites };
+// GET /menu/v1/brands/{brandId}/menus → menus (sandbox restaurant sites)
+async function listMenus(brandId) {
+  return apiGet(`/menu/v1/brands/${brandId}/menus`);
+}
+
+// Toggle one menu item's availability via the restaurant Menu API (sandbox test).
+// POST /menu/v1/brands/{brandId}/menus/{menuId}/item_unavailabilities/{siteId}
+async function setMenuItemUnavailability(brandId, menuId, siteId, itemId, unavailable) {
+  const token = await getAccessToken();
+  const url = `${config.deliveroo.apiBase}/menu/v1/brands/${brandId}/menus/${menuId}/item_unavailabilities/${siteId}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ unavailable_ids: unavailable ? [itemId] : [] }),
+  });
+  const text = await res.text();
+  return { status: res.status, body: text };
+}
+
+module.exports = {
+  getAccessToken,
+  updateAvailability,
+  listBrands,
+  listSites,
+  listMenus,
+  setMenuItemUnavailability,
+};

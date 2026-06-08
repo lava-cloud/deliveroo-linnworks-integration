@@ -199,13 +199,39 @@ app.get("/debug/deliveroo-discover", async (req, res) => {
     const result = { env: config.deliverooEnv, brands: brands.body, status: brands.status, sites: {} };
     // If brands came back, try to list sites for each brand id.
     const list = Array.isArray(brands.body) ? brands.body : brands.body && brands.body.brands;
+    result.menus = {};
     if (Array.isArray(list)) {
       for (const b of list) {
         const id = b.id || b.brand_id || b.brandId;
-        if (id) result.sites[id] = (await deliveroo.listSites(id)).body;
+        if (id) {
+          result.sites[id] = (await deliveroo.listSites(id)).body;
+          result.menus[id] = (await deliveroo.listMenus(id)).body;
+        }
       }
     }
     res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /debug/deliveroo-stock-test  header x-sync-secret
+// Body: { brandId, menuId, siteId, itemId, unavailable: true|false }
+// Live test: toggles one menu item's availability in sandbox.
+app.post("/debug/deliveroo-stock-test", async (req, res) => {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    return res.status(401).json({ error: "Bad sync secret" });
+  }
+  const { brandId, menuId, siteId, itemId, unavailable } = req.body || {};
+  try {
+    const r = await deliveroo.setMenuItemUnavailability(
+      brandId,
+      menuId,
+      siteId,
+      itemId,
+      unavailable !== false
+    );
+    res.json({ ok: r.status >= 200 && r.status < 300, ...r });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
