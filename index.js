@@ -1,238 +1,240 @@
-const skuMap = require("./sku-map.json");
+// ---------------------------------------------------------------------------
+// index.js  —  Deliveroo <-> Linnworks middleware (entry point)
+//
+// What this app does:
+//   • Receives Deliveroo order webhooks and stores them safely in a database.
+//   • Pushes those orders into Linnworks (once Linnworks creds are live).
+//   • Reads Linnworks stock and updates Deliveroo availability so you don't
+//     oversell (once Deliveroo gives us Brand/Catalogue/Site IDs).
+//
+// Anything not yet "ready" is staged and logged rather than failing, so the
+// service always stays up. Check GET /  to see exactly what's ready.
+// ---------------------------------------------------------------------------
 
 const express = require("express");
+const config = require("./src/config");
+const db = require("./src/db");
+const deliveroo = require("./src/deliveroo");
+const linnworks = require("./src/linnworks");
+const skuMap = require("./sku-map.json"); // { "Linnworks-SKU": "DeliverooItemID" }
+
 const app = express();
-
-const DELIV_AUTH_URL =
-  "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
-
-// In-memory store for Deliveroo orders (simple first version)
-let pendingDeliverooOrders = [];
-
-// ----- Deliveroo auth helper -----
-async function getDeliverooAccessToken() {
-  const clientId = process.env.DELIV_CLIENT_ID;
-  const clientSecret = process.env.DELIV_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    console.error("Missing Deliveroo credentials in environment variables");
-    throw new Error("Deliveroo credentials not configured");
-  }
-
-  const params = new URLSearchParams();
-  params.append("grant_type", "client_credentials");
-  params.append("client_id", clientId);
-  params.append("client_secret", clientSecret);
-
-  const response = await fetch(DELIV_AUTH_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    },
-    body: params,
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    console.error("Failed to get Deliveroo token:", response.status, text);
-    throw new Error("Deliveroo auth failed");
-  }
-
-  const data = await response.json();
-  console.log(
-    "Got Deliveroo access token (expires_in:",
-    data.expires_in,
-    "seconds)"
-  );
-  return data.access_token;
-}
-
 app.use(express.json());
 
-// ----- Health check -----
-app.get("/", (req, res) => {
-  res.json({ message: "Deliveroo–Linnworks integration is running" });
-});
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-// ----- Linnworks required endpoints (stubs for now) -----
-app.post("/linnworks/add-new-user", (req, res) => {
-  res.json({ success: true, message: "Add new user stub" });
-});
+// Turn a raw Deliveroo order payload into a tidy structure.
+function normaliseOrder(raw, receivedAt) {
+  raw = raw || {};
+  const orderId =
+    raw.id || raw.order_id || raw.orderId || raw.orderReference || null;
 
-app.post("/linnworks/user-config", (req, res) => {
-  res.json({ success: true, config: {} });
-});
+  const itemsArray = Array.isArray(raw.items) ? raw.items : [];
+  const lines = itemsArray.map((item, index) => ({
+    LineNumber: index + 1,
+    SKU: item.sku || item.code || null,
+    Title: item.name || item.title || "Item",
+    Quantity: item.quantity ?? item.qty ?? 1,
+    Price: item.price ?? item.unit_price ?? null,
+  }));
 
-app.post("/linnworks/save-config", (req, res) => {
-  res.json({ success: true });
-});
+  return {
+    OrderId: orderId,
+    ReferenceNumber: orderId,
+    Source: "Deliveroo",
+    ReceivedAt: receivedAt,
+    CustomerName:
+      (raw.customer && raw.customer.name) || raw.customer_name || null,
+    TotalPrice: raw.total_price ?? raw.total ?? null,
+    Lines: lines,
+    RawJson: raw,
+  };
+}
 
-app.post("/linnworks/shipping-tags", (req, res) => {
-  res.json({ success: true, tags: [] });
-});
+// Try to push any not-yet-pushed orders into Linnworks.
+async function pushPendingOrdersToLinnworks() {
+  if (!config.flags.linnworksReady) return;
 
-app.post("/linnworks/payment-tags", (req, res) => {
-  res.json({ success: true, tags: [] });
-});
-
-app.post("/linnworks/config-deleted", (req, res) => {
-  res.json({ success: true });
-});
-
-app.post("/linnworks/config-test", (req, res) => {
-  res.json({ success: true, message: "Config test OK" });
-});
-
-// ----- Linnworks Orders endpoint (now more structured) -----
-app.post("/linnworks/orders", (req, res) => {
-  console.log(
-    "Linnworks requested orders. Pending Deliveroo orders:",
-    pendingDeliverooOrders.length
-  );
-
-  const ordersToSend = pendingDeliverooOrders.map((entry) => {
-    const raw = entry.raw || {};
-    const orderId =
-      raw.id ||
-      raw.order_id ||
-      raw.orderId ||
-      raw.orderReference ||
-      entry.orderId ||
-      `unknown-${Date.now()}`;
-
-    const customerName =
-      (raw.customer && raw.customer.name) ||
-      raw.customer_name ||
-      null;
-
-    const totalPrice =
-      raw.total_price ??
-      raw.total ??
-      null;
-
-    const itemsArray = Array.isArray(raw.items) ? raw.items : [];
-
-    const lines = itemsArray.map((item, index) => ({
-      LineNumber: index + 1,
-      SKU: item.sku || item.code || null,
-      Title: item.name || item.title || "Item",
-      Quantity: item.quantity ?? item.qty ?? 1,
-      Price: item.price ?? item.unit_price ?? null,
-    }));
-
-    return {
-      OrderId: orderId,
-      ReferenceNumber: orderId,
-      Source: "Deliveroo",
-      ReceivedAt: entry.receivedAt,
-      CustomerName: customerName,
-      TotalPrice: totalPrice,
-      Lines: lines,
-      RawJson: raw, // keep full payload for debugging / mapping
-    };
-  });
-
-  // Clear the queue once sent
-  pendingDeliverooOrders = [];
-
-  res.json({
-    hasMoreOrders: false,
-    orders: ordersToSend,
-  });
-});
-
-// ----- Linnworks Inventory Update endpoint -----
-app.post("/linnworks/inventory-update", async (req, res) => {
-  const body = req.body;
-
-  console.log("Inventory update received:", JSON.stringify(body, null, 2));
-
-  if (!body.items || !Array.isArray(body.items)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Missing items array" });
+  const pending = await db.getPendingOrders();
+  for (const row of pending) {
+    const structured = normaliseOrder(row.raw, row.received_at);
+    try {
+      await linnworks.createOrder(structured);
+      await db.markPushed(row.order_id);
+      console.log(`[orders] Pushed ${row.order_id} to Linnworks.`);
+    } catch (err) {
+      await db.markError(row.order_id, err.message);
+      console.warn(`[orders] Could not push ${row.order_id}: ${err.message}`);
+    }
   }
+}
+
+// Read Linnworks stock for all mapped SKUs and update Deliveroo availability.
+async function runStockSync() {
+  const skus = Object.keys(skuMap);
+  if (!skus.length) {
+    console.log("[stock] sku-map.json is empty — nothing to sync.");
+    return { skus: 0, updated: 0, staged: false };
+  }
+
+  let stockBySku = {};
+  if (config.flags.linnworksReady) {
+    stockBySku = await linnworks.getStockLevelsBySkus(skus);
+  } else {
+    console.log("[stock] Linnworks not configured — cannot read real stock yet.");
+  }
+
+  const items = skus
+    .map((sku) => {
+      const itemId = skuMap[sku];
+      if (!itemId) return null;
+      const level = stockBySku[sku] ?? 0;
+      return { itemId, sku, available: level > 0, stockLevel: level };
+    })
+    .filter(Boolean);
+
+  const result = await deliveroo.updateAvailability(items);
+  return { skus: skus.length, updated: result.sent, staged: result.staged };
+}
+
+// ---------------------------------------------------------------------------
+// Routes
+// ---------------------------------------------------------------------------
+
+// Health + status dashboard (open this in a browser to see what's ready).
+app.get("/", (req, res) => {
+  res.json({
+    message: "Deliveroo–Linnworks integration is running",
+    environment: config.deliverooEnv,
+    ready: config.flags,
+    notes: {
+      deliverooStock: config.flags.deliverooStockReady
+        ? "Live"
+        : "Staged — waiting for Deliveroo Brand/Catalogue/Site IDs",
+      linnworks: config.flags.linnworksReady
+        ? "Configured"
+        : "Waiting for Linnworks app credentials",
+      database: config.flags.databaseReady
+        ? "Postgres (orders persist)"
+        : "In-memory (orders lost on restart — add a database)",
+    },
+  });
+});
+
+// ----- Deliveroo order webhook -----
+app.post("/deliveroo/order-webhook", async (req, res) => {
+  const raw = req.body || {};
+  const receivedAt = new Date().toISOString();
+  const orderId =
+    raw.id ||
+    raw.order_id ||
+    raw.orderId ||
+    raw.orderReference ||
+    `unknown-${receivedAt}`;
+
+  // Acknowledge fast (Deliveroo expects a quick 200), then process.
+  res.status(200).send("OK");
 
   try {
-    const accessToken = await getDeliverooAccessToken();
-
-    // Build the list of items to send to Deliveroo using SKU mapping
-    const itemsForDeliveroo = body.items
-      .map((item) => {
-        const sku = item.sku || item.channelSKU || "UNKNOWN";
-        const stockLevel = item.stockLevel ?? item.stock ?? 0;
-        const available = stockLevel > 0;
-
-        const itemId = skuMap[sku];
-
-        if (!itemId) {
-          console.warn(
-            `⚠️ No Deliveroo item mapping found for SKU '${sku}'. Skipping.`
-          );
-          return null;
-        }
-
-        console.log(
-          `Preparing Deliveroo update for SKU ${sku}: ` +
-            `mapped Deliveroo itemId=${itemId}, stockLevel=${stockLevel}, available=${available}`
-        );
-
-        return { itemId, available, sku, stockLevel };
-      })
-      .filter((it) => it !== null);
-
-    console.log(
-      `With token ${accessToken.slice(
-        0,
-        10
-      )}... would update Deliveroo items:`,
-      JSON.stringify(itemsForDeliveroo, null, 2)
-    );
-
-    // Later we will call the actual Deliveroo Catalogue/Menu API here
-    // using itemsForDeliveroo and your Brand/Catalogue/Site IDs.
-
-    res.json({ success: true });
+    await db.saveOrder(orderId, raw);
+    console.log(`[webhook] Saved Deliveroo order ${orderId}`);
+    // Attempt to forward to Linnworks immediately (safe no-op if not ready).
+    await pushPendingOrdersToLinnworks();
   } catch (err) {
-    console.error("Error in inventory-update handler:", err.message);
-    res
-      .status(500)
-      .json({ success: false, message: "Error talking to Deliveroo" });
+    console.error(`[webhook] Error handling ${orderId}: ${err.message}`);
   }
 });
 
-// ----- Deliveroo webhook endpoint (orders) -----
-app.post("/deliveroo/order-webhook", (req, res) => {
-  const order = req.body || {};
+// ----- Manual stock sync trigger (protected by SYNC_SECRET) -----
+// Call: POST /sync/stock  with header  x-sync-secret: <your SYNC_SECRET>
+app.post("/sync/stock", async (req, res) => {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    return res.status(401).json({ success: false, message: "Bad sync secret" });
+  }
+  try {
+    const result = await runStockSync();
+    res.json({ success: true, ...result });
+  } catch (err) {
+    console.error("[stock] sync error:", err.message);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
-  const orderId =
-    order.id ||
-    order.order_id ||
-    order.orderId ||
-    order.orderReference ||
-    `unknown-${Date.now()}`;
+// ----- Linnworks Orders pull endpoint (kept for the future channel app / debug) -----
+// Returns stored orders that haven't been pushed yet. Does NOT delete them.
+app.post("/linnworks/orders", async (req, res) => {
+  try {
+    const pending = await db.getPendingOrders();
+    const orders = pending.map((row) =>
+      normaliseOrder(row.raw, row.received_at)
+    );
+    res.json({ hasMoreOrders: false, orders });
+  } catch (err) {
+    res.status(500).json({ hasMoreOrders: false, orders: [], error: err.message });
+  }
+});
 
-  const receivedAt = new Date().toISOString();
+// ----- Linnworks channel stubs (kept for the future App Store connector) -----
+app.post("/linnworks/add-new-user", (req, res) => res.json({ success: true }));
+app.post("/linnworks/user-config", (req, res) => res.json({ success: true, config: {} }));
+app.post("/linnworks/save-config", (req, res) => res.json({ success: true }));
+app.post("/linnworks/shipping-tags", (req, res) => res.json({ success: true, tags: [] }));
+app.post("/linnworks/payment-tags", (req, res) => res.json({ success: true, tags: [] }));
+app.post("/linnworks/config-deleted", (req, res) => res.json({ success: true }));
+app.post("/linnworks/config-test", (req, res) => res.json({ success: true }));
 
-  console.log(
-    "Deliveroo webhook received for order",
-    orderId,
-    JSON.stringify(order, null, 2)
-  );
+// ----- Inventory update (manual/testing route, same as before) -----
+app.post("/linnworks/inventory-update", async (req, res) => {
+  const items = (req.body && req.body.items) || [];
+  if (!Array.isArray(items)) {
+    return res.status(400).json({ success: false, message: "Missing items array" });
+  }
+  try {
+    const mapped = items
+      .map((item) => {
+        const sku = item.sku || item.channelSKU || "UNKNOWN";
+        const level = item.stockLevel ?? item.stock ?? 0;
+        const itemId = skuMap[sku];
+        if (!itemId) {
+          console.warn(`[inventory] No mapping for SKU '${sku}', skipping.`);
+          return null;
+        }
+        return { itemId, sku, available: level > 0, stockLevel: level };
+      })
+      .filter(Boolean);
 
-  pendingDeliverooOrders.push({
-    orderId,
-    receivedAt,
-    raw: order,
+    const result = await deliveroo.updateAvailability(mapped);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    console.error("[inventory] error:", err.message);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Startup
+// ---------------------------------------------------------------------------
+async function start() {
+  await db.initDb();
+
+  app.listen(config.port, () => {
+    console.log(`Server running on port ${config.port} (env=${config.deliverooEnv})`);
+    console.log("Ready flags:", JSON.stringify(config.flags));
   });
 
-  res.status(200).send("OK");
-});
+  // Optional automatic stock sync on a timer.
+  if (config.stockSyncIntervalMinutes > 0) {
+    const ms = config.stockSyncIntervalMinutes * 60_000;
+    console.log(`[stock] Auto-sync every ${config.stockSyncIntervalMinutes} min.`);
+    setInterval(() => {
+      runStockSync().catch((e) => console.error("[stock] auto-sync error:", e.message));
+    }, ms);
+  }
+}
 
-// ----- Start app -----
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+start().catch((err) => {
+  console.error("Fatal startup error:", err);
+  process.exit(1);
 });
-
