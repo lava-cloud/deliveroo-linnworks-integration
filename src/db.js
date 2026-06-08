@@ -138,8 +138,19 @@ async function deleteConfig(authToken) {
   await pool.query(`DELETE FROM channel_configs WHERE auth_token = $1`, [authToken]);
 }
 
+// ----- Diagnostics -----
+async function counts() {
+  if (useMemory) {
+    return { orders: mem.orders.length, configs: Object.keys(mem.configs).length };
+  }
+  const o = await pool.query(`SELECT COUNT(*)::int AS c FROM deliveroo_orders`);
+  const c = await pool.query(`SELECT COUNT(*)::int AS c FROM channel_configs`);
+  return { orders: o.rows[0].c, configs: c.rows[0].c };
+}
+
 module.exports = {
   initDb,
+  counts,
   saveOrder,
   getOrdersSince,
   createConfig,

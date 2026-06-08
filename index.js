@@ -172,6 +172,21 @@ app.get("/", (req, res) => {
   });
 });
 
+// --- diagnostics (protected by SYNC_SECRET) --------------------------------
+// GET /debug/status  header x-sync-secret: <SYNC_SECRET>
+// Shows how many orders and connected configs exist — confirms Linnworks
+// reached our AddNewUser endpoint without reading raw logs.
+app.get("/debug/status", async (req, res) => {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    return res.status(401).json({ error: "Bad sync secret" });
+  }
+  try {
+    res.json({ ok: true, ...(await db.counts()), ready: config.flags });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // --- Deliveroo order webhook ----------------------------------------------
 
 app.post("/deliveroo/order-webhook", async (req, res) => {
