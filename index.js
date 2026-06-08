@@ -223,27 +223,38 @@ app.post("/linnworks/add-new-user", async (req, res) => {
   }
 });
 
-// ----- Setup wizard: UserConfig (return current saved config) -----
+// A "completed wizard" response. Returning StepName "UserConfig" tells
+// Linnworks the setup is finished. We need no credentials from the user here
+// (Deliveroo auth lives in Render), so we complete immediately.
+function completedWizardResponse(configItems = []) {
+  return {
+    Error: null,
+    StepName: "UserConfig", // signals wizard complete
+    AccountName: "Deliveroo",
+    WizardStepTitle: "Deliveroo",
+    WizardStepDescription: "Deliveroo integration connected.",
+    GlobalConfigSettings: {},
+    ConfigItems: configItems,
+  };
+}
+
+// ----- Setup wizard: UserConfig -----
 app.post("/linnworks/user-config", async (req, res) => {
   const token = getAuthToken(req.body);
   try {
-    const cfg = (token && (await db.getConfig(token))) || {};
-    res.json({ Error: null, Config: cfg });
-  } catch (err) {
-    res.json({ Error: err.message });
-  }
+    if (token) await db.getConfig(token); // touch (ensures row exists)
+  } catch (_) {}
+  res.json(completedWizardResponse());
 });
 
 // ----- Setup wizard: SaveConfig -----
 app.post("/linnworks/save-config", async (req, res) => {
   const token = getAuthToken(req.body);
-  const incoming = (req.body && req.body.Config) || req.body || {};
+  const items = (req.body && req.body.ConfigItems) || [];
   try {
-    if (token) await db.saveConfig(token, incoming);
-    res.json({ Error: null });
-  } catch (err) {
-    res.json({ Error: err.message });
-  }
+    if (token) await db.saveConfig(token, { ConfigItems: items });
+  } catch (_) {}
+  res.json(completedWizardResponse(items));
 });
 
 // ----- ConfigDeleted -----
