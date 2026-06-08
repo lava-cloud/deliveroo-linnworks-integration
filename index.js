@@ -162,6 +162,28 @@ app.post("/sync/stock", async (req, res) => {
   }
 });
 
+// ----- Safe Linnworks connection test (protected by SYNC_SECRET) -----
+// POST /debug/linnworks  header x-sync-secret: <SYNC_SECRET>
+// Body (optional): { "skus": ["YOUR-SKU-1"] }
+// Returns auth status + (if skus given) their current stock levels.
+// Read-only: never creates or changes anything.
+app.post("/debug/linnworks", async (req, res) => {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    return res.status(401).json({ success: false, message: "Bad sync secret" });
+  }
+  try {
+    const s = await linnworks.getSession();
+    const out = { success: true, authorized: true, server: s.server };
+    const skus = (req.body && req.body.skus) || [];
+    if (Array.isArray(skus) && skus.length) {
+      out.stock = await linnworks.getStockLevelsBySkus(skus);
+    }
+    res.json(out);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ----- Linnworks Orders pull endpoint (kept for the future channel app / debug) -----
 // Returns stored orders that haven't been pushed yet. Does NOT delete them.
 app.post("/linnworks/orders", async (req, res) => {
