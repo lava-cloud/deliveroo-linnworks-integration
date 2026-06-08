@@ -187,6 +187,30 @@ app.get("/debug/status", async (req, res) => {
   }
 });
 
+// GET /debug/deliveroo-discover  header x-sync-secret: <SYNC_SECRET>
+// Reads your brand(s) and their sites from Deliveroo so we can capture the
+// brand_id (and confirm site_id) once the API is connected. Read-only.
+app.get("/debug/deliveroo-discover", async (req, res) => {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    return res.status(401).json({ error: "Bad sync secret" });
+  }
+  try {
+    const brands = await deliveroo.listBrands();
+    const result = { env: config.deliverooEnv, brands: brands.body, status: brands.status, sites: {} };
+    // If brands came back, try to list sites for each brand id.
+    const list = Array.isArray(brands.body) ? brands.body : brands.body && brands.body.brands;
+    if (Array.isArray(list)) {
+      for (const b of list) {
+        const id = b.id || b.brand_id || b.brandId;
+        if (id) result.sites[id] = (await deliveroo.listSites(id)).body;
+      }
+    }
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // --- Deliveroo order webhook ----------------------------------------------
 
 app.post("/deliveroo/order-webhook", async (req, res) => {

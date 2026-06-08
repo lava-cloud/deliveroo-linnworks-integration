@@ -118,4 +118,33 @@ async function updateAvailability(items) {
   return { staged: false, sent: items.length };
 }
 
-module.exports = { getAccessToken, updateAvailability };
+// --- Discovery helpers -----------------------------------------------------
+// Once the API is connected, these let us read your brand_id and sites
+// straight from Deliveroo (so we don't need them handed over manually).
+async function apiGet(path) {
+  const token = await getAccessToken();
+  const res = await fetch(`${config.deliveroo.apiBase}${path}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  });
+  const text = await res.text();
+  let body;
+  try {
+    body = JSON.parse(text);
+  } catch (_) {
+    body = text;
+  }
+  return { status: res.status, body };
+}
+
+// GET /site/v1/brands → your brand(s), including brand_id
+async function listBrands() {
+  return apiGet("/site/v1/brands");
+}
+
+// GET /site/v1/brands/{brandId}/sites → sites under a brand (confirms site_id)
+async function listSites(brandId) {
+  return apiGet(`/site/v1/brands/${brandId}/sites`);
+}
+
+module.exports = { getAccessToken, updateAvailability, listBrands, listSites };
