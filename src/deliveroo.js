@@ -72,25 +72,33 @@ async function updateAvailability(items) {
 
   const token = await getAccessToken();
 
-  // Deliveroo "item unavailabilities" payload.
-  // NOTE: confirm exact shape with your TIM before production; this matches
-  // the documented unavailabilities-v1 format.
+  // Retail Catalogue API "unavailabilities" payload (unavailabilities-v1).
+  // status is the string "available" / "unavailable" (NOT a boolean).
+  // Items default to "available"; we only need to flag out-of-stock ones,
+  // but we send both so availability is restored when stock returns.
   const payload = {
     version: "unavailabilities-v1",
     reset_all_item_availabilities: false,
     item_unavailabilities: items.map((it) => ({
       item_id: it.itemId,
-      unavailable: it.available === false,
+      status: it.available === false ? "unavailable" : "available",
     })),
   };
 
-  const url =
-    `${config.deliveroo.apiBase}/brands/${config.deliveroo.brandId}` +
-    `/catalogue/${config.deliveroo.catalogueId}` +
-    `/item_unavailabilities/${config.deliveroo.siteId}`;
+  // Retail Catalogue API is PATCH /unavailabilities (synchronous), scoped by
+  // brand/catalogue/site. Exact path to be confirmed with the Deliveroo TIM;
+  // override via DELIV_UNAVAILABILITIES_URL if they give a different one.
+  const url = config.deliverooUnavailabilitiesUrl
+    ? config.deliverooUnavailabilitiesUrl
+        .replace("{brand}", config.deliveroo.brandId)
+        .replace("{catalogue}", config.deliveroo.catalogueId)
+        .replace("{site}", config.deliveroo.siteId)
+    : `${config.deliveroo.apiBase}/catalogue/v1/brands/${config.deliveroo.brandId}` +
+      `/catalogues/${config.deliveroo.catalogueId}` +
+      `/sites/${config.deliveroo.siteId}/unavailabilities`;
 
   const response = await fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
