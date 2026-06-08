@@ -97,6 +97,19 @@ See `.env.example`. Key ones:
 
 ---
 
+## Catalogue / listings (decided: defer)
+
+Products are created/edited in Deliveroo **Catalogue Manager** for now; Linnworks
+only maps SKUs and syncs stock + orders. Listing creation from Linnworks is **not**
+enabled (`IsListingSupported: False`).
+
+If we later want to drive the catalogue from Linnworks, the preferred route is
+**Option B**: middleware builds the Deliveroo master-catalogue JSON from product
+data and uploads via the Catalogue API (`POST /catalogue/uploads` →
+`PATCH /update-listings`). This needs the full **Catalogue API** scope (not just
+the Stock API). The full Linnworks Generic Listing Tool route (Option C) is
+heavier and not recommended unless a Linnworks-native listing UI is required.
+
 ## Next steps
 
 1. **Deliveroo:** chase TIM via developer portal; obtain Brand/Catalogue/Site IDs;
