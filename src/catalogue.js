@@ -97,80 +97,77 @@ async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
 // barcodes on all, items in 2 merchandise_collections, a hero_image,
 // experience "aisles", version "catalogue-upload-v1".
 function sampleCatalogue(catalogueId) {
-  const hero = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
-  const img = (n) => `https://deliveroo-linnworks-integration.onrender.com/img1920.png?i=${n}`;
+  const img = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
+  const L = (en) => ({ en }); // Deliveroo uses language-keyed objects
 
-  const modifierItem = (id, name, plu, barcode) => ({
+  const baseItem = (id, name, plu, barcode, price) => ({
     id,
-    name,
-    operational_name: name,
     plu,
     barcodes: [barcode],
-    description: `${name} modifier option`,
-    type: "MODIFIER",
-    media: [{ type: "main_image", url: img(id) }],
-    price_info: { price: 50 },
-    tax_rate: 0.0,
-  });
-
-  const sellableItem = (id, name, plu, barcode, price) => ({
-    id,
-    name,
-    operational_name: name,
-    plu,
-    barcodes: [barcode],
-    description: `${name} - sample sellable product for sandbox certification`,
-    type: "ITEM",
-    media: [{ type: "main_image", url: img(id) }],
+    name: L(name),
+    description: L(`${name} - sample product for sandbox certification`),
+    media: [{ media_type: "main_image", media_url: img }],
     price_info: { price },
-    tax_rate: 0.0,
-    is_eligible_for_substitution: false,
-    allergens: ["no_allergens"],
-    modifier_groups: [
-      {
-        id: `${id}_size`,
-        name: "Size (choose one)",
-        min_selection: 1,
-        max_selection: 1,
-        item_ids: ["mod_size_s", "mod_size_l"],
-      },
-      {
-        id: `${id}_extras`,
-        name: "Extras (choose any)",
-        min_selection: 0,
-        max_selection: 2,
-        item_ids: ["mod_extra_1", "mod_extra_2"],
-      },
-    ],
+    tax_rate: "20.0",
+    is_eligible_as_replacement: true,
+    is_eligible_for_substitution: true,
+    is_returnable: false,
+    age_restricted: false,
+    allergies: ["no_allergens"],
+    diets: [],
+    country_of_origin: ["Great Britain"],
+    temperature_zone: "ambient",
   });
 
   return {
     version: "catalogue-upload-v1",
-    id: catalogueId,
-    experience: "aisles",
-    hero_image: { url: hero },
-    items: [
-      sellableItem("item_lava_1", "Lava Sample Product One", "1200206", "5060000000017", 199),
-      sellableItem("item_lava_2", "Lava Sample Product Two", "1200207", "5060000000024", 299),
-      modifierItem("mod_size_s", "Small", "MOD0001", "5060000000031"),
-      modifierItem("mod_size_l", "Large", "MOD0002", "5060000000048"),
-      modifierItem("mod_extra_1", "Extra A", "MOD0003", "5060000000055"),
-      modifierItem("mod_extra_2", "Extra B", "MOD0004", "5060000000062"),
-    ],
-    merchandise_collections: [
-      {
-        id: "coll_featured",
-        name: "Featured",
-        description: "Featured sample items",
-        item_ids: ["item_lava_1", "item_lava_2"],
+    catalogue: {
+      id: catalogueId,
+      items: [
+        baseItem("item_lava_1", "Lava Sample Product One", "1200206", "5060000000017", 199),
+        baseItem("item_lava_2", "Lava Sample Product Two", "1200207", "5060000000024", 299),
+        baseItem("mod_size_s", "Small", "MOD0001", "5060000000031", 0),
+        baseItem("mod_size_l", "Large", "MOD0002", "5060000000048", 50),
+        baseItem("mod_extra_1", "Extra A", "MOD0003", "5060000000055", 30),
+        baseItem("mod_extra_2", "Extra B", "MOD0004", "5060000000062", 30),
+      ],
+      hero_image: { url: img },
+      experience: "aisles",
+      merchandise_collections: {
+        item_categories: [
+          {
+            id: "coll_featured",
+            name: L("Featured"),
+            description: L("Featured items"),
+            item_ids: ["item_lava_1", "item_lava_2"],
+          },
+          {
+            id: "coll_all",
+            name: L("All Products"),
+            description: L("All items"),
+            item_ids: ["item_lava_1", "item_lava_2"],
+          },
+        ],
       },
-      {
-        id: "coll_all",
-        name: "All Products",
-        description: "All sample items",
-        item_ids: ["item_lava_1", "item_lava_2"],
-      },
-    ],
+      // Best-effort modifier groups (single-select + multi-select) referencing
+      // the modifier items above. Structure to be confirmed against validator.
+      modifiers: [
+        {
+          id: "grp_size",
+          name: L("Size"),
+          min_selection: 1,
+          max_selection: 1,
+          item_ids: ["mod_size_s", "mod_size_l"],
+        },
+        {
+          id: "grp_extras",
+          name: L("Extras"),
+          min_selection: 0,
+          max_selection: 2,
+          item_ids: ["mod_extra_1", "mod_extra_2"],
+        },
+      ],
+    },
   };
 }
 
