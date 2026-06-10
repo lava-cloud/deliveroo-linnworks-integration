@@ -154,24 +154,9 @@ function sampleCatalogue(catalogueId) {
           },
         ],
       },
-      // Best-effort modifier groups (single-select + multi-select) referencing
-      // the modifier items above. Structure to be confirmed against validator.
-      modifiers: [
-        {
-          id: "grp_size",
-          name: L("Size"),
-          min_selection: 1,
-          max_selection: 1,
-          item_ids: ["mod_size_s", "mod_size_l"],
-        },
-        {
-          id: "grp_extras",
-          name: L("Extras"),
-          min_selection: 0,
-          max_selection: 2,
-          item_ids: ["mod_extra_1", "mod_extra_2"],
-        },
-      ],
+      // Empty modifiers (matches Deliveroo's own valid examples). We'll add the
+      // real modifier-group structure once the base catalogue is confirmed valid.
+      modifiers: [],
     },
   };
 }
