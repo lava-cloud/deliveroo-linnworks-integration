@@ -26,6 +26,10 @@ const skuMap = require("./sku-map.json"); // { "Linnworks-or-Channel-SKU": "Deli
 
 // In-memory state for the sandbox catalogue scenarios.
 const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebhook: null };
+// Sandbox brand id (discovered via GET site brand id). Override with DELIV_BRAND_ID.
+const SANDBOX_BRAND = "17b449e6-43f8-4dec-adf9-10240a5138a1";
+const brandIdFor = (req) =>
+  (req.body && req.body.brandId) || config.deliveroo.brandId || SANDBOX_BRAND;
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
@@ -272,7 +276,7 @@ app.post("/debug/cat/brand", async (req, res) => {
 app.post("/debug/cat/upload", async (req, res) => {
   if (!requireSecret(req, res)) return;
   try {
-    const r = await catalogue.createUpload();
+    const r = await catalogue.createUpload(brandIdFor(req));
     if (r.body && typeof r.body === "object") {
       catState.uploadUrl = r.body.upload_url || null;
       catState.uploadId = r.body.upload_id || null;
@@ -305,10 +309,11 @@ app.post("/debug/cat/upload-json", async (req, res) => {
 app.post("/debug/cat/listings", async (req, res) => {
   if (!requireSecret(req, res)) return;
   const siteId = (req.body && req.body.siteId) || "101";
+  const catalogueId = (req.body && req.body.catalogueId) || catState.catalogueId;
   const itemIds =
     (req.body && req.body.itemIds) || ["item_lava_1", "item_lava_2"];
   try {
-    res.json(await catalogue.updateListings(siteId, itemIds));
+    res.json(await catalogue.updateListings(brandIdFor(req), catalogueId, siteId, itemIds));
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -318,9 +323,15 @@ app.post("/debug/cat/listings", async (req, res) => {
 app.post("/debug/cat/unavail", async (req, res) => {
   if (!requireSecret(req, res)) return;
   const itemId = (req.body && req.body.itemId) || "item_lava_1";
+  const siteId = (req.body && req.body.siteId) || "101";
+  const catalogueId = (req.body && req.body.catalogueId) || catState.catalogueId;
   const available = (req.body && req.body.status) !== "unavailable";
   try {
-    res.json(await catalogue.updateUnavailabilities([{ itemId, available }]));
+    res.json(
+      await catalogue.updateUnavailabilities(brandIdFor(req), catalogueId, siteId, [
+        { itemId, available },
+      ])
+    );
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

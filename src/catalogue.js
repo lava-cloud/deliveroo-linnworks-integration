@@ -47,8 +47,8 @@ async function getSiteBrandId(siteLocationId) {
 }
 
 // Scenario 2: POST catalogue upload → { upload_url, upload_id }
-async function createUpload() {
-  const path = process.env.DELIV_CAT_UPLOAD_PATH || "/catalogue/uploads";
+async function createUpload(brandId) {
+  const path = `/brands/${brandId}/catalogue/uploads`;
   return authedFetch("POST", path, {});
 }
 
@@ -64,8 +64,8 @@ async function uploadCatalogueJson(uploadUrl, catalogueJson) {
 }
 
 // Scenario 4: PATCH update listings for a site.
-async function updateListings(siteId, itemIds) {
-  const path = process.env.DELIV_CAT_LISTINGS_PATH || "/catalogue/listings";
+async function updateListings(brandId, catalogueId, siteId, itemIds) {
+  const path = `/brands/${brandId}/catalogue/${catalogueId}/listings`;
   return authedFetch("PATCH", path, {
     version: "catalogue-listing-v1",
     site_ids: [String(siteId)],
@@ -74,8 +74,8 @@ async function updateListings(siteId, itemIds) {
 }
 
 // Scenario 6 / production stock: PATCH unavailabilities.
-async function updateUnavailabilities(items) {
-  const path = process.env.DELIV_CAT_UNAVAIL_PATH || "/catalogue/unavailabilities";
+async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
+  const path = `/brands/${brandId}/catalogue/${catalogueId}/sites/${siteId}/unavailabilities`;
   return authedFetch("PATCH", path, {
     version: "unavailabilities-v1",
     reset_all_item_availabilities: false,
