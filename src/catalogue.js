@@ -52,6 +52,12 @@ async function createUpload(brandId) {
   return authedFetch("POST", path, {});
 }
 
+// Track upload progress / get processing result + errors by upload_id.
+async function getUploadStatus(brandId, uploadId) {
+  const path = `/brands/${brandId}/catalogue/uploads/${uploadId}`;
+  return authedFetch("GET", path);
+}
+
 // Scenario 3: PUT the catalogue JSON to the presigned upload_url (NO auth).
 async function uploadCatalogueJson(uploadUrl, catalogueJson) {
   const res = await fetch(uploadUrl, {
@@ -171,6 +177,7 @@ function sampleCatalogue(catalogueId) {
 module.exports = {
   getSiteBrandId,
   createUpload,
+  getUploadStatus,
   uploadCatalogueJson,
   updateListings,
   updateUnavailabilities,

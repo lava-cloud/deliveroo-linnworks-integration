@@ -337,6 +337,18 @@ app.post("/debug/cat/unavail", async (req, res) => {
   }
 });
 
+// Poll upload status by upload_id (shows processing result + error messages).
+app.post("/debug/cat/upload-status", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const uploadId = (req.body && req.body.uploadId) || catState.uploadId;
+  if (!uploadId) return res.status(400).json({ error: "No uploadId" });
+  try {
+    res.json(await catalogue.getUploadStatus(brandIdFor(req), uploadId));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Inspect scenario state (upload ids, last webhook received).
 app.get("/debug/cat/state", (req, res) => {
   if (!requireSecret(req, res)) return;
