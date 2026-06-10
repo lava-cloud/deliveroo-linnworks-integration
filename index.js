@@ -305,7 +305,8 @@ app.post("/debug/cat/upload-json", async (req, res) => {
   try {
     const json = catalogue.sampleCatalogue(catalogueId);
     const r = await catalogue.uploadCatalogueJson(catState.uploadUrl, json);
-    res.json({ uploaded: r, catalogueId, items: json.items.map((i) => i.id) });
+    const items = (json.catalogue && json.catalogue.items) || [];
+    res.json({ uploaded: r, catalogueId, items: items.map((i) => i.id) });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
