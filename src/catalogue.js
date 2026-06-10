@@ -97,8 +97,8 @@ async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
 // barcodes on all, items in 2 merchandise_collections, a hero_image,
 // experience "aisles", version "catalogue-upload-v1".
 function sampleCatalogue(catalogueId) {
-  const hero = "https://deliveroo-linnworks-integration.onrender.com/logo.png";
-  const img = (n) => `https://deliveroo-linnworks-integration.onrender.com/logo.png?i=${n}`;
+  const hero = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
+  const img = (n) => `https://deliveroo-linnworks-integration.onrender.com/img1920.png?i=${n}`;
 
   const modifierItem = (id, name, plu, barcode) => ({
     id,

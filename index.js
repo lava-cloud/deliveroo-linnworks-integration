@@ -116,7 +116,7 @@ function toLinnworksOrder(row) {
 // Generates a small solid-colour PNG at startup so we don't depend on any
 // external image host. Served at GET /logo.png.
 const zlib = require("zlib");
-function makeSolidPng(size, r, g, b) {
+function makeSolidPng(width, height, r, g, b) {
   const crcTable = (() => {
     const t = [];
     for (let n = 0; n < 256; n++) {
@@ -141,24 +141,30 @@ function makeSolidPng(size, r, g, b) {
   };
   const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
   const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(size, 0);
-  ihdr.writeUInt32BE(size, 4);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
   ihdr[8] = 8; // bit depth
   ihdr[9] = 2; // colour type RGB
-  const row = Buffer.alloc(1 + size * 3);
-  for (let x = 0; x < size; x++) {
+  const row = Buffer.alloc(1 + width * 3);
+  for (let x = 0; x < width; x++) {
     row[1 + x * 3] = r;
     row[1 + x * 3 + 1] = g;
     row[1 + x * 3 + 2] = b;
   }
-  const raw = Buffer.concat(Array.from({ length: size }, () => row));
+  const raw = Buffer.concat(Array.from({ length: height }, () => row));
   const idat = zlib.deflateSync(raw);
   return Buffer.concat([sig, chunk("IHDR", ihdr), chunk("IDAT", idat), chunk("IEND", Buffer.alloc(0))]);
 }
-const LOGO_PNG = makeSolidPng(120, 0, 204, 188); // Deliveroo-ish teal
+const LOGO_PNG = makeSolidPng(120, 120, 0, 204, 188); // small square logo
+const IMG_1920 = makeSolidPng(1920, 1080, 0, 204, 188); // 16:9 catalogue image
 app.get("/logo.png", (req, res) => {
   res.set("Content-Type", "image/png");
   res.send(LOGO_PNG);
+});
+// 1920x1080 16:9 image for catalogue items/hero (Deliveroo min size).
+app.get("/img1920.png", (req, res) => {
+  res.set("Content-Type", "image/png");
+  res.send(IMG_1920);
 });
 
 // --- status / health -------------------------------------------------------
