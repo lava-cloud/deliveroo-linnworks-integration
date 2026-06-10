@@ -344,6 +344,17 @@ app.post("/debug/cat/unavail", async (req, res) => {
   }
 });
 
+// Probe whether a catalogue was processed/accepted. Body: { catalogueId }
+app.post("/debug/cat/get", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const catalogueId = (req.body && req.body.catalogueId) || catState.catalogueId || "lava_test_catalogue_1";
+  try {
+    res.json(await catalogue.getCatalogue(brandIdFor(req), catalogueId));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Poll upload status by upload_id (shows processing result + error messages).
 app.post("/debug/cat/upload-status", async (req, res) => {
   if (!requireSecret(req, res)) return;

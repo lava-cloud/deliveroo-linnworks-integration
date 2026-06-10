@@ -52,6 +52,11 @@ async function createUpload(brandId) {
   return authedFetch("POST", path, {});
 }
 
+// GET the processed catalogue — confirms whether the upload was accepted.
+async function getCatalogue(brandId, catalogueId) {
+  return authedFetch("GET", `/brands/${brandId}/catalogue/${catalogueId}`);
+}
+
 // Track upload progress / get processing result + errors by upload_id.
 async function getUploadStatus(brandId, uploadId) {
   const path = `/brands/${brandId}/catalogue/uploads/${uploadId}`;
@@ -174,6 +179,7 @@ function sampleCatalogue(catalogueId) {
 module.exports = {
   getSiteBrandId,
   createUpload,
+  getCatalogue,
   getUploadStatus,
   uploadCatalogueJson,
   updateListings,
