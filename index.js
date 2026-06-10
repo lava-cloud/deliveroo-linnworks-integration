@@ -21,7 +21,11 @@ const express = require("express");
 const config = require("./src/config");
 const db = require("./src/db");
 const deliveroo = require("./src/deliveroo");
+const catalogue = require("./src/catalogue");
 const skuMap = require("./sku-map.json"); // { "Linnworks-or-Channel-SKU": "DeliverooItemID" }
+
+// In-memory state for the sandbox catalogue scenarios.
+const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebhook: null };
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
@@ -235,6 +239,97 @@ app.post("/debug/deliveroo-stock-test", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// --- Catalogue events webhook (the "Missing" webhook in the portal) --------
+// Register this URL in Dev Portal -> Webhooks -> Catalogue events.
+app.post("/deliveroo/catalogue-webhook", (req, res) => {
+  catState.lastWebhook = { at: new Date().toISOString(), body: req.body };
+  console.log("[catalogue-webhook]", JSON.stringify(req.body));
+  res.status(200).send("OK");
+});
+
+// --- Catalogue sandbox scenario triggers (protected by SYNC_SECRET) --------
+function requireSecret(req, res) {
+  if (config.syncSecret && req.get("x-sync-secret") !== config.syncSecret) {
+    res.status(401).json({ error: "Bad sync secret" });
+    return false;
+  }
+  return true;
+}
+
+// Scenario 1: Fetch brand ID via site location id. Body: { siteLocationId }
+app.post("/debug/cat/brand", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    res.json(await catalogue.getSiteBrandId((req.body && req.body.siteLocationId) || "101"));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Scenario 2: Create catalogue upload → stores upload_url + upload_id.
+app.post("/debug/cat/upload", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    const r = await catalogue.createUpload();
+    if (r.body && typeof r.body === "object") {
+      catState.uploadUrl = r.body.upload_url || null;
+      catState.uploadId = r.body.upload_id || null;
+    }
+    res.json(r);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Scenario 3: Upload the sample catalogue JSON to the stored upload_url.
+// Body: { catalogueId }
+app.post("/debug/cat/upload-json", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const catalogueId = (req.body && req.body.catalogueId) || "lava_test_catalogue_1";
+  if (!catState.uploadUrl) {
+    return res.status(400).json({ error: "No upload_url — run /debug/cat/upload first" });
+  }
+  catState.catalogueId = catalogueId;
+  try {
+    const json = catalogue.sampleCatalogue(catalogueId);
+    const r = await catalogue.uploadCatalogueJson(catState.uploadUrl, json);
+    res.json({ uploaded: r, catalogueId, items: json.items.map((i) => i.id) });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Scenario 4: Update listings. Body: { siteId, itemIds? }
+app.post("/debug/cat/listings", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const siteId = (req.body && req.body.siteId) || "101";
+  const itemIds =
+    (req.body && req.body.itemIds) || ["item_lava_1", "item_lava_2"];
+  try {
+    res.json(await catalogue.updateListings(siteId, itemIds));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Scenario 6: Update unavailabilities. Body: { itemId, status }
+app.post("/debug/cat/unavail", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const itemId = (req.body && req.body.itemId) || "item_lava_1";
+  const available = (req.body && req.body.status) !== "unavailable";
+  try {
+    res.json(await catalogue.updateUnavailabilities([{ itemId, available }]));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Inspect scenario state (upload ids, last webhook received).
+app.get("/debug/cat/state", (req, res) => {
+  if (!requireSecret(req, res)) return;
+  res.json(catState);
 });
 
 // --- Deliveroo order webhook ----------------------------------------------
