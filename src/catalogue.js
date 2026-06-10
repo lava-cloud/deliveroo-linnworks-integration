@@ -105,11 +105,12 @@ function sampleCatalogue(catalogueId) {
   const img = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
   const L = (en) => ({ en }); // Deliveroo uses language-keyed objects
 
-  const baseItem = (id, name, plu, barcode, price) => ({
+  const item = (id, name, plu, barcode, price, extra = {}) => ({
     id,
     plu,
     barcodes: [barcode],
     name: L(name),
+    operational_name: L(name),
     description: L(`${name} - sample product for sandbox certification`),
     media: [{ media_type: "main_image", media_url: img }],
     price_info: { price },
@@ -122,19 +123,22 @@ function sampleCatalogue(catalogueId) {
     diets: [],
     country_of_origin: ["Great Britain"],
     temperature_zone: "ambient",
+    ...extra,
   });
+
+  const withMods = { modifier_ids: ["grp_size", "grp_extras"] };
 
   return {
     version: "catalogue-upload-v1",
     catalogue: {
       id: catalogueId,
       items: [
-        baseItem("item_lava_1", "Lava Sample Product One", "1200206", "5060000000017", 199),
-        baseItem("item_lava_2", "Lava Sample Product Two", "1200207", "5060000000024", 299),
-        baseItem("mod_size_s", "Small", "MOD0001", "5060000000031", 0),
-        baseItem("mod_size_l", "Large", "MOD0002", "5060000000048", 50),
-        baseItem("mod_extra_1", "Extra A", "MOD0003", "5060000000055", 30),
-        baseItem("mod_extra_2", "Extra B", "MOD0004", "5060000000062", 30),
+        item("item_lava_1", "Lava Sample Product One", "1200206", "5060000000017", 199, withMods),
+        item("item_lava_2", "Lava Sample Product Two", "1200207", "5060000000024", 299, withMods),
+        item("mod_size_s", "Small", "MOD0001", "5060000000031", 0),
+        item("mod_size_l", "Large", "MOD0002", "5060000000048", 50),
+        item("mod_extra_1", "Extra A", "MOD0003", "5060000000055", 30),
+        item("mod_extra_2", "Extra B", "MOD0004", "5060000000062", 30),
       ],
       hero_image: { url: img },
       experience: "aisles",
@@ -154,9 +158,24 @@ function sampleCatalogue(catalogueId) {
           },
         ],
       },
-      // Empty modifiers (matches Deliveroo's own valid examples). We'll add the
-      // real modifier-group structure once the base catalogue is confirmed valid.
-      modifiers: [],
+      // Single-select group (min1/max1) + multi-select group (min0/max2),
+      // each referencing two modifier items. Sellable items link via modifier_ids.
+      modifiers: [
+        {
+          id: "grp_size",
+          name: L("Size"),
+          min_selection: 1,
+          max_selection: 1,
+          item_ids: ["mod_size_s", "mod_size_l"],
+        },
+        {
+          id: "grp_extras",
+          name: L("Extras"),
+          min_selection: 0,
+          max_selection: 2,
+          item_ids: ["mod_extra_1", "mod_extra_2"],
+        },
+      ],
     },
   };
 }
