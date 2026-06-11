@@ -105,10 +105,19 @@ function sampleCatalogue(catalogueId) {
   const img = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
   const L = (en) => ({ en }); // Deliveroo uses language-keyed objects
 
-  const item = (id, name, plu, barcode, price, extra = {}) => ({
+  // Namespace all IDs/barcodes by the catalogue id so each upload is UNIQUE
+  // (rules out "file already uploaded" duplicate rejection).
+  const token = (catalogueId.replace(/[^A-Za-z0-9]/g, "").slice(0, 12) || "x");
+  let seed = 0;
+  for (const ch of token) seed = (seed * 31 + ch.charCodeAt(0)) % 100000;
+  const iid = (n) => `it_${token}_${n}`;
+  const gid = (n) => `grp_${token}_${n}`;
+  const barcode = (n) => ("50" + String(seed).padStart(5, "0") + String(n).padStart(6, "0")).slice(0, 13);
+
+  const item = (id, name, plu, bc, price, extra = {}) => ({
     id,
     plu,
-    barcodes: [barcode],
+    barcodes: [bc],
     name: L(name),
     operational_name: L(name),
     description: L(`${name} - sample product for sandbox certification`),
@@ -126,55 +135,34 @@ function sampleCatalogue(catalogueId) {
     ...extra,
   });
 
-  const withMods = { modifier_ids: ["grp_size", "grp_extras"] };
+  const i1 = iid(1), i2 = iid(2);
+  const ms = iid("ms"), ml = iid("ml"), e1 = iid("e1"), e2 = iid("e2");
+  const gSize = gid("size"), gExtras = gid("extras");
+  const withMods = { modifier_ids: [gSize, gExtras] };
 
   return {
     version: "catalogue-upload-v1",
     catalogue: {
       id: catalogueId,
       items: [
-        item("item_lava_1", "Lava Sample Product One", "1200206", "5060000000017", 199, withMods),
-        item("item_lava_2", "Lava Sample Product Two", "1200207", "5060000000024", 299, withMods),
-        item("mod_size_s", "Small", "MOD0001", "5060000000031", 0),
-        item("mod_size_l", "Large", "MOD0002", "5060000000048", 50),
-        item("mod_extra_1", "Extra A", "MOD0003", "5060000000055", 30),
-        item("mod_extra_2", "Extra B", "MOD0004", "5060000000062", 30),
+        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199, withMods),
+        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299, withMods),
+        item(ms, "Small", `${token}-ms`, barcode(3), 0),
+        item(ml, "Large", `${token}-ml`, barcode(4), 50),
+        item(e1, "Extra A", `${token}-e1`, barcode(5), 30),
+        item(e2, "Extra B", `${token}-e2`, barcode(6), 30),
       ],
       hero_image: { url: img },
       experience: "aisles",
       merchandise_collections: {
         item_categories: [
-          {
-            id: "coll_featured",
-            name: L("Featured"),
-            description: L("Featured items"),
-            item_ids: ["item_lava_1", "item_lava_2"],
-          },
-          {
-            id: "coll_all",
-            name: L("All Products"),
-            description: L("All items"),
-            item_ids: ["item_lava_1", "item_lava_2"],
-          },
+          { id: gid("featured"), name: L("Featured"), description: L("Featured items"), item_ids: [i1, i2] },
+          { id: gid("all"), name: L("All Products"), description: L("All items"), item_ids: [i1, i2] },
         ],
       },
-      // Single-select group (min1/max1) + multi-select group (min0/max2),
-      // each referencing two modifier items. Sellable items link via modifier_ids.
       modifiers: [
-        {
-          id: "grp_size",
-          name: L("Size"),
-          min_selection: 1,
-          max_selection: 1,
-          item_ids: ["mod_size_s", "mod_size_l"],
-        },
-        {
-          id: "grp_extras",
-          name: L("Extras"),
-          min_selection: 0,
-          max_selection: 2,
-          item_ids: ["mod_extra_1", "mod_extra_2"],
-        },
+        { id: gSize, name: L("Size"), min_selection: 1, max_selection: 1, item_ids: [ms, ml] },
+        { id: gExtras, name: L("Extras"), min_selection: 0, max_selection: 2, item_ids: [e1, e2] },
       ],
     },
   };
