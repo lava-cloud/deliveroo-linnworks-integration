@@ -112,7 +112,14 @@ function sampleCatalogue(catalogueId) {
   for (const ch of token) seed = (seed * 31 + ch.charCodeAt(0)) % 100000;
   const iid = (n) => `it_${token}_${n}`;
   const gid = (n) => `grp_${token}_${n}`;
-  const barcode = (n) => ("50" + String(seed).padStart(5, "0") + String(n).padStart(6, "0")).slice(0, 13);
+  // Valid EAN-13: 12 data digits + correct check digit (Deliveroo only accepts
+  // EAN-8/UPC-A/EAN-12/EAN-13/GTIN-14 — invalid check digits get rejected).
+  const barcode = (n) => {
+    const data = ("50" + String(seed).padStart(5, "0") + String(n).padStart(5, "0")).slice(0, 12);
+    let sum = 0;
+    for (let i = 0; i < 12; i++) sum += Number(data[i]) * (i % 2 === 0 ? 1 : 3);
+    return data + String((10 - (sum % 10)) % 10);
+  };
 
   const item = (id, name, plu, bc, price, extra = {}) => ({
     id,
