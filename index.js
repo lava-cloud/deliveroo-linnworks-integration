@@ -41,25 +41,47 @@ const VALID_PLUS = new Set(
     .filter(Boolean)
 );
 
-// Collect every pos_item_id in an order (items + their modifiers).
-function collectPlus(order) {
+// Expected product name for each known PLU — lets us catch a PLU attached to
+// the wrong item (a "mismatch"). Sandbox menu; in production this comes from
+// your Linnworks SKU->title mapping.
+const PLU_NAMES = {
+  MU11001: "Chicken Burger",
+  MU11002: "Veggie Burger (V)",
+  OM17001: "Mayo Sauce",
+  OM17002: "BBQ Sauce",
+  OM17300: "Coca Cola",
+};
+
+// Flatten an order into {name, plu} entries (items + their modifiers).
+function orderLines(order) {
   const out = [];
   for (const it of order.items || []) {
-    out.push(it.pos_item_id);
-    for (const m of it.modifiers || []) out.push(m.pos_item_id);
+    out.push({ name: it.name, plu: it.pos_item_id });
+    for (const m of it.modifiers || []) out.push({ name: m.name, plu: m.pos_item_id });
   }
   return out;
 }
 
 // Decide the sync status for an order based on its PLUs.
 function syncDecision(order) {
-  const plus = collectPlus(order);
-  if (plus.some((p) => !p || String(p).trim() === "")) {
+  const lines = orderLines(order);
+  // Missing PLU
+  if (lines.some((l) => !l.plu || String(l.plu).trim() === "")) {
     return { status: "failed", reason: "pos_item_id_not_found", notes: "Order contains an item with no PLU" };
   }
-  const unknown = plus.find((p) => !VALID_PLUS.has(String(p)));
+  // Unknown PLU (not in our catalogue at all)
+  const unknown = lines.find((l) => !VALID_PLUS.has(String(l.plu)));
   if (unknown) {
-    return { status: "failed", reason: "pos_item_id_mismatched", notes: `Unknown PLU: ${unknown}` };
+    return { status: "failed", reason: "pos_item_id_mismatched", notes: `Unknown PLU: ${unknown.plu}` };
+  }
+  // Mismatched PLU (valid PLU, but attached to the wrong item)
+  const mism = lines.find((l) => PLU_NAMES[l.plu] && PLU_NAMES[l.plu] !== l.name);
+  if (mism) {
+    return {
+      status: "failed",
+      reason: "pos_item_id_mismatched",
+      notes: `PLU ${mism.plu} expected "${PLU_NAMES[mism.plu]}" but order had "${mism.name}"`,
+    };
   }
   return { status: "succeeded", reason: "", notes: "" };
 }
