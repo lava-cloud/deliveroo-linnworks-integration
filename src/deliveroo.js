@@ -118,6 +118,32 @@ async function updateAvailability(items) {
   return { staged: false, sent: items.length };
 }
 
+// Send POS "sync status" to confirm we ingested an order (Orders API).
+// POST /order/v1/orders/{id}/sync_status  { occurred_at, status, reason, notes }
+async function sendOrderSyncStatus(orderId, status = "succeeded", reason = "", notes = "") {
+  const token = await getAccessToken();
+  const url = `${config.deliveroo.apiBase}/order/v1/orders/${encodeURIComponent(
+    orderId
+  )}/sync_status`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      occurred_at: new Date().toISOString(),
+      status,
+      reason,
+      notes,
+    }),
+  });
+  const text = await res.text();
+  console.log(`[orders] sync_status ${status} for ${orderId} -> ${res.status} ${text}`);
+  return { status: res.status, body: text };
+}
+
 // --- Discovery helpers -----------------------------------------------------
 // Once the API is connected, these let us read your brand_id and sites
 // straight from Deliveroo (so we don't need them handed over manually).
@@ -173,6 +199,7 @@ async function setMenuItemUnavailability(brandId, menuId, siteId, itemId, unavai
 module.exports = {
   getAccessToken,
   updateAvailability,
+  sendOrderSyncStatus,
   listBrands,
   listSites,
   listMenus,

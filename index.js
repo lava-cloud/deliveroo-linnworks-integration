@@ -26,6 +26,9 @@ const skuMap = require("./sku-map.json"); // { "Linnworks-or-Channel-SKU": "Deli
 
 // In-memory state for the sandbox catalogue scenarios.
 const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebhook: null };
+// Orders API state: track synced orders + last sync result for debugging.
+const syncedOrders = new Set();
+let lastSync = null;
 // Sandbox brand id (discovered via GET site brand id). Override with DELIV_BRAND_ID.
 const SANDBOX_BRAND = "17b449e6-43f8-4dec-adf9-10240a5138a1";
 const brandIdFor = (req) =>
@@ -358,6 +361,12 @@ app.get("/debug/orders", async (req, res) => {
   }
 });
 
+// Show the last order sync-status result we sent to Deliveroo.
+app.get("/debug/sync", (req, res) => {
+  if (!requireSecret(req, res)) return;
+  res.json({ lastSync, syncedCount: syncedOrders.size });
+});
+
 // Probe whether a catalogue was processed/accepted. Body: { catalogueId }
 app.post("/debug/cat/get", async (req, res) => {
   if (!requireSecret(req, res)) return;
@@ -391,17 +400,26 @@ app.get("/debug/cat/state", (req, res) => {
 
 app.post("/deliveroo/order-webhook", async (req, res) => {
   const raw = req.body || {};
-  const receivedAt = new Date().toISOString();
+  // Deliveroo nests the order under body.order; the event type is top-level.
+  const order = (raw.body && raw.body.order) || raw.order || raw;
+  const event = raw.event || "";
+  const status = order.status || "";
   const orderId =
-    raw.id || raw.order_id || raw.orderId || raw.orderReference || `unknown-${receivedAt}`;
+    order.id || raw.id || raw.order_id || `unknown-${new Date().toISOString()}`;
 
   res.status(200).send("OK"); // acknowledge fast
 
   try {
     await db.saveOrder(orderId, raw);
-    console.log(`[webhook] Stored Deliveroo order ${orderId}`);
+    console.log(`[webhook] ${event || "(no event)"} ${orderId} status=${status}`);
+
+    // On the "accepted" event, confirm ingestion to Deliveroo with a sync status.
+    if (status === "accepted" && !syncedOrders.has(orderId)) {
+      syncedOrders.add(orderId);
+      lastSync = { orderId, ...(await deliveroo.sendOrderSyncStatus(orderId, "succeeded")) };
+    }
   } catch (err) {
-    console.error(`[webhook] Error storing ${orderId}: ${err.message}`);
+    console.error(`[webhook] Error handling ${orderId}: ${err.message}`);
   }
 });
 
