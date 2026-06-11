@@ -139,16 +139,14 @@ function sampleCatalogue(catalogueId) {
 
   const i1 = iid(1), i2 = iid(2);
   const ms = iid("ms"), ml = iid("ml"), e1 = iid("e1"), e2 = iid("e2");
-  const gSize = gid("size"), gExtras = gid("extras");
-  const withMods = { modifier_ids: [gSize, gExtras] };
 
   return {
     version: "catalogue-upload-v1",
     catalogue: {
       id: catalogueId,
       items: [
-        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199, withMods),
-        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299, withMods),
+        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199),
+        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299),
         item(ms, "Small", `${token}-ms`, barcode(3), 0),
         item(ml, "Large", `${token}-ml`, barcode(4), 50),
         item(e1, "Extra A", `${token}-e1`, barcode(5), 30),
@@ -156,16 +154,45 @@ function sampleCatalogue(catalogueId) {
       ],
       hero_image: { url: img },
       experience: "aisles",
+      // Aisles requires two-tier categorisation: item_categories + groups
+      // (mirrors Deliveroo's own "Partner Aisles" example exactly).
+      categories: {
+        item_categories: [
+          {
+            id: gid("cat_main"),
+            name: L("Main Products"),
+            description: L("Main Products"),
+            item_ids: [i1, i2],
+          },
+          {
+            id: gid("cat_extras"),
+            name: L("Extras and Options"),
+            description: L("Extras and Options"),
+            item_ids: [ms, ml, e1, e2],
+          },
+        ],
+        groups: [
+          {
+            id: gid("grp_products"),
+            name: L("Products"),
+            description: L("Products"),
+            item_category_ids: [gid("cat_main")],
+          },
+          {
+            id: gid("grp_options"),
+            name: L("Options"),
+            description: L("Options"),
+            item_category_ids: [gid("cat_extras")],
+          },
+        ],
+      },
       merchandise_collections: {
         item_categories: [
           { id: gid("featured"), name: L("Featured"), description: L("Featured items"), item_ids: [i1, i2] },
           { id: gid("all"), name: L("All Products"), description: L("All items"), item_ids: [i1, i2] },
         ],
       },
-      modifiers: [
-        { id: gSize, name: L("Size"), min_selection: 1, max_selection: 1, item_ids: [ms, ml] },
-        { id: gExtras, name: L("Extras"), min_selection: 0, max_selection: 2, item_ids: [e1, e2] },
-      ],
+      modifiers: [],
     },
   };
 }
