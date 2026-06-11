@@ -361,6 +361,17 @@ app.get("/debug/orders", async (req, res) => {
   }
 });
 
+// Manually test the sync-status call against a given order id (path check).
+app.post("/debug/sync-test", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const orderId = (req.body && req.body.orderId) || "";
+  try {
+    res.json(await deliveroo.sendOrderSyncStatus(orderId, "succeeded"));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Show the last order sync-status result we sent to Deliveroo.
 app.get("/debug/sync", (req, res) => {
   if (!requireSecret(req, res)) return;
