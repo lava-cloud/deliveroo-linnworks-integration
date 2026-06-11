@@ -110,50 +110,79 @@ function lwDate(iso) {
 }
 
 // Convert a stored Deliveroo order into a Linnworks order object.
+// Deliveroo money is { fractional: <minor units>, currency_code }.
+function money(m) {
+  if (m && typeof m.fractional === "number") return m.fractional / 100;
+  if (typeof m === "number") return m;
+  return 0;
+}
+
 function toLinnworksOrder(row) {
   const raw = row.raw || {};
+  // Real Deliveroo orders nest under body.order.
+  const order = (raw.body && raw.body.order) || raw.order || raw;
   const orderId =
-    raw.id || raw.order_id || raw.orderId || raw.orderReference || row.order_id;
+    order.id || raw.id || raw.order_id || row.order_id;
 
-  const itemsArray = Array.isArray(raw.items) ? raw.items : [];
-  const OrderItems = itemsArray.map((item, i) => ({
-    UseChannelTax: false,
-    TaxCostInclusive: true,
-    IsService: false,
-    OrderLineNumber: String(i + 1),
-    SKU: item.sku || item.code || item.plu || "",
-    PricePerUnit: String(item.price ?? item.unit_price ?? 0),
-    Qty: String(item.quantity ?? item.qty ?? 1),
-    TaxRate: "0",
-    LinePercentDiscount: "0",
-    ItemTitle: item.name || item.title || "Item",
-    Options: [],
-    CancelStatus: "NONE",
-  }));
+  const itemsArray = Array.isArray(order.items) ? order.items : [];
+  const OrderItems = [];
+  let lineNo = 0;
+  const pushLine = (sku, title, qty, price) =>
+    OrderItems.push({
+      UseChannelTax: false,
+      TaxCostInclusive: true,
+      IsService: false,
+      OrderLineNumber: String(++lineNo),
+      SKU: sku || "",
+      PricePerUnit: String(price),
+      Qty: String(qty),
+      TaxRate: "0",
+      LinePercentDiscount: "0",
+      ItemTitle: title || "Item",
+      Options: [],
+      CancelStatus: "NONE",
+    });
+  for (const item of itemsArray) {
+    pushLine(item.pos_item_id || item.sku, item.name, item.quantity ?? 1, money(item.unit_price));
+    // Modifiers / add-ons become their own lines so they decrement stock too.
+    for (const m of item.modifiers || []) {
+      pushLine(m.pos_item_id, m.name, m.quantity ?? 1, money(m.unit_price));
+    }
+  }
 
-  const cust = raw.customer || {};
-  const addr = cust.address || raw.delivery_address || {};
+  const cust = order.customer || {};
+  const custName =
+    cust.name ||
+    [cust.first_name, cust.last_name].filter(Boolean).join(" ") ||
+    "Deliveroo Customer";
+  const addr =
+    (order.fulfillment && order.fulfillment.delivery_address) || cust.address || {};
   const address = {
-    FullName: cust.name || raw.customer_name || "Deliveroo Customer",
+    FullName: custName,
     Company: "",
     Address1: addr.line1 || addr.address1 || "",
     Address2: addr.line2 || addr.address2 || "",
     Address3: "",
-    Town: addr.city || addr.town || "",
+    Town: addr.town || addr.city || "",
     Region: addr.region || "",
     PostCode: addr.postcode || addr.post_code || "",
     Country: addr.country || "United Kingdom",
     CountryCode: addr.country_code || "GB",
-    PhoneNumber: cust.phone || "",
+    PhoneNumber: cust.phone_number || cust.contact_number || "",
     EmailAddress: cust.email || "",
   };
+
+  const noteText = order.note_to_customer || order.notes || "";
+  const ExtendedProperties = noteText
+    ? [{ Name: "DeliverooNote", Value: String(noteText), Type: "Order" }]
+    : [];
 
   return {
     ReferenceNumber: String(orderId),
     ExternalReference: String(orderId),
     Site: "Deliveroo",
-    ChannelBuyerName: cust.name || raw.customer_name || "Deliveroo Customer",
-    Currency: raw.currency || "GBP",
+    ChannelBuyerName: custName,
+    Currency: (order.total_price && order.total_price.currency_code) || "GBP",
     PaymentStatus: "PAID",
     ReceivedDate: lwDate(row.received_at),
     PaidOn: lwDate(row.received_at),
@@ -164,7 +193,7 @@ function toLinnworksOrder(row) {
     BillingAddress: address,
     DeliveryAddress: address,
     OrderItems,
-    ExtendedProperties: [],
+    ExtendedProperties,
     Notes: [],
     MatchPostalServiceTag: "Deliveroo",
     MatchPaymentMethodTag: "Deliveroo",
