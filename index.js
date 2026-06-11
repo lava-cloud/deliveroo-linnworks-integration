@@ -30,6 +30,39 @@ const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebho
 const syncedOrders = new Set();
 let lastSync = null;
 const recentEvents = []; // every order webhook call (not deduped), for debugging
+
+// PLUs (pos_item_ids) we can fulfil. Sandbox menu by default; in production
+// this becomes your Linnworks SKUs. Override with DELIV_VALID_PLUS (comma list).
+const VALID_PLUS = new Set(
+  (process.env.DELIV_VALID_PLUS ||
+    "MU11001,MU11002,OM17001,OM17002,OM17300,OM21001,OM21002,OM21003")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+);
+
+// Collect every pos_item_id in an order (items + their modifiers).
+function collectPlus(order) {
+  const out = [];
+  for (const it of order.items || []) {
+    out.push(it.pos_item_id);
+    for (const m of it.modifiers || []) out.push(m.pos_item_id);
+  }
+  return out;
+}
+
+// Decide the sync status for an order based on its PLUs.
+function syncDecision(order) {
+  const plus = collectPlus(order);
+  if (plus.some((p) => !p || String(p).trim() === "")) {
+    return { status: "failed", reason: "pos_item_id_not_found", notes: "Order contains an item with no PLU" };
+  }
+  const unknown = plus.find((p) => !VALID_PLUS.has(String(p)));
+  if (unknown) {
+    return { status: "failed", reason: "pos_item_id_mismatched", notes: `Unknown PLU: ${unknown}` };
+  }
+  return { status: "succeeded", reason: "", notes: "" };
+}
 // Sandbox brand id (discovered via GET site brand id). Override with DELIV_BRAND_ID.
 const SANDBOX_BRAND = "17b449e6-43f8-4dec-adf9-10240a5138a1";
 const brandIdFor = (req) =>
@@ -442,10 +475,16 @@ app.post("/deliveroo/order-webhook", async (req, res) => {
     await db.saveOrder(orderId, raw);
     console.log(`[webhook] ${event || "(no event)"} ${orderId} status=${status}`);
 
-    // On the "accepted" event, confirm ingestion to Deliveroo with a sync status.
+    // On the "accepted" event, send a sync status: succeeded if we can fulfil
+    // every PLU, otherwise failed with the appropriate reason.
     if (status === "accepted" && !syncedOrders.has(orderId)) {
       syncedOrders.add(orderId);
-      lastSync = { orderId, ...(await deliveroo.sendOrderSyncStatus(orderId, "succeeded")) };
+      const d = syncDecision(order);
+      lastSync = {
+        orderId,
+        decision: d,
+        ...(await deliveroo.sendOrderSyncStatus(orderId, d.status, d.reason, d.notes)),
+      };
     }
   } catch (err) {
     console.error(`[webhook] Error handling ${orderId}: ${err.message}`);
