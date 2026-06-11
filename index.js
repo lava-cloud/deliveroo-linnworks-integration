@@ -29,6 +29,7 @@ const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebho
 // Orders API state: track synced orders + last sync result for debugging.
 const syncedOrders = new Set();
 let lastSync = null;
+const recentEvents = []; // every order webhook call (not deduped), for debugging
 // Sandbox brand id (discovered via GET site brand id). Override with DELIV_BRAND_ID.
 const SANDBOX_BRAND = "17b449e6-43f8-4dec-adf9-10240a5138a1";
 const brandIdFor = (req) =>
@@ -378,6 +379,12 @@ app.get("/debug/sync", (req, res) => {
   res.json({ lastSync, syncedCount: syncedOrders.size });
 });
 
+// Show every recent order webhook event (not deduped).
+app.get("/debug/events", (req, res) => {
+  if (!requireSecret(req, res)) return;
+  res.json({ events: recentEvents });
+});
+
 // Probe whether a catalogue was processed/accepted. Body: { catalogueId }
 app.post("/debug/cat/get", async (req, res) => {
   if (!requireSecret(req, res)) return;
@@ -419,6 +426,17 @@ app.post("/deliveroo/order-webhook", async (req, res) => {
     order.id || raw.id || raw.order_id || `unknown-${new Date().toISOString()}`;
 
   res.status(200).send("OK"); // acknowledge fast
+
+  // Record every event (not deduped) for debugging.
+  recentEvents.unshift({
+    at: new Date().toISOString(),
+    event,
+    orderId,
+    status,
+    status_log: order.status_log,
+    has_remake: !!order.remake_details,
+  });
+  if (recentEvents.length > 30) recentEvents.pop();
 
   try {
     await db.saveOrder(orderId, raw);
