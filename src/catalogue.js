@@ -119,7 +119,9 @@ function sampleCatalogue(catalogueId) {
     plu,
     barcodes: [bc],
     name: L(name),
-    operational_name: L(name),
+    // Plain string (matches order webhooks; Deliveroo's catalogue examples
+    // omit it entirely, and a lang-object here may fail strict validation).
+    operational_name: name,
     description: L(`${name} - sample product for sandbox certification`),
     media: [{ media_type: "main_image", media_url: img }],
     price_info: { price },
