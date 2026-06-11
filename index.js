@@ -344,6 +344,20 @@ app.post("/debug/cat/unavail", async (req, res) => {
   }
 });
 
+// Show the most recent Deliveroo orders we've received (raw payloads).
+app.get("/debug/orders", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    const { rows } = await db.getOrdersSince(null, 1, 20);
+    res.json({
+      count: rows.length,
+      orders: rows.map((r) => ({ order_id: r.order_id, received_at: r.received_at, raw: r.raw })),
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Probe whether a catalogue was processed/accepted. Body: { catalogueId }
 app.post("/debug/cat/get", async (req, res) => {
   if (!requireSecret(req, res)) return;
