@@ -160,9 +160,9 @@ function sampleCatalogue(catalogueId) {
         item(e2, "Extra B", `${token}-e2`, barcode(6), 30),
       ],
       hero_image: { url: img },
-      experience: "aisles",
-      // Aisles requires two-tier categorisation: item_categories + groups
-      // (mirrors Deliveroo's own "Partner Aisles" example exactly).
+      // "categories" experience: at least one item must reference TWO
+      // categories (i1 is in both cat_main and cat_specials).
+      experience: "categories",
       categories: {
         item_categories: [
           {
@@ -172,24 +172,16 @@ function sampleCatalogue(catalogueId) {
             item_ids: [i1, i2],
           },
           {
+            id: gid("cat_specials"),
+            name: L("Specials"),
+            description: L("Special offer products"),
+            item_ids: [i1],
+          },
+          {
             id: gid("cat_extras"),
             name: L("Extras and Options"),
             description: L("Extras and Options"),
             item_ids: [ms, ml, e1, e2],
-          },
-        ],
-        groups: [
-          {
-            id: gid("grp_products"),
-            name: L("Products"),
-            description: L("Products"),
-            item_category_ids: [gid("cat_main")],
-          },
-          {
-            id: gid("grp_options"),
-            name: L("Options"),
-            description: L("Options"),
-            item_category_ids: [gid("cat_extras")],
           },
         ],
       },
@@ -199,7 +191,12 @@ function sampleCatalogue(catalogueId) {
           { id: gid("all"), name: L("All Products"), description: L("All items"), item_ids: [i1, i2] },
         ],
       },
-      modifiers: [],
+      // Scenario requires a single-select group (2 modifiers) and a
+      // multi-select group (2 modifiers).
+      modifiers: [
+        { id: gid("size"), name: L("Size"), min_selection: 1, max_selection: 1, item_ids: [ms, ml] },
+        { id: gid("extras"), name: L("Extras"), min_selection: 0, max_selection: 2, item_ids: [e1, e2] },
+      ],
     },
   };
 }
