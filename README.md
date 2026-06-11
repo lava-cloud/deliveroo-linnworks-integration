@@ -49,8 +49,20 @@ Deliveroo sends new orders to `/deliveroo/order-webhook`, which we store in Post
 | Database (Postgres) | ✅ orders & config persist |
 | Linnworks channel connected | ✅ AddNewUser/UserConfig/SaveConfig handshake verified |
 | Order import to Linnworks | ✅ code ready (needs live Deliveroo orders) |
-| Stock sync to Deliveroo | ⏳ **staged** — needs Deliveroo Brand/Catalogue/Site IDs |
+| Stock sync to Deliveroo | ⏳ blocked — Retail **Catalogue API** cert rejects our upload with no error feedback (webhook never delivers); chasing Deliveroo for the reason |
+| **Orders API certification** | ✅ **all 12 sandbox scenarios passed** (receive order → POS sync status; PLU validation for missing/mismatched) |
+| Orders production access | ⏳ blocked only on **activation contract review** (not technical) — chase Deliveroo |
+| Order → Linnworks mapping | ✅ real Deliveroo format mapped (nested body.order, pos_item_id→SKU, pence→pounds, modifiers as lines) |
 | Order auto-accept | 🔜 future (tablet used for now) |
+
+### Orders API: how it works (certified)
+Deliveroo pushes `order.new` (placed) then `order.status_update` (accepted) to
+`/deliveroo/order-webhook`. On the **accepted** event we POST a **sync status** to
+`/order/v1/orders/{id}/sync_status`: `succeeded` if we can fulfil every PLU,
+else `failed` with `pos_item_id_not_found` (missing PLU) or `pos_item_id_mismatched`
+(unknown PLU, or a valid PLU on the wrong item). Valid PLUs come from
+`DELIV_VALID_PLUS` (sandbox menu by default → your Linnworks SKUs in production);
+`PLU_NAMES` in index.js maps PLU→expected title for mismatch detection.
 
 **The one remaining blocker is Deliveroo onboarding** (TIM assignment + Brand/Catalogue/
 Site IDs). When those arrive, paste them into Render env vars and stock sync goes live
