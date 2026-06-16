@@ -79,10 +79,10 @@ async function uploadCatalogueJson(uploadUrl, catalogueJson) {
   return { status: res.status, body: text };
 }
 
-// Scenario 4: PATCH update listings for a site.
+// Scenario 4: PUT listings for a site (lists items + stores the catalogue).
 async function updateListings(brandId, catalogueId, siteId, itemIds) {
   const path = `/brands/${brandId}/catalogue/${catalogueId}/listings`;
-  return authedFetch("PATCH", path, {
+  return authedFetch("PUT", path, {
     version: "catalogue-listing-v1",
     site_ids: [String(siteId)],
     listed_items: itemIds.map((id) => ({ id })),
