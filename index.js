@@ -62,26 +62,36 @@ function orderLines(order) {
   return out;
 }
 
+// Strict PLU checks (unknown/mismatch) are for the sandbox certification
+// scenarios. In PRODUCTION they must be OFF by default, or we'd wrongly reject
+// real orders whose PLUs aren't in the sandbox list. Default: on in sandbox,
+// off in production. Override with DELIV_STRICT_PLU=true/false.
+const STRICT_PLU =
+  (process.env.DELIV_STRICT_PLU || (config.deliverooEnv === "sandbox" ? "true" : "false")) ===
+  "true";
+
 // Decide the sync status for an order based on its PLUs.
 function syncDecision(order) {
   const lines = orderLines(order);
-  // Missing PLU
+  // Missing PLU — always a real problem (can't fulfil an unidentified item).
   if (lines.some((l) => !l.plu || String(l.plu).trim() === "")) {
     return { status: "failed", reason: "pos_item_id_not_found", notes: "Order contains an item with no PLU" };
   }
-  // Unknown PLU (not in our catalogue at all)
-  const unknown = lines.find((l) => !VALID_PLUS.has(String(l.plu)));
-  if (unknown) {
-    return { status: "failed", reason: "pos_item_id_mismatched", notes: `Unknown PLU: ${unknown.plu}` };
-  }
-  // Mismatched PLU (valid PLU, but attached to the wrong item)
-  const mism = lines.find((l) => PLU_NAMES[l.plu] && PLU_NAMES[l.plu] !== l.name);
-  if (mism) {
-    return {
-      status: "failed",
-      reason: "pos_item_id_mismatched",
-      notes: `PLU ${mism.plu} expected "${PLU_NAMES[mism.plu]}" but order had "${mism.name}"`,
-    };
+  if (STRICT_PLU) {
+    // Unknown PLU (not in our catalogue at all)
+    const unknown = lines.find((l) => !VALID_PLUS.has(String(l.plu)));
+    if (unknown) {
+      return { status: "failed", reason: "pos_item_id_mismatched", notes: `Unknown PLU: ${unknown.plu}` };
+    }
+    // Mismatched PLU (valid PLU, but attached to the wrong item)
+    const mism = lines.find((l) => PLU_NAMES[l.plu] && PLU_NAMES[l.plu] !== l.name);
+    if (mism) {
+      return {
+        status: "failed",
+        reason: "pos_item_id_mismatched",
+        notes: `PLU ${mism.plu} expected "${PLU_NAMES[mism.plu]}" but order had "${mism.name}"`,
+      };
+    }
   }
   return { status: "succeeded", reason: "", notes: "" };
 }
