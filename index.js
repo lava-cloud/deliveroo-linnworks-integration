@@ -405,8 +405,12 @@ app.post("/debug/cat/listings", async (req, res) => {
   if (!requireSecret(req, res)) return;
   const siteId = (req.body && req.body.siteId) || "101";
   const catalogueId = (req.body && req.body.catalogueId) || catState.catalogueId;
-  const itemIds =
-    (req.body && req.body.itemIds) || ["item_lava_1", "item_lava_2"];
+  // Default to the actual item ids in our generated catalogue for this id.
+  let itemIds = req.body && req.body.itemIds;
+  if (!itemIds) {
+    const sample = catalogue.sampleCatalogue(catalogueId);
+    itemIds = ((sample.catalogue && sample.catalogue.items) || []).map((i) => i.id);
+  }
   try {
     res.json(await catalogue.updateListings(brandIdFor(req), catalogueId, siteId, itemIds));
   } catch (e) {
