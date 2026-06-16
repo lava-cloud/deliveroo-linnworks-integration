@@ -436,6 +436,17 @@ app.post("/debug/cat/unavail", async (req, res) => {
   }
 });
 
+// Generic catalogue API probe. Body: { method, path, body }
+app.post("/debug/cat/raw", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const { method, path, body } = req.body || {};
+  try {
+    res.json(await catalogue.raw(method || "GET", path, body));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Show the most recent Deliveroo orders we've received (raw payloads).
 app.get("/debug/orders", async (req, res) => {
   if (!requireSecret(req, res)) return;

@@ -36,6 +36,11 @@ async function authedFetch(method, path, body) {
   return { status: res.status, body: parsed };
 }
 
+// Generic authed call — used to probe candidate endpoint paths.
+async function raw(method, path, body) {
+  return authedFetch(method, path, body);
+}
+
 // Scenario 1: GET Site Brand ID using site location id.
 async function getSiteBrandId(siteLocationId) {
   const path =
@@ -202,6 +207,7 @@ function sampleCatalogue(catalogueId) {
 }
 
 module.exports = {
+  raw,
   getSiteBrandId,
   createUpload,
   getCatalogue,
