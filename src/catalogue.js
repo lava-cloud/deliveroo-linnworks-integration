@@ -173,8 +173,14 @@ function sampleCatalogue(catalogueId) {
     catalogue: {
       id: catalogueId,
       items: [
-        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199),
-        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299),
+        // Sellable items link to their modifier groups via modifier_ids
+        // (per Deliveroo Menu API schema: items -> modifier_ids -> groups).
+        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199, {
+          modifier_ids: [gid("size"), gid("extras")],
+        }),
+        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299, {
+          modifier_ids: [gid("size"), gid("extras")],
+        }),
         item(ms, "Small", `${token}-ms`, barcode(3), 0),
         item(ml, "Large", `${token}-ml`, barcode(4), 50),
         item(e1, "Extra A", `${token}-e1`, barcode(5), 30),
@@ -215,8 +221,9 @@ function sampleCatalogue(catalogueId) {
       // Scenario requires a single-select group (2 modifiers) and a
       // multi-select group (2 modifiers).
       modifiers: [
-        { id: gid("size"), name: L("Size"), min_selection: 1, max_selection: 1, item_ids: [ms, ml] },
-        { id: gid("extras"), name: L("Extras"), min_selection: 0, max_selection: 2, item_ids: [e1, e2] },
+        // Field names per Deliveroo Menu API modifier schema.
+        { id: gid("size"), name: L("Size"), min_selection: 1, max_selection: 1, repeatable: false, item_ids: [ms, ml] },
+        { id: gid("extras"), name: L("Extras"), min_selection: 0, max_selection: 2, repeatable: false, item_ids: [e1, e2] },
       ],
     },
   };
