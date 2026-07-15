@@ -22,31 +22,46 @@ async function initDb() {
     return;
   }
 
-  const { Pool } = require("pg");
-  pool = new Pool({
-    connectionString: config.databaseUrl,
-    ssl: { rejectUnauthorized: false }, // Render managed Postgres needs SSL
-  });
+  // If the database is unreachable, DO NOT crash the whole service — fall back
+  // to in-memory so order ingestion keeps working. (A DB blip must never take
+  // down the webhook.)
+  try {
+    const { Pool } = require("pg");
+    pool = new Pool({
+      connectionString: config.databaseUrl,
+      ssl: { rejectUnauthorized: false }, // Render managed Postgres needs SSL
+      connectionTimeoutMillis: 10000,
+    });
+    // Never let an async pool error crash the process.
+    pool.on("error", (e) => console.error("[db] pool error:", e.message));
 
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS deliveroo_orders (
-      id           SERIAL PRIMARY KEY,
-      order_id     TEXT UNIQUE,
-      received_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-      raw          JSONB NOT NULL
-    );
-  `);
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS channel_configs (
-      auth_token   TEXT PRIMARY KEY,
-      config       JSONB NOT NULL DEFAULT '{}',
-      created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-      updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
-    );
-  `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS deliveroo_orders (
+        id           SERIAL PRIMARY KEY,
+        order_id     TEXT UNIQUE,
+        received_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+        raw          JSONB NOT NULL
+      );
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS channel_configs (
+        auth_token   TEXT PRIMARY KEY,
+        config       JSONB NOT NULL DEFAULT '{}',
+        created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+        updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+      );
+    `);
 
-  useMemory = false;
-  console.log("[db] Connected to Postgres; tables ready.");
+    useMemory = false;
+    console.log("[db] Connected to Postgres; tables ready.");
+  } catch (err) {
+    console.error(
+      "[db] Postgres unavailable — falling back to in-memory so the service stays up:",
+      err.message
+    );
+    useMemory = true;
+    pool = null;
+  }
 }
 
 // ----- Orders -----
