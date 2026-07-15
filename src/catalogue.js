@@ -122,9 +122,12 @@ async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
 // ≥6 items (2 sellable + 2 single-select modifiers + 2 multi-select modifiers),
 // barcodes on all, items in 2 merchandise_collections, a hero_image,
 // experience "aisles", version "catalogue-upload-v1".
-function sampleCatalogue(catalogueId) {
+function sampleCatalogue(catalogueId, nonce) {
   const img = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
   const L = (en) => ({ en }); // Deliveroo uses language-keyed objects
+  // Optional nonce varies description text so a re-upload of the same
+  // catalogue id isn't rejected as "file already uploaded".
+  const NONCE = nonce ? ` (${nonce})` : "";
 
   // Namespace all IDs/barcodes by the catalogue id so each upload is UNIQUE
   // (rules out "file already uploaded" duplicate rejection).
@@ -150,7 +153,7 @@ function sampleCatalogue(catalogueId) {
     // Plain string (matches order webhooks; Deliveroo's catalogue examples
     // omit it entirely, and a lang-object here may fail strict validation).
     operational_name: name,
-    description: L(`${name} - sample product for sandbox certification`),
+    description: L(`${name} - sample product for sandbox certification${NONCE}`),
     media: [{ media_type: "main_image", media_url: img }],
     price_info: { price },
     tax_rate: "20.0",
