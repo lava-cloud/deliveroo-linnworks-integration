@@ -49,9 +49,9 @@ Deliveroo sends new orders to `/deliveroo/order-webhook`, which we store in Post
 | Database (Postgres) | ✅ orders & config persist |
 | Linnworks channel connected | ✅ AddNewUser/UserConfig/SaveConfig handshake verified |
 | Order import to Linnworks | ✅ code ready (needs live Deliveroo orders) |
-| Stock sync to Deliveroo | ⏳ blocked — Retail **Catalogue API** cert rejects our upload with no error feedback (webhook never delivers); chasing Deliveroo for the reason |
+| **Catalogue API certification** | ✅ **6/7 scenarios passed** (1,2,4,5,6,7). Scenario 3 blocked by a faulty Deliveroo validator — escalated with full evidence. Whole pipeline proven live: upload → process → webhook → listings → **item_unavailabilities stock sync** |
 | **Orders API certification** | ✅ **all 12 sandbox scenarios passed** (receive order → POS sync status; PLU validation for missing/mismatched) |
-| Orders production access | ⏳ blocked only on **activation contract review** (not technical) — chase Deliveroo |
+| Orders production access | ✅ **approved** — portal shows 4 go-live steps (see GOLIVE.md) |
 | Order → Linnworks mapping | ✅ real Deliveroo format mapped (nested body.order, pos_item_id→SKU, pence→pounds, modifiers as lines) |
 | Order auto-accept | 🔜 future (tablet used for now) |
 
