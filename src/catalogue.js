@@ -68,11 +68,16 @@ async function getUploadStatus(brandId, uploadId) {
   return authedFetch("GET", path);
 }
 
-// Scenario 3: PUT the catalogue JSON to the presigned upload_url (NO auth).
+// Scenario 3: PUT the catalogue JSON to the upload_url.
+// Per Deliveroo support, this PUT must include the OAuth bearer token.
 async function uploadCatalogueJson(uploadUrl, catalogueJson) {
+  const token = await deliveroo.getAccessToken();
   const res = await fetch(uploadUrl, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(catalogueJson),
   });
   const text = await res.text();
