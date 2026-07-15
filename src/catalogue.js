@@ -104,9 +104,10 @@ async function updateListings(brandId, catalogueId, siteId, itemIds) {
   });
 }
 
-// Scenario 6 / production stock: PATCH unavailabilities.
+// Scenario 6 / production stock: PATCH item unavailabilities.
+// Route confirmed live: PATCH /brands/{b}/catalogue/{id}/item_unavailabilities/{site} -> 200
 async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
-  const path = `/brands/${brandId}/catalogue/${catalogueId}/sites/${siteId}/unavailabilities`;
+  const path = `/brands/${brandId}/catalogue/${catalogueId}/item_unavailabilities/${siteId}`;
   return authedFetch("PATCH", path, {
     version: "unavailabilities-v1",
     reset_all_item_availabilities: false,

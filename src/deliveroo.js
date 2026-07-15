@@ -85,17 +85,16 @@ async function updateAvailability(items) {
     })),
   };
 
-  // Retail Catalogue API is PATCH /unavailabilities (synchronous), scoped by
-  // brand/catalogue/site. Exact path to be confirmed with the Deliveroo TIM;
-  // override via DELIV_UNAVAILABILITIES_URL if they give a different one.
+  // Route confirmed live in sandbox:
+  // PATCH /brands/{brand}/catalogue/{catalogue}/item_unavailabilities/{site} -> 200
   const url = config.deliverooUnavailabilitiesUrl
     ? config.deliverooUnavailabilitiesUrl
         .replace("{brand}", config.deliveroo.brandId)
         .replace("{catalogue}", config.deliveroo.catalogueId)
         .replace("{site}", config.deliveroo.siteId)
-    : `${config.deliveroo.apiBase}/catalogue/v1/brands/${config.deliveroo.brandId}` +
-      `/catalogues/${config.deliveroo.catalogueId}` +
-      `/sites/${config.deliveroo.siteId}/unavailabilities`;
+    : `${config.deliveroo.apiBase}/brands/${config.deliveroo.brandId}` +
+      `/catalogue/${config.deliveroo.catalogueId}` +
+      `/item_unavailabilities/${config.deliveroo.siteId}`;
 
   const response = await fetch(url, {
     method: "PATCH",
