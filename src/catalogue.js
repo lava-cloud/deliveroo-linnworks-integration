@@ -72,7 +72,7 @@ async function getUploadStatus(brandId, uploadId) {
 // Per Deliveroo support, this PUT should include the OAuth bearer token.
 // withAuth can be toggled to compare with/without the bearer. 20s timeout so a
 // stalled request can never hang the service.
-async function uploadCatalogueJson(uploadUrl, catalogueJson, withAuth = true) {
+async function uploadCatalogueJson(uploadUrl, catalogueJson, withAuth = false) {
   const headers = { "Content-Type": "application/json" };
   if (withAuth) headers.Authorization = `Bearer ${await deliveroo.getAccessToken()}`;
   try {
