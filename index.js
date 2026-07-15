@@ -402,7 +402,8 @@ app.post("/debug/cat/upload-json", async (req, res) => {
   catState.catalogueId = catalogueId;
   try {
     const json = catalogue.sampleCatalogue(catalogueId);
-    const r = await catalogue.uploadCatalogueJson(catState.uploadUrl, json);
+    const withAuth = !(req.body && req.body.withAuth === false);
+    const r = await catalogue.uploadCatalogueJson(catState.uploadUrl, json, withAuth);
     const items = (json.catalogue && json.catalogue.items) || [];
     res.json({ uploaded: r, catalogueId, items: items.map((i) => i.id) });
   } catch (e) {

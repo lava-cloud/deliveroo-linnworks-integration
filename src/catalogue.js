@@ -69,19 +69,24 @@ async function getUploadStatus(brandId, uploadId) {
 }
 
 // Scenario 3: PUT the catalogue JSON to the upload_url.
-// Per Deliveroo support, this PUT must include the OAuth bearer token.
-async function uploadCatalogueJson(uploadUrl, catalogueJson) {
-  const token = await deliveroo.getAccessToken();
-  const res = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(catalogueJson),
-  });
-  const text = await res.text();
-  return { status: res.status, body: text };
+// Per Deliveroo support, this PUT should include the OAuth bearer token.
+// withAuth can be toggled to compare with/without the bearer. 20s timeout so a
+// stalled request can never hang the service.
+async function uploadCatalogueJson(uploadUrl, catalogueJson, withAuth = true) {
+  const headers = { "Content-Type": "application/json" };
+  if (withAuth) headers.Authorization = `Bearer ${await deliveroo.getAccessToken()}`;
+  try {
+    const res = await fetch(uploadUrl, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(catalogueJson),
+      signal: AbortSignal.timeout(20000),
+    });
+    const text = await res.text();
+    return { status: res.status, body: text };
+  } catch (e) {
+    return { status: 0, body: `fetch error: ${e.message}` };
+  }
 }
 
 // Scenario 4: PUT listings for a site (lists items + stores the catalogue).
