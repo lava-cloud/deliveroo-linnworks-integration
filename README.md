@@ -109,6 +109,30 @@ See `.env.example`. Key ones:
 
 ---
 
+## Catalogue API — hard-won schema knowledge (undocumented)
+
+Discovered empirically via the processing-error webhook (not in Deliveroo's docs):
+
+- Catalogue items have a **`type` enum: `ITEM` | `CHOICE`** (case-sensitive).
+  Modifier-option items must be `CHOICE`; anything else → processing
+  `external_error: "type: must be a valid value"`.
+- Items link to modifier groups via **`modifier_ids`**; groups live in the
+  catalogue-level `modifiers` array: `{id, name:{en}, min_selection,
+  max_selection, repeatable, item_ids}` (Menu API heritage).
+- Names/descriptions are language objects `{"en": …}`; `operational_name` is a
+  plain string; `tax_rate` is a string; barcodes must be valid EAN-13 (check
+  digit enforced); media uses `media_type`/`media_url`; aisles experience
+  requires two-tier `categories` (`item_categories` + `groups`, every category
+  referenced by a group).
+- The presigned `upload_url` accepts **unauthenticated PUT only** (S3 rejects an
+  added Authorization header: "Only one auth mechanism allowed"); plain JSON
+  only (gzip → "invalid json: \x1f").
+- **Scenario 3 in the certification portal is unpassable** as of Jul 2026: its
+  validator is provably blind to uploads (identical failure whether processing
+  succeeds or fails; sandbox presigned URLs point at a production-named bucket).
+  Raised with Deliveroo as a Technical Incident — needs their fix or a manual
+  scenario completion. All other scenarios (1,2,4,5,6,7) passed.
+
 ## Catalogue / listings (decided: defer)
 
 Products are created/edited in Deliveroo **Catalogue Manager** for now; Linnworks
