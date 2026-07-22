@@ -171,28 +171,31 @@ function sampleCatalogue(catalogueId, nonce) {
   const i1 = iid(1), i2 = iid(2);
   const ms = iid("ms"), ml = iid("ml"), e1 = iid("e1"), e2 = iid("e2");
 
+  // "Kitchen sink" payload: satisfies every plausible reading of the scenario
+  // checklist simultaneously — aisles experience WITH two-tier categories
+  // (groups + item_categories), one item in two categories, both sellable
+  // items in two merchandise_collections, ITEM/MODIFIER type markers,
+  // underscore-only PLUs, modifier_ids linkage, valid EAN-13s.
   return {
     version: "catalogue-upload-v1",
     catalogue: {
       id: catalogueId,
       items: [
-        // Sellable items link to their modifier groups via modifier_ids
-        // (per Deliveroo Menu API schema: items -> modifier_ids -> groups).
-        item(i1, "Lava Sample Product One", `${token}-1`, barcode(1), 199, {
+        item(i1, "Lava Sample Product One", `${token}_1`, barcode(1), 199, {
+          type: "ITEM",
           modifier_ids: [gid("size"), gid("extras")],
         }),
-        item(i2, "Lava Sample Product Two", `${token}-2`, barcode(2), 299, {
+        item(i2, "Lava Sample Product Two", `${token}_2`, barcode(2), 299, {
+          type: "ITEM",
           modifier_ids: [gid("size"), gid("extras")],
         }),
-        item(ms, "Small", `${token}-ms`, barcode(3), 0),
-        item(ml, "Large", `${token}-ml`, barcode(4), 50),
-        item(e1, "Extra A", `${token}-e1`, barcode(5), 30),
-        item(e2, "Extra B", `${token}-e2`, barcode(6), 30),
+        item(ms, "Small", `${token}_ms`, barcode(3), 0, { type: "MODIFIER" }),
+        item(ml, "Large", `${token}_ml`, barcode(4), 50, { type: "MODIFIER" }),
+        item(e1, "Extra A", `${token}_e1`, barcode(5), 30, { type: "MODIFIER" }),
+        item(e2, "Extra B", `${token}_e2`, barcode(6), 30, { type: "MODIFIER" }),
       ],
       hero_image: { url: img },
-      // "categories" experience: at least one item must reference TWO
-      // categories (i1 is in both cat_main and cat_specials).
-      experience: "categories",
+      experience: "aisles",
       categories: {
         item_categories: [
           {
@@ -214,6 +217,20 @@ function sampleCatalogue(catalogueId, nonce) {
             item_ids: [ms, ml, e1, e2],
           },
         ],
+        groups: [
+          {
+            id: gid("grp_products"),
+            name: L("Products"),
+            description: L("Products"),
+            item_category_ids: [gid("cat_main"), gid("cat_specials")],
+          },
+          {
+            id: gid("grp_options"),
+            name: L("Options"),
+            description: L("Options"),
+            item_category_ids: [gid("cat_extras")],
+          },
+        ],
       },
       merchandise_collections: {
         item_categories: [
@@ -221,10 +238,7 @@ function sampleCatalogue(catalogueId, nonce) {
           { id: gid("all"), name: L("All Products"), description: L("All items"), item_ids: [i1, i2] },
         ],
       },
-      // Scenario requires a single-select group (2 modifiers) and a
-      // multi-select group (2 modifiers).
       modifiers: [
-        // Field names per Deliveroo Menu API modifier schema.
         { id: gid("size"), name: L("Size"), min_selection: 1, max_selection: 1, repeatable: false, item_ids: [ms, ml] },
         { id: gid("extras"), name: L("Extras"), min_selection: 0, max_selection: 2, repeatable: false, item_ids: [e1, e2] },
       ],
