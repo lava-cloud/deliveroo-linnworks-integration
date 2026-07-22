@@ -189,11 +189,12 @@ function sampleCatalogue(catalogueId, nonce, modifierType) {
           type: "ITEM",
           modifier_ids: [gid("size"), gid("extras")],
         }),
-        // modifierType probes the item-type enum; omitted -> no type field.
-        item(ms, "Small", `${token}_ms`, barcode(3), 0, modifierType ? { type: modifierType } : {}),
-        item(ml, "Large", `${token}_ml`, barcode(4), 50, modifierType ? { type: modifierType } : {}),
-        item(e1, "Extra A", `${token}_e1`, barcode(5), 30, modifierType ? { type: modifierType } : {}),
-        item(e2, "Extra B", `${token}_e2`, barcode(6), 30, modifierType ? { type: modifierType } : {}),
+        // Item type enum is ITEM / CHOICE (probed empirically; CHOICE = modifier
+        // option, Menu API heritage). modifierType param still allows probing.
+        item(ms, "Small", `${token}_ms`, barcode(3), 0, { type: modifierType || "CHOICE" }),
+        item(ml, "Large", `${token}_ml`, barcode(4), 50, { type: modifierType || "CHOICE" }),
+        item(e1, "Extra A", `${token}_e1`, barcode(5), 30, { type: modifierType || "CHOICE" }),
+        item(e2, "Extra B", `${token}_e2`, barcode(6), 30, { type: modifierType || "CHOICE" }),
       ],
       hero_image: { url: img },
       experience: "aisles",
