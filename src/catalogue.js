@@ -122,7 +122,7 @@ async function updateUnavailabilities(brandId, catalogueId, siteId, items) {
 // ≥6 items (2 sellable + 2 single-select modifiers + 2 multi-select modifiers),
 // barcodes on all, items in 2 merchandise_collections, a hero_image,
 // experience "aisles", version "catalogue-upload-v1".
-function sampleCatalogue(catalogueId, nonce) {
+function sampleCatalogue(catalogueId, nonce, modifierType) {
   const img = "https://deliveroo-linnworks-integration.onrender.com/img1920.png";
   const L = (en) => ({ en }); // Deliveroo uses language-keyed objects
   // Optional nonce varies description text so a re-upload of the same
@@ -189,10 +189,11 @@ function sampleCatalogue(catalogueId, nonce) {
           type: "ITEM",
           modifier_ids: [gid("size"), gid("extras")],
         }),
-        item(ms, "Small", `${token}_ms`, barcode(3), 0, { type: "MODIFIER" }),
-        item(ml, "Large", `${token}_ml`, barcode(4), 50, { type: "MODIFIER" }),
-        item(e1, "Extra A", `${token}_e1`, barcode(5), 30, { type: "MODIFIER" }),
-        item(e2, "Extra B", `${token}_e2`, barcode(6), 30, { type: "MODIFIER" }),
+        // modifierType probes the item-type enum; omitted -> no type field.
+        item(ms, "Small", `${token}_ms`, barcode(3), 0, modifierType ? { type: modifierType } : {}),
+        item(ml, "Large", `${token}_ml`, barcode(4), 50, modifierType ? { type: modifierType } : {}),
+        item(e1, "Extra A", `${token}_e1`, barcode(5), 30, modifierType ? { type: modifierType } : {}),
+        item(e2, "Extra B", `${token}_e2`, barcode(6), 30, modifierType ? { type: modifierType } : {}),
       ],
       hero_image: { url: img },
       experience: "aisles",
