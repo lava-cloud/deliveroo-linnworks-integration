@@ -14,9 +14,9 @@
 const fs = require("fs");
 const path = require("path");
 
-const [, , DELIV_CSV, LINN_CSV] = process.argv;
+const [, , DELIV_CSV, LINN_CSV, EBAY_CSV] = process.argv;
 if (!DELIV_CSV || !LINN_CSV) {
-  console.error("Usage: node tools/build-sku-map.js <deliveroo.csv> <linnworks.csv>");
+  console.error("Usage: node tools/build-sku-map.js <deliveroo.csv> <linnworks.csv> [ebay-listings.csv]");
   process.exit(1);
 }
 
@@ -112,6 +112,27 @@ for (const p of lParsed) {
   byNorm.get(p.norm).push(p);
 }
 
+// --- eBay listings index (primary matching source when provided) -----------
+// Deliveroo item names were copied from eBay titles, so title->custom label
+// (= Linnworks SKU) is the highest-fidelity route.
+const linnSkuSet = new Set(lItems.map((l) => l.sku));
+const linnBySku = new Map(lItems.map((l) => [l.sku, l]));
+let ebByNorm = new Map(), ebParsed = [];
+if (EBAY_CSV) {
+  const eb = parseCsv(fs.readFileSync(EBAY_CSV, "utf8").replace(/^﻿/, ""));
+  const eh = eb[0];
+  const ti = eh.indexOf("Title");
+  const ci = eh.findIndex((h) => h.toLowerCase().includes("custom label"));
+  const rows = eb.slice(1).filter((r) => r[ti] && r[ci] && r[ci].trim());
+  for (const r of rows) {
+    const title = r[ti], sku = r[ci].trim();
+    const p = { title, sku, norm: norm(title), t: tokens(title) };
+    ebParsed.push(p);
+    if (!ebByNorm.has(p.norm)) ebByNorm.set(p.norm, []);
+    ebByNorm.get(p.norm).push(p);
+  }
+}
+
 // Prefer candidate whose variant tag matches the Deliveroo variant.
 function pickByTag(cands, tag) {
   const exact = cands.filter((c) => c.tag === tag);
@@ -127,6 +148,49 @@ const ambiguous = [];  // {d, candidates:[{li,score}]}
 const unmatched = [];  // {d, best}
 for (const r of dItems) {
   const dName = r[dIdx.item_name];
+
+  // --- Pass 1: eBay title (exact, then fuzzy) -> custom label -> SKU
+  if (ebParsed.length) {
+    const g = ebByNorm.get(norm(dName)) || [];
+    const labels = [...new Set(g.map((p) => p.sku))];
+    if (labels.length === 1 && linnSkuSet.has(labels[0])) {
+      matches.push({ d: r, li: linnBySku.get(labels[0]), method: "ebay-exact", score: 1 });
+      continue;
+    }
+    if (labels.length > 1) {
+      const inLinn = labels.filter((s) => linnSkuSet.has(s));
+      if (inLinn.length === 1) {
+        matches.push({ d: r, li: linnBySku.get(inLinn[0]), method: "ebay-exact", score: 1 });
+        continue;
+      }
+      ambiguous.push({
+        d: r,
+        candidates: labels.map((s) => ({ li: linnBySku.get(s) || { sku: s, title: "(label not in Linnworks export)", barcode: "" }, score: 1 })),
+      });
+      continue;
+    }
+    if (labels.length === 1 && !linnSkuSet.has(labels[0])) {
+      // eBay identifies the product but its label isn't in the inventory
+      // export (channel SKU / archived). Remember it and fall through to
+      // title-matching against Linnworks; report the discrepancy.
+      r._ebayLabel = labels[0];
+    }
+    // eBay fuzzy
+    const dt0 = tokens(dName);
+    let b = null, s2 = null;
+    for (const p of ebParsed) {
+      const s = dice(dt0, p.t);
+      if (!b || s > b.score) { s2 = b; b = { p, score: s }; }
+      else if (!s2 || s > s2.score) s2 = { p, score: s };
+    }
+    if (b && b.score >= 0.9 && (!s2 || s2.p.sku === b.p.sku || b.score - s2.score >= 0.03) &&
+        numsCompatible(dName, b.p.title) && linnSkuSet.has(b.p.sku)) {
+      matches.push({ d: r, li: linnBySku.get(b.p.sku), method: "ebay-fuzzy", score: b.score });
+      continue;
+    }
+  }
+
+  // --- Pass 2: Linnworks item titles (variant-aware), as before
   const dv = delivVariant(dName);
   const exactGroup = byNorm.get(norm(dv.core)) || [];
   if (exactGroup.length) {
@@ -149,10 +213,16 @@ for (const r of dItems) {
   const nextDiff = scored.find((s) => s.p.norm !== best.p.norm);
   const margin = nextDiff ? best.score - nextDiff.score : 1;
   const numOk = numsCompatible(dv.core, best.p.core);
-  if (best.score >= 0.78 && margin >= 0.04 && numOk) {
+  const confident =
+    numOk &&
+    ((best.score >= 0.78 && margin >= 0.04) ||
+      // lower bar allowed when numerics agree AND the gap to the next
+      // different product is clear
+      (best.score >= 0.6 && margin >= 0.06));
+  if (confident) {
     const pick = pickByTag(bestGroup.map((s) => s.p), dv.tag) || (bestGroup.length === 1 ? bestGroup[0].p : null);
     if (pick) {
-      matches.push({ d: r, li: pick.li, method: "fuzzy", score: best.score });
+      matches.push({ d: r, li: pick.li, method: r._ebayLabel ? "title+label-mismatch" : "fuzzy", score: best.score });
       continue;
     }
   }
@@ -200,9 +270,25 @@ const lines = [];
 lines.push(`# Deliveroo ↔ Linnworks mapping report`);
 lines.push(``);
 lines.push(`Deliveroo items: ${dItems.length} · Linnworks SKUs: ${lItems.length}`);
-lines.push(`Matched: **${matches.length}** (exact ${matches.filter((m) => m.method === "exact").length}, fuzzy ${matches.filter((m) => m.method === "fuzzy").length})`);
+const byMethod = {};
+for (const m of matches) byMethod[m.method] = (byMethod[m.method] || 0) + 1;
+lines.push(`Matched: **${matches.length}** (${Object.entries(byMethod).map(([k, v]) => `${k} ${v}`).join(", ")})`);
 lines.push(`Needs review: **${ambiguous.length}** · Unmatched: **${unmatched.length}** · Duplicate-SKU groups: **${dupes.length}**`);
 lines.push(``);
+const mismatches = matches.filter((m) => m.method === "title+label-mismatch");
+if (mismatches.length) {
+  lines.push(`## eBay label ≠ Linnworks SKU (matched by title; check channel mapping / archived SKUs)`);
+  for (const m of mismatches)
+    lines.push(`- "${m.d[dIdx.item_name]}" → [${m.li.sku}] (eBay label was \`${m.d._ebayLabel}\`)`);
+  lines.push(``);
+}
+const lowConf = matches.filter((m) => m.score < 0.78).sort((a, b) => a.score - b.score);
+if (lowConf.length) {
+  lines.push(`## Low-confidence auto-matches (score < 0.78) — double-check these`);
+  for (const m of lowConf)
+    lines.push(`- (${m.score.toFixed(2)}) "${m.d[dIdx.item_name]}" → [${m.li.sku}] "${m.li.title}"`);
+  lines.push(``);
+}
 if (dupes.length) {
   lines.push(`## Duplicates (same Linnworks SKU ↔ multiple Deliveroo items — consider deleting extras on Deliveroo)`);
   for (const [sku, ms] of dupes) {
