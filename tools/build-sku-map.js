@@ -49,11 +49,10 @@ function csvField(v) {
   return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
 }
 
-const norm = (s) =>
-  String(s).toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "");
-const tokens = (s) => [
-  ...new Set(String(s).toLowerCase().replace(/&/g, "and").split(/[^a-z0-9]+/).filter(Boolean)),
-];
+const pre = (s) =>
+  String(s).toLowerCase().replace(/&/g, "and").replace(/pe[- ]?x/g, "pex");
+const norm = (s) => pre(s).replace(/[^a-z0-9]+/g, "");
+const tokens = (s) => [...new Set(pre(s).split(/[^a-z0-9]+/).filter(Boolean))];
 const dice = (a, b) => {
   const A = new Set(a), B = new Set(b);
   let inter = 0;
@@ -70,7 +69,9 @@ const dItems = dRows.slice(1).filter((r) => r[dIdx.item_id]);
 const lRows = parseCsv(fs.readFileSync(LINN_CSV, "utf8"));
 const lItems = lRows.slice(1)
   .map((r) => ({ sku: r[0], barcode: r[1] || "", title: r[2] || "" }))
-  .filter((r) => r.sku && r.title);
+  .filter((r) => r.sku && r.title)
+  // never auto-match damaged/defective stock SKUs
+  .filter((r) => !/defect|damaged/i.test(r.title) && !/-\s*DEF\b/i.test(r.sku));
 
 // --- variant handling ------------------------------------------------------
 // Linnworks titles carry variant prefixes (SINGLE -, NO -, 10 PACK -) and

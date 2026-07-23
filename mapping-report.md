@@ -1,8 +1,8 @@
 # Deliveroo ↔ Linnworks mapping report
 
-Deliveroo items: 241 · Linnworks SKUs: 1245
-Matched: **155** (ebay-exact 92, fuzzy 29, title+label-mismatch 16, ebay-fuzzy 10, exact 8)
-Needs review: **60** · Unmatched: **26** · Duplicate-SKU groups: **13**
+Deliveroo items: 241 · Linnworks SKUs: 1226
+Matched: **160** (ebay-exact 92, fuzzy 35, title+label-mismatch 15, ebay-fuzzy 10, exact 8)
+Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
 
 ## eBay label ≠ Linnworks SKU (matched by title; check channel mapping / archived SKUs)
 - "15Mm Lever Ball Valve Dual Handle Full Bore Wras Approved Blue and Red Isolation" → [2200038] (eBay label was `FBA_6R-E86B-4CYQ`)
@@ -18,13 +18,11 @@ Needs review: **60** · Unmatched: **26** · Duplicate-SKU groups: **13**
 - "Heatmiser Slimline V4 Wired Programmable Thermostat - White" → [600098] (eBay label was `LS-FFQQ-CGNH`)
 - "Mark Vitow Torca Torrent Shower Valve On/off Cartridge, Brass" → [1600029] (eBay label was `TORCA`)
 - "Outdoor Garden Diy Tap Kit Self Cutting Bibtap Easy Fitment" → [1100009] (eBay label was `FBA_ZM-KGDP-PCTA`)
-- "Pe-x Barrier Pipe 15Mm X 25M Plastic Pushfit Plumbing White Wras Approved" → [1200204] (eBay label was `FBA_JO-2M6B-DU6Y`)
 - "Washing Machine Inlet Hose Washers (Pack of 10)" → [1000020] (eBay label was `NO-WASHERS`)
 - "Weld-on Solvent Cement for Abs & Pvc Plastic Plumbing Pipe Adhesive Glue 250Ml" → [900034] (eBay label was `ED-CXZJ-5AVJ`)
 
 ## Low-confidence auto-matches (score < 0.78) — double-check these
 - (0.60) "Mark Vitow Torca Torrent Shower Valve On/off Cartridge, Brass" → [1600029] "SINGLE - MV Torrent Showert Valve ON/OFF Cartridge 3/4" - TORCA **BRASS**"
-- (0.60) "Pe-x Barrier Pipe 15Mm X 25M Plastic Pushfit Plumbing White Wras Approved" → [1200204] "Altopoly 15mm x 25m PB Barrier Pipe - White"
 - (0.61) "Adjustable Toilet Dual Flush Valve Push Button Toilet Flush System Replacement" → [1900069] "NO - NV Adjustable Toilet Dual Flush Valve 1.5 & 2" with Cable Push Button"
 - (0.63) "22Mm Barrier Pipe Pex White - 25M Coil Push Fit Plumbing Pipe Wras Approved" → [1200018] "LavaTap PEX Barrier Pipe White 22mm - 25M"
 - (0.67) "Adjustable Toilet Dual Flush Valve Push Button Cable Flush System Replacement" → [1900069] "NO - NV Adjustable Toilet Dual Flush Valve 1.5 & 2" with Cable Push Button"
@@ -34,10 +32,16 @@ Needs review: **60** · Unmatched: **26** · Duplicate-SKU groups: **13**
 - (0.71) "7 Day 2 Channel Programmer - Replaces Honeywell St9400c" → [600136] "TTH2CT - TotalHome 7 Day 2 Channel Programmer - ST9400C Replacement"
 - (0.71) "Sentinel X100 1 Litre Inhibitor for Central Heating Systems" → [900218] "SINGLE - Sentinel X100 Inhibitor 1 Litre"
 - (0.73) "Heatmiser Neohub Gen 2 Smart Wifi Hub" → [600048] "Heatmiser NeoHub Gen 2"
-- (0.74) "Designer Trv Thermostatic Radiator Valve Brushed Brass Corner Twin Pack" → [2100215 - DEF] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Corner - DEFECTIVE"
+- (0.75) "Designer Trv Thermostatic Radiator Valve Black Angled Twin Pack" → [2100200] "LavaTherm TRV Black Thermostatic Radiator Valve Angled"
+- (0.75) "Designer Trv Thermostatic Radiator Valve Black Corner Twin Pack" → [2100213] "LavaTherm TRV Black Thermostatic Radiator Valve Corner"
+- (0.75) "Designer Trv Thermostatic Radiator Valve Chrome Angled Twin Pack" → [2100201] "LavaTherm TRV Chrome Thermostatic Radiator Valve Angled"
+- (0.75) "Designer Trv Thermostatic Radiator Valve Chrome Corner Twin Pack" → [2100214] "LavaTherm TRV Chrome Thermostatic Radiator Valve Corner"
+- (0.75) "Designer Trv Thermostatic Radiator Valve White Angled Twin Pack" → [2100206] "LavaTherm TRV White Thermostatic Radiator Valve Angled"
+- (0.75) "Designer Trv Thermostatic Radiator Valve White Corner Twin Pack" → [2100218] "LavaTherm TRV White Thermostatic Radiator Valve Corner"
 - (0.75) "Flushdaddy Lolik Long Life Cistern Spares Pack" → [1900043] "SINGLE - MV LOLIK Flush Daddy Long life Cistern Spares Pack"
 - (0.75) "Heatmiser Rf-switch V2 - Wireless Receiver Use with Neoair Slimline Rf" → [600092] "Heatmiser RF-SWITCH v2- Wireless Receiver"
 - (0.76) "Fernox Tfi Sigma Hp 28Mm 62615 Heat Pump Filter" → [400037] "Fernox TF1 Sigma HP 28mm Heat Pump Filter 62615 High Flow System Filter"
+- (0.78) "Designer Trv Thermostatic Radiator Valve Brushed Brass Angled Twin Pack" → [2100203] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled"
 
 ## Duplicates (same Linnworks SKU ↔ multiple Deliveroo items — consider deleting extras on Deliveroo)
 - **1900069**:
@@ -161,46 +165,22 @@ Needs review: **60** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [2100216] "LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Corner" (score 0.67)
     - candidate: [2100216 - NO] "NO - LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Corner" (score 0.67)
     - candidate: [2100060] "NO - NK-TRV101C Design Twin Pack TRV Brushed Nickel Corner" (score 0.63)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Black Angled Twin Pack" (4c91fa32-37ea-4359-b6e1-9f16524636bc)
-    - candidate: [2100200] "LavaTherm TRV Black Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100200 - NO] "NO - LavaTherm TRV Black Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100200 - DEF] "LavaTherm TRV Black Thermostatic Radiator Valve Angled - DEFECTIVE" (score 0.71)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Black Corner Twin Pack" (ffd36f12-5a92-4717-b749-568c650bd126)
-    - candidate: [2100213] "LavaTherm TRV Black Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100213 - NO] "NO - LavaTherm TRV Black Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100213 - DEF] "LavaTherm TRV Black Thermostatic Radiator Valve Corner - DEFECTIVE" (score 0.71)
 - DELIVEROO: "Designer Trv Thermostatic Radiator Valve Black Straight Twin Pack" (f16e63a8-cadf-4bc5-8dc4-e42d978eb19e)
     - candidate: [2100207] "LavaTherm TRV Black Thermostatic Radiator Valve Straight" (score 0.75)
     - candidate: [2100207 - NO] "NO - LavaTherm TRV Black Thermostatic Radiator Valve Straight" (score 0.75)
-    - candidate: [2100207 - DEF] "LavaTherm TRV Black Thermostatic Radiator Valve Straight - DEFECTIVE" (score 0.71)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Brushed Brass Angled Twin Pack" (d6671334-ce06-4d99-a965-dc59bbca8c0d)
-    - candidate: [2100203] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled" (score 0.78)
-    - candidate: [2100203 - NO] "NO - LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled" (score 0.78)
-    - candidate: [2100203 - DEF] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled - DEFECTIVE" (score 0.74)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Chrome Angled Twin Pack" (6eab7ce6-cd8d-4845-8d32-aadf2d20e24d)
-    - candidate: [2100201] "LavaTherm TRV Chrome Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100201 - NO] "NO - LavaTherm TRV Chrome Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100201 - DEF] "LavaTherm TRV Chrome Thermostatic Radiator Valve Angled - DEFECTIVE" (score 0.71)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Chrome Corner Twin Pack" (165a66cf-23e9-4381-996e-133de104f5aa)
-    - candidate: [2100214] "LavaTherm TRV Chrome Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100214 - NO] "NO - LavaTherm TRV Chrome Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100214 - DEF] "LavaTherm TRV Chrome Thermostatic Radiator Valve Corner - DEFECTIVE" (score 0.71)
+    - candidate: [2100007] "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack" (score 0.70)
+- DELIVEROO: "Designer Trv Thermostatic Radiator Valve Brushed Brass Corner Twin Pack" (1bb1a32c-a490-4c5c-b85c-eee465bdf99a)
+    - candidate: [2100203] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled" (score 0.67)
+    - candidate: [2100203 - NO] "NO - LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled" (score 0.67)
+    - candidate: [2100209] "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Straight" (score 0.67)
 - DELIVEROO: "Designer Trv Thermostatic Radiator Valve Chrome Straight Twin Pack" (41547b2d-3d86-4232-9f6d-1292f412bc68)
     - candidate: [2100208] "LavaTherm TRV Chrome Thermostatic Radiator Valve Straight" (score 0.75)
     - candidate: [2100208 - NO] "NO - LavaTherm TRV Chrome Thermostatic Radiator Valve Straight" (score 0.75)
-    - candidate: [2100208 - DEF] "LavaTherm TRV Chrome Thermostatic Radiator Valve Straight - DEFECTIVE" (score 0.71)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve White Angled Twin Pack" (da2fab74-77ad-4cd6-8156-ffd91ce1d9ba)
-    - candidate: [2100206] "LavaTherm TRV White Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100206 - NO] "NO - LavaTherm TRV White Thermostatic Radiator Valve Angled" (score 0.75)
-    - candidate: [2100206 - DEF] "LavaTherm TRV White Thermostatic Radiator Valve Angled - DEFECTIVE" (score 0.71)
-- DELIVEROO: "Designer Trv Thermostatic Radiator Valve White Corner Twin Pack" (18708e98-1152-45b9-9cd3-b87fad9e8625)
-    - candidate: [2100218] "LavaTherm TRV White Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100218 - NO] "NO - LavaTherm TRV White Thermostatic Radiator Valve Corner" (score 0.75)
-    - candidate: [2100218 - DEF] "LavaTherm TRV White Thermostatic Radiator Valve Corner - DEFECTIVE" (score 0.71)
+    - candidate: [2100007] "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack" (score 0.70)
 - DELIVEROO: "Designer Trv Thermostatic Radiator Valve White Straight Twin Pack" (c5398f62-dee1-4d15-9a4e-7a525532247e)
     - candidate: [2100212] "LavaTherm TRV White Thermostatic Radiator Valve Straight" (score 0.75)
     - candidate: [2100212 - NO] "NO - LavaTherm TRV White Thermostatic Radiator Valve Straight" (score 0.75)
-    - candidate: [2100212 - DEF] "LavaTherm TRV White Thermostatic Radiator Valve Straight - DEFECTIVE" (score 0.71)
+    - candidate: [2100007] "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack" (score 0.70)
 - DELIVEROO: "Drain Snake Pipe Cleaner 6Mm X 3M Rotary Unblocker 3 Metres" (6df42bc3-8efb-4945-a082-424dd8898c95)
     - candidate: [2000051] "Drain Snake Pipe Cleaner 6mm x 3m SPC" (score 0.74)
     - candidate: [2000052] "NO - TT Drain Snake Pipe Cleaner 6mm x 3m SPC" (score 0.70)
@@ -322,6 +302,10 @@ Needs review: **60** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [500015] "NO - SALVUS HOBMATE GAS HOB CONNECTING HOSE MIDBRASS" (score 0.67)
     - candidate: [500014] "SINGLE - Salvus HobMate Gas Hob Connecting Hose" (score 0.59)
     - candidate: [500007] "SINGLE - SALVUS 1/2" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.29)
+- DELIVEROO: "Pe-x Barrier Pipe 15Mm X 25M Plastic Pushfit Plumbing White Wras Approved" (c3ab0ced-5bde-457f-9893-e1dde4372065)
+    - candidate: [1200016] "LavaTap PEX Barrier Pipe White 15mm - 25M" (score 0.63)
+    - candidate: [1200204] "Altopoly 15mm x 25m PB Barrier Pipe - White" (score 0.60)
+    - candidate: [1200017] "LavaTap PEX Barrier Pipe White 15mm - 100M" (score 0.53)
 - DELIVEROO: "Pro Tap Spanner Set and Accessory Kit for Tap Removal" (2884d795-32b8-4204-900b-5d2f18ef57d0)
     - candidate: [2000016] "SINGLE - TT Pro Tap Set and Accessory Kit **PTBNSS**" (score 0.75)
     - candidate: [2000016 - NO] "NO - Pro Tap Set and Accessory Kit PTBNSS" (score 0.75)
