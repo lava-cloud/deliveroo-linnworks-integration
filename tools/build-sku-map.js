@@ -235,6 +235,102 @@ for (const r of dItems) {
   }
 }
 
+// --- Passes 3 & 4 over the leftovers: model-number match + IDF containment --
+// Canonical tokens: singularised words + unit-normalised numerics
+// (1500mm -> len1500, 1.5m -> len1500, 1l/1 litre -> vol1000, 1lb -> wt454).
+function canon(s) {
+  const toks = new Set(), nums = new Set();
+  for (let t of tokens(s)) {
+    const m = t.match(/^(\d+(?:\.\d+)?)(mm|cm|m|ml|l|litres?|litre|g|kg|lbs?|oz)$/);
+    if (m) {
+      const v = parseFloat(m[1]);
+      let c = null;
+      if (m[2] === "mm") c = "len" + Math.round(v);
+      else if (m[2] === "cm") c = "len" + Math.round(v * 10);
+      else if (m[2] === "m") c = "len" + Math.round(v * 1000);
+      else if (m[2] === "ml") c = "vol" + Math.round(v);
+      else if (m[2][0] === "l") c = "vol" + Math.round(v * 1000);
+      else if (m[2] === "g") c = "wt" + Math.round(v);
+      else if (m[2] === "kg") c = "wt" + Math.round(v * 1000);
+      else if (m[2].startsWith("lb")) c = "wt" + Math.round(v * 454);
+      else if (m[2] === "oz") c = "wt" + Math.round(v * 28);
+      if (c) { toks.add(c); nums.add(c); continue; }
+    }
+    if (/^\d+(?:\.\d+)?$/.test(t)) { toks.add(t); nums.add(t); continue; }
+    if (t.length > 3 && t.endsWith("s") && !t.endsWith("ss")) t = t.slice(0, -1);
+    toks.add(t);
+  }
+  return { toks, nums };
+}
+const numsOkCanon = (d, l) => { for (const n of d.nums) if (!l.nums.has(n)) return false; return true; };
+
+for (const p of lParsed) p.c = canon(p.core);
+// document frequency over Linnworks cores (deduped by core)
+const coreSeen = new Set(), coreDocs = [];
+for (const p of lParsed) if (!coreSeen.has(p.norm)) { coreSeen.add(p.norm); coreDocs.push(p.c.toks); }
+const df = new Map();
+for (const d of coreDocs) for (const t of d) df.set(t, (df.get(t) || 0) + 1);
+const N = coreDocs.length;
+const idf = (t) => Math.log((N + 1) / ((df.get(t) || 0) + 1));
+const isModelTok = (t) =>
+  !/^(len|vol|wt)\d/.test(t) &&
+  ((/[a-z]/.test(t) && /\d/.test(t)) || /^\d{4,}$/.test(t)) &&
+  (df.get(t) || 0) <= 4;
+
+function secondPass(dName) {
+  const dv = delivVariant(dName);
+  const dc = canon(dv.core);
+  // Pass 3: distinctive model tokens pointing at exactly one product core
+  const models = [...dc.toks].filter(isModelTok);
+  if (models.length) {
+    const groups = new Map();
+    for (const p of lParsed)
+      if (models.some((t) => p.c.toks.has(t))) {
+        if (!groups.has(p.norm)) groups.set(p.norm, []);
+        groups.get(p.norm).push(p);
+      }
+    if (groups.size === 1) {
+      const cands = [...groups.values()][0];
+      if (numsOkCanon(dc, cands[0].c)) {
+        const pick = pickByTag(cands, dv.tag) || (cands.length === 1 ? cands[0] : null);
+        if (pick) return { li: pick.li, method: "model", score: 0.95 };
+      }
+    }
+    return null; // model tokens ambiguous across products -> leave for review
+  }
+  // Pass 4: IDF-weighted containment of Deliveroo tokens in candidate
+  let denom = 0;
+  for (const t of dc.toks) denom += idf(t);
+  if (!denom) return null;
+  const scored = [];
+  for (const p of lParsed) {
+    let s = 0;
+    for (const t of dc.toks) if (p.c.toks.has(t)) s += idf(t);
+    scored.push({ p, score: s / denom });
+  }
+  scored.sort((a, b) => b.score - a.score);
+  const best = scored[0];
+  const bestGroup = scored.filter((x) => x.p.norm === best.p.norm && x.score >= best.score - 0.001);
+  const nextDiff = scored.find((x) => x.p.norm !== best.p.norm);
+  const margin = nextDiff ? best.score - nextDiff.score : 1;
+  if (best.score >= 0.82 && margin >= 0.08 && numsOkCanon(dc, best.p.c)) {
+    const pick = pickByTag(bestGroup.map((x) => x.p), dv.tag) || (bestGroup.length === 1 ? bestGroup[0].p : null);
+    if (pick) return { li: pick.li, method: "idf", score: best.score };
+  }
+  return null;
+}
+
+for (const list of [ambiguous, unmatched]) {
+  for (let i = list.length - 1; i >= 0; i--) {
+    const entry = list[i];
+    const res = secondPass(entry.d[dIdx.item_name]);
+    if (res) {
+      matches.push({ d: entry.d, li: res.li, method: res.method, score: res.score });
+      list.splice(i, 1);
+    }
+  }
+}
+
 // --- duplicates: one Linnworks SKU matched by multiple Deliveroo items
 const bySku = new Map();
 for (const m of matches) {
@@ -251,24 +347,67 @@ const skuMap = {};
 for (const [sku, ms] of bySku.entries()) skuMap[sku] = ms[0].d[dIdx.item_id];
 fs.writeFileSync(path.join(repoRoot, "sku-map.json"), JSON.stringify(skuMap, null, 2));
 
-// 2. re-import CSV with plu + barcodes filled for confident matches
+// 2. re-import CSV with plu + barcodes filled for confident matches.
+// If a previous reviewed copy exists, any PLU the user filled in MANUALLY
+// takes precedence over automation. Output goes to a v2 file so the user's
+// working copy is never overwritten.
+const prevPath = path.join(path.dirname(DELIV_CSV), "deliveroo-catalogue-with-plu.csv");
+const manual = new Map(); // item_id -> {plu, barcodes}
+if (fs.existsSync(prevPath)) {
+  try {
+    const prev = parseCsv(fs.readFileSync(prevPath, "utf8"));
+    const ph = prev[0];
+    const pid = ph.indexOf("item_id"), pplu = ph.indexOf("plu"), pbar = ph.indexOf("barcodes");
+    for (const r of prev.slice(1))
+      if (r[pid] && r[pplu] && r[pplu].trim())
+        manual.set(r[pid], { plu: r[pplu].trim(), barcodes: (r[pbar] || "").trim() });
+  } catch (e) {
+    console.warn("Could not read previous reviewed CSV:", e.message);
+  }
+}
 const outRows = [dHeader.map(csvField).join(",")];
 const matchedByItemId = new Map(matches.map((m) => [m.d[dIdx.item_id], m]));
+let manualKept = 0, manualConflicts = [];
 for (const r of dItems) {
   const m = matchedByItemId.get(r[dIdx.item_id]);
+  const man = manual.get(r[dIdx.item_id]);
   const copy = [...r];
-  if (m) {
+  if (man) {
+    manualKept++;
+    copy[dIdx.plu] = man.plu;
+    if (man.barcodes) copy[dIdx.barcodes] = man.barcodes;
+    else if (linnBySku.get(man.plu) && linnBySku.get(man.plu).barcode)
+      copy[dIdx.barcodes] = linnBySku.get(man.plu).barcode;
+    if (m && m.li.sku !== man.plu)
+      manualConflicts.push({ name: r[dIdx.item_name], manual: man.plu, auto: m.li.sku });
+    // manual choice also feeds the SKU map
+    skuMap[man.plu] = r[dIdx.item_id];
+  } else if (m) {
     copy[dIdx.plu] = m.li.sku;
     if (m.li.barcode) copy[dIdx.barcodes] = m.li.barcode;
   }
   outRows.push(copy.map(csvField).join(","));
 }
-const reimportPath = path.join(path.dirname(DELIV_CSV), "deliveroo-catalogue-with-plu.csv");
+fs.writeFileSync(path.join(repoRoot, "sku-map.json"), JSON.stringify(skuMap, null, 2)); // rewrite incl. manual
+const reimportPath = path.join(path.dirname(DELIV_CSV), "deliveroo-catalogue-with-plu-v2.csv");
 fs.writeFileSync(reimportPath, outRows.join("\r\n"));
 
-// 3. report
+// 3. report (items the user resolved manually no longer need review)
+for (const list of [ambiguous, unmatched])
+  for (let i = list.length - 1; i >= 0; i--)
+    if (manual.has(list[i].d[dIdx.item_id])) list.splice(i, 1);
+
 const lines = [];
 lines.push(`# Deliveroo ↔ Linnworks mapping report`);
+if (manual.size) {
+  lines.push(``);
+  lines.push(`Manual PLU entries preserved from your reviewed CSV: **${manualKept}**`);
+  if (manualConflicts.length) {
+    lines.push(`### Manual vs auto-match conflicts (your value kept — double-check)`);
+    for (const c of manualConflicts)
+      lines.push(`- "${c.name}": manual **${c.manual}** vs auto ${c.auto}`);
+  }
+}
 lines.push(``);
 lines.push(`Deliveroo items: ${dItems.length} · Linnworks SKUs: ${lItems.length}`);
 const byMethod = {};
@@ -283,7 +422,14 @@ if (mismatches.length) {
     lines.push(`- "${m.d[dIdx.item_name]}" → [${m.li.sku}] (eBay label was \`${m.d._ebayLabel}\`)`);
   lines.push(``);
 }
-const lowConf = matches.filter((m) => m.score < 0.78).sort((a, b) => a.score - b.score);
+const secondPassMatches = matches.filter((m) => m.method === "model" || m.method === "idf");
+if (secondPassMatches.length) {
+  lines.push(`## Second-pass matches (model-number / rarity-weighted) — quick audit`);
+  for (const m of secondPassMatches.sort((a, b) => a.score - b.score))
+    lines.push(`- [${m.method} ${m.score.toFixed(2)}] "${m.d[dIdx.item_name]}" → [${m.li.sku}] "${m.li.title}"`);
+  lines.push(``);
+}
+const lowConf = matches.filter((m) => m.score < 0.78 && m.method !== "model" && m.method !== "idf").sort((a, b) => a.score - b.score);
 if (lowConf.length) {
   lines.push(`## Low-confidence auto-matches (score < 0.78) — double-check these`);
   for (const m of lowConf)

@@ -1,8 +1,10 @@
 # Deliveroo ↔ Linnworks mapping report
 
+Manual PLU entries preserved from your reviewed CSV: **168**
+
 Deliveroo items: 241 · Linnworks SKUs: 1226
-Matched: **160** (ebay-exact 92, fuzzy 35, title+label-mismatch 15, ebay-fuzzy 10, exact 8)
-Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
+Matched: **169** (ebay-exact 92, fuzzy 35, title+label-mismatch 15, ebay-fuzzy 10, exact 8, idf 2, model 7)
+Needs review: **44** · Unmatched: **20** · Duplicate-SKU groups: **16**
 
 ## eBay label ≠ Linnworks SKU (matched by title; check channel mapping / archived SKUs)
 - "15Mm Lever Ball Valve Dual Handle Full Bore Wras Approved Blue and Red Isolation" → [2200038] (eBay label was `FBA_6R-E86B-4CYQ`)
@@ -20,6 +22,17 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
 - "Outdoor Garden Diy Tap Kit Self Cutting Bibtap Easy Fitment" → [1100009] (eBay label was `FBA_ZM-KGDP-PCTA`)
 - "Washing Machine Inlet Hose Washers (Pack of 10)" → [1000020] (eBay label was `NO-WASHERS`)
 - "Weld-on Solvent Cement for Abs & Pvc Plastic Plumbing Pipe Adhesive Glue 250Ml" → [900034] (eBay label was `ED-CXZJ-5AVJ`)
+
+## Second-pass matches (model-number / rarity-weighted) — quick audit
+- [model 0.95] "Siemens Rde100.jrf 7 Day Wireless Programmable Thermostat and Receiver" → [600196] "Siemens RDE100.1RF 7 Day Wireless Programmable Thermostat and Receiver"
+- [model 0.95] "Heatmiser Slimline V4 Wired 230V Programmable Thermostat - Not Battery" → [600098] "Heatmiser Slimline V4 Thermostat - Wired Digital Programmable Thermostat - White"
+- [model 0.95] "Black Swan Stay Soft Plumbers Putty Put2 White" → [900008] "SINGLE - Black Swan PUT2 Plumbers Putty 28oz"
+- [model 0.95] "Banico Zvmc22 22Mm 3 Port Motorised Valve Replacement for Honeywell 3 Port Valve" → [2200001] "Banico ZVMC22 3 Port 22mm Mid Position Valve With Connector"
+- [model 0.95] "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206 No" → [600172] "TTHWP - TotalHome Wired Programmable Thermostat Honeywell CM707 Replacement"
+- [model 0.95] "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206" → [600172] "TTHWP - TotalHome Wired Programmable Thermostat Honeywell CM707 Replacement"
+- [model 0.95] "Black Swan Pvc3 Heavy Body Pvc Solvent Cement Clear 236Ml Plumbing Pipe Glue" → [900009] "SINGLE - Black Swan PVC Heavy Cement Bodied 1/2 Pint - 236ml - PVC3"
+- [idf 1.00] "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor" → [TowelRailElements] "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor"
+- [idf 1.00] "Lavatherm Pipe Insulation Lagging Wool Felt Wrap" → [800005] "SINGLE - Lavatherm Pipe Insulation Lagging Wool Felt Wrap"
 
 ## Low-confidence auto-matches (score < 0.78) — double-check these
 - (0.60) "Mark Vitow Torca Torrent Shower Valve On/off Cartridge, Brass" → [1600029] "SINGLE - MV Torrent Showert Valve ON/OFF Cartridge 3/4" - TORCA **BRASS**"
@@ -74,29 +87,26 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
 - **600096**:
   - 50bc13f7-66e7-4862-9c4a-b4e22d867fbf — Heatmiser Slimline Rf V3 Wireless Programmable Thermostat (No Receiver)
   - 581b163b-4732-4d69-b357-6fbab66fd8a5 — Heatmiser Slimline Rf V3 Wireless Programmable Thermostat (No Receiver) - No
+- **600098**:
+  - 31939379-ae18-4900-9c6e-886e2e556ded — Heatmiser Slimline V4 Wired Programmable Thermostat - White
+  - 5c6b10ad-99ee-4b72-9efa-33f0f72f2af1 — Heatmiser Slimline V4 Wired 230V Programmable Thermostat - Not Battery
 - **600114**:
   - 3035452e-7b3d-4860-b54d-c7b0baf74dcb — Heatmiser Ta230 230V Underfloor Heating Thermal Actuator
   - e07d83e5-83f8-48d9-b9fe-a71e7de1607c — Heatmiser Ta230 230V Underfloor Heating Thermal Actuator
 - **200037**:
   - 986fb67d-dd88-4446-899a-77c197ba4b6d — Lavaplumb 480Mm Manhole Cover Lifting Key - Zinc Plated Steel Triangle Handle
   - 301239a0-c0be-417f-a4f2-2a2d215a631b — Lavatap Radiator Valve Change Kit - Tool for Radiator - 15Mm & 22Mm Pipes
+- **800005**:
+  - eeda1962-a3f4-450b-956e-95ed16b188fe — Lavatherm Pipe Insulation Lagging Wool Felt Wrap XL
+  - 49855e26-9e16-44aa-bb04-b5c3e20252a6 — Lavatherm Pipe Insulation Lagging Wool Felt Wrap
 - **NO - 900214**:
   - dce37b78-ec51-4e93-a6ef-ab31e2afea14 — Ufh Pipe Clips 300 Pack - 60Mm Staples for 12-20Mm Heating Pipe
   - eb518250-d16a-4eb1-8e00-20c45f03cc1f — Ufh Pipe Clips 300 Pack - 60Mm Staples for 12-20Mm Heating Pipe (No)
+- **600172**:
+  - 03c60f8e-c696-4d24-87a3-a201a00d86e1 — Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206 No
+  - 3efaf591-2131-4a21-89be-b67b7540af63 — Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206
 
 ## Needs review (pick the right SKU, then edit plu in the re-import CSV manually)
-- DELIVEROO: "1/2" Salvus Caterhose Commercial Yellow Gas Catering Pipe Hose 1.5M Long 1500Mm" (4ddfdf66-2801-493f-aad1-44ab3e8fdb21)
-    - candidate: [500007] "SINGLE - SALVUS 1/2" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.87)
-    - candidate: [500008] "NO - SALVUS 1/2" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.87)
-    - candidate: [500009] "SINGLE - SALVUS 1/2" 1m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.78)
-- DELIVEROO: "1L Litre Folding Plumbers Bucket" (25f74c44-e15d-49b8-bd7f-b1a268447943)
-    - candidate: [2000065] "SINGLE - TT PitBull 11 Litre Blue Folding Plumbers Bucket **PBFB**" (score 0.62)
-    - candidate: [900218] "SINGLE - Sentinel X100 Inhibitor 1 Litre" (score 0.20)
-    - candidate: [900008] "SINGLE - Black Swan PUT2 Plumbers Putty 28oz" (score 0.18)
-- DELIVEROO: "2 Port Motorised Zone Valve Head Fits Honeywell V4043h 22Mm and 28Mm" (8e3b11ad-147e-45cd-ae05-3a54bf4db33e)
-    - candidate: [2200003] "Banico H-ZV 2 Port 22mm or 28mm Motorised Zone Valve Head Can Replace Honeywell" (score 0.67)
-    - candidate: [2200004] "NO - Banico H-ZV 2 Port 22mm or 28mm Motorised Zone Valve Head Can Replace Honeywell" (score 0.67)
-    - candidate: [2200059] "Vitow VT1 Motorised 2 Port Valve 22mm (Head and Body)" (score 0.64)
 - DELIVEROO: "3/4" Salus Caterhose Commercial Yellow Gas Catering Pipe Hose 1.5M Long 1500Mm" (9d8281af-f251-4e19-aa58-fb39234ec86a)
     - candidate: [500011] "SINGLE - SALVUS 3/4" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.80)
     - candidate: [500012] "NO - SALVUS 3/4" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE" (score 0.80)
@@ -121,14 +131,6 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [2200086] "LavaTherm Motorised 2 Port Valve 22mm" (score 0.67)
     - candidate: [2200060] "NO - Vitow VT1 Motorised 2 Port Valve 22mm" (score 0.63)
     - candidate: [2200085] "TTH222MZV - TotalHome 2 Port 22mm Motorised Valve" (score 0.63)
-- DELIVEROO: "Banico Zvmc22 22Mm 3 Port Motorised Valve Replacement for Honeywell 3 Port Valve" (83400910-ddec-4edc-9be8-5ae3e146b7e5)
-    - candidate: [2200088] "LavaTherm Motorised 3 Port Valve 22mm" (score 0.63)
-    - candidate: [2200001] "Banico ZVMC22 3 Port 22mm Mid Position Valve With Connector" (score 0.60)
-    - candidate: [2200002] "NO - Banico ZVMC22 3 Port 22mm Mid Position Valve With Connector" (score 0.60)
-- DELIVEROO: "Black Swan Stay Soft Plumbers Putty Put2 White" (e637ff5e-1f13-44bd-9232-e7da2304ac1e)
-    - candidate: [900007] "SINGLE - Black Swan Stay Soft Plumbers Putty 14oz PUT1" (score 0.75)
-    - candidate: [900008] "SINGLE - Black Swan PUT2 Plumbers Putty 28oz" (score 0.71)
-    - candidate: [900030] "Black Swan Silicone Grease 1oz - SG2" (score 0.29)
 - DELIVEROO: "Bm22 Boilermag Domestic 22Mm Magnetic Filter 2 Free Bm3 Central Heating Cleaner" (2a8da57e-2405-4f8c-a7a3-9f954c1f3bdc)
     - candidate: [400001] "BoilerMag BM22 Magnetic Heating Filter 22mm" (score 0.67)
     - candidate: [400002] "NO - BoilerMag BM22 Magnetic Heating Filter 22mm" (score 0.67)
@@ -185,14 +187,6 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [2000051] "Drain Snake Pipe Cleaner 6mm x 3m SPC" (score 0.74)
     - candidate: [2000052] "NO - TT Drain Snake Pipe Cleaner 6mm x 3m SPC" (score 0.70)
     - candidate: [1100034] "MDPE  25MM X 3/4" ADAPTER FI" (score 0.22)
-- DELIVEROO: "Drayton 0707260 Trv4 White Thermostatic Radiator Lockshield Valve 15Mm No" (59036ebe-b629-418d-ba94-d32fffe20d1a)
-    - candidate: [2100022] "Drayton 0707260 TRV4 White Thermostatic Radiator Matching lockshield Valve 15mm" (score 0.90)
-    - candidate: [2100023] "NO - Drayton 0707260 TRV4 White Thermostatic Radiator with lockshield Valve 15mm" (score 0.90)
-    - candidate: [2100027] "Drayton 0705180 TRV4 15mm Angled With Lockshield White and Chrome Radiator Valve" (score 0.64)
-- DELIVEROO: "Drayton 08 09 099 Rt212 Trv Thermostatic Radiator Valve Sensing Head" (b8cb14e6-801c-401a-aa78-dedf48b4f8bb)
-    - candidate: [2100029] "Drayton 08 09 260 RT212 Thermostatic Radiator Valve TRV and Lockshield 15mm Angled" (score 0.67)
-    - candidate: [2100081] "Drayton 0809099 RT212 TRV Sensing Head" (score 0.59)
-    - candidate: [2100081 - NO] "NO - Drayton 0809099 RT212 TRV Sensing Head" (score 0.59)
 - DELIVEROO: "Engo E20i Smart Thermostat Wireless Programmable Wifi App Alexa" (6705a00c-8521-4282-9381-c57b6ccef22c)
     - candidate: [E20i] "ENGO Wireless Programmable Smart Thermostat - E20i" (score 1.00)
     - candidate: [600262] "ENGO **E20i-B** Wireless Programmable Smart Thermostat - Black" (score 1.00)
@@ -243,10 +237,6 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [600080V2] "Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - Black" (score 0.74)
     - candidate: [600081] "NO - Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - Black" (score 0.74)
     - candidate: [600082V2] "Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - White" (score 0.74)
-- DELIVEROO: "Heatmiser Slimline V4 Wired 230V Programmable Thermostat - Not Battery" (5c6b10ad-99ee-4b72-9efa-33f0f72f2af1)
-    - candidate: [600098] "Heatmiser Slimline V4 Thermostat - Wired Digital Programmable Thermostat - White" (score 0.71)
-    - candidate: [600099] "NO - Heatmiser Slimline V4 Thermostat - Wired Digital Programmable Thermostat - White" (score 0.71)
-    - candidate: [600096] "Heatmiser Slimline RF V3 Wireless Programmable Thermostat" (score 0.50)
 - DELIVEROO: "Heatmiser Uh8-rf V2 8 Zone Wiring Centre Rf Wireless Use with Slimline-rf Neoair" (e36ba44f-c5a6-4b3b-b65a-a6837588987a)
     - candidate: [600112] "Heatmiser UH8-RF 8 Zone Wiring Centre" (score 0.70)
     - candidate: [600113] "NO - Heatmiser UH8-RF 8 Zone Wiring Centre" (score 0.70)
@@ -273,11 +263,6 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [1200146] "SINGLE - LavaPlumb 22mm Pushfit Inserts White - 50 Pack" (score 1.00)
     - candidate: [1200143] "SINGLE - LavaPlumb 22mm Pushfit Elbow White - 5 Pack" (score 1.00)
     - candidate: [1200141] "SINGLE - LavaPlumb 15mm Pushfit Elbow White - 10 Pack" (score 1.00)
-- DELIVEROO: "Lavatherm Pipe Insulation Lagging Wool Felt Wrap" (49855e26-9e16-44aa-bb04-b5c3e20252a6)
-    - candidate: [M_L_ParentLTPW3] "(label not in Linnworks export)" (score 1.00)
-    - candidate: [900246] "2 PACK - Lavatherm Pipe Insulation Lagging Wool Felt Wrap" (score 1.00)
-    - candidate: [800003] "3 PACK - Lavatherm Pipe Insulation Lagging Wool Felt Wrap" (score 1.00)
-    - candidate: [800005] "SINGLE - Lavatherm Pipe Insulation Lagging Wool Felt Wrap" (score 1.00)
 - DELIVEROO: "Lead-free Solder Wire 500G 3.25mm Plumbing Solder" (743c68ac-f243-4120-94a5-87647a48463b)
     - candidate: [900145] "SINGLE - 500g Lead Free Solder Wire Reel" (score 0.71)
     - candidate: [900294] "SINGLE - Lead Free Solder Wire Reel 250g" (score 0.57)
@@ -318,27 +303,11 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
     - candidate: [500029] "KIT - Salvus Turbo Torch Blow Torch Kit + 1 x Salvus Mapp Gas" (score 0.67)
     - candidate: [50028] "KIT - Salvus Turbo Torch Blow Torch Kit + 2 x Salvus Mapp Gas" (score 0.67)
     - candidate: [500020] "SINGLE - Salvus Turbo Torch Blow Torch" (score 0.62)
-- DELIVEROO: "Siemens Rde100.jrf 7 Day Wireless Programmable Thermostat and Receiver" (5a5eab27-a4ab-458b-9118-db348ce39028)
-    - candidate: [600196] "Siemens RDE100.1RF 7 Day Wireless Programmable Thermostat and Receiver" (score 0.90)
-    - candidate: [600122] "Honeywell T3R Y3H710RF0053 Wireless Thermostat 7 Day Programmable & Receiver" (score 0.70)
-    - candidate: [600150] "Siemens RDJ100RF Programmable Wireless Thermostat" (score 0.53)
-- DELIVEROO: "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor" (0d871fca-482a-4a66-bf8f-ec30c0b07688)
-    - candidate: [TowelRailElements] "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor" (score 1.00)
-    - candidate: [1600060] "Thermostatic 300W Towel Rail Radiator Heating Element Dual Fuel Kit - Black - TE300B" (score 1.00)
-    - candidate: [1600062] "Thermostatic 600W Towel Rail Radiator Heating Element Dual Fuel Kit  - Anthracite - TE600A" (score 1.00)
-    - candidate: [1600064] "Thermostatic 300W Towel Rail Radiator Heating Element Dual Fuel Kit - Anthracite - TE300A" (score 1.00)
-    - candidate: [1600058] "Thermostatic 600W Towel Rail Radiator Heating Element Dual Fuel Kit - Black - TE600B" (score 1.00)
-    - candidate: [1600054] "Thermostatic 600W Towel Rail Radiator Heating Element Dual Fuel Kit - Chrome - TE600C" (score 1.00)
-    - candidate: [1600056] "Thermostatic 300W Towel Rail Radiator Heating Element Dual Fuel Kit - Chrome - TE300C" (score 1.00)
 
 ## Unmatched Deliveroo items (no Linnworks title close enough)
 - "1/2" Toilet Fill Valve Wras Approved Cistern Fill Valve Adjustable Inlet" (14708db5-4917-454a-9aef-05a92f2bcdee) — nearest: [1900187] "SINGLE - NV Side Entry Fill Valve 1/2" WRAS approved Brass Tail **PRFSFBW-D**" (0.57)
 - "Adjustable Pipe Cutters Suitable for Copper Brass Aluminium Tube 3Mm-30mm" (75152510-ede0-4f21-9688-75097f4a30bb) — nearest: [2000037] "SINGLE - TT Compact Tube Cutter for Copper, Aluminium and Brass 3-22mm **CM**" (0.45)
-- "Black Swan Pvc3 Heavy Body Pvc Solvent Cement Clear 236Ml Plumbing Pipe Glue" (8ebb5bfd-9213-4790-bdb2-1656fa855a3a) — nearest: [900009] "SINGLE - Black Swan PVC Heavy Cement Bodied 1/2 Pint - 236ml - PVC3" (0.58)
 - "Black Swan Pvci Pvc Solvent Cement Clear Small 118 Ml Plumbing Plastic Pipe Glue" (c67b2042-3388-410f-b4d7-6c50786c58de) — nearest: [900033] "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 125ml" (0.46)
-- "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate 500Ml" (e917345b-4797-413c-9740-14d64291bbd4) — nearest: [900230] "SINGLE - LavaTherm Super Concentrate Central Heating Inhibitor 500ml" (0.53)
-- "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate. Box of 8 X 500Ml" (c942694b-0a5c-4619-9c59-53e3b3810e1c) — nearest: [900230] "SINGLE - LavaTherm Super Concentrate Central Heating Inhibitor 500ml" (0.42)
-- "Calmag Water Filter Jug Purifier Dispenser 2 Litre Capacity Ideal for Fridge" (fd2b1438-8e05-4d07-94f8-4e138fbb7048) — nearest: [400009] "Calmag Soft Water Jug Replacement Cartridges for CAL-JUG (x4 cartridges)" (0.38)
 - "Filter Set for Lavatap Tremercati 3 in 1 Boiling Water Tap System Tmboil-03" (e2de9445-6a46-43a5-9d24-085527d2e1b5) — nearest: [KOGE_TAP_KITS] "PARENT - Koge 3 in 1 Boiling Water Tap Kits" (0.52)
 - "Flexible Toilet Pan Connector Wc Waste Soil Pipe 250-500Mm" (48bef621-dc13-4e9c-af9d-f5fb91e43fbf) — nearest: [1900006] "SINGLE - Flexible Toilet Pan Connector Universal WC Flexi 260 - 560mm" (0.53)
 - "Heatmiser 2 Wire Thermal Actuator Ta230" (423d763c-ee87-47c4-b314-9933e5af0068) — nearest: [600114] "Heatmiser UFH Underfloor Heating Thermal Actuator 230v TA230" (0.57)
@@ -351,8 +320,6 @@ Needs review: **55** · Unmatched: **26** · Duplicate-SKU groups: **13**
 - "Pit Bull Pvc Solvent Cement Pipe Glue for Plumbing" (0a43ad40-a3e4-48fd-b859-64fa861c4bf1) — nearest: [900033] "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 125ml" (0.57)
 - "Pro Honeywell Wireless Programmable Thermostat CM927 CM921 CM727 Replacement" (67440974-46a9-44db-9ede-006172cf1c70) — nearest: [600138] "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat" (0.50)
 - "Pro Honeywell Wireless Programmable Thermostat Cm927 Cm921 Cm727 Replacement No" (8e1b4f6c-02d7-48d2-8153-598362257533) — nearest: [600138] "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat" (0.47)
-- "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206" (3efaf591-2131-4a21-89be-b67b7540af63) — nearest: [600138] "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat" (0.50)
-- "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206 No" (03c60f8e-c696-4d24-87a3-a201a00d86e1) — nearest: [600138] "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat" (0.47)
 - "Secure Meters H3747 4 Channel Programmable Replaces Horstmann H37xl H47xl" (d20d3a7d-8893-407a-b622-2bb7cffda342) — nearest: [600133] "NO - Horstmann H47XL 4 Channel Programmer" (0.53)
 - "Secure Radbot 1 Intelligent Al Radiator Thermostatic Smart Valve" (d3bff6ac-442c-4e71-966a-53a988bad0a2) — nearest: [2100016] "LavaTherm TRV HEAD Curve Chrome Thermostatic Radiator Valve TRV Head M30 x 1.5" (0.38)
 - "Shower Fixing Plate Kit for Fast Secure Installation of Shower Bar Mixer Sho104s" (b7bdb214-202e-433f-9f29-74206d04ae6b) — nearest: [601-B09-5BC] "Chrome Bar Shower Mixer Kit with Riser Rail" (0.40)
