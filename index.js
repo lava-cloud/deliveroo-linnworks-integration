@@ -30,6 +30,18 @@ const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebho
 const syncedOrders = new Set();
 let lastSync = null;
 const recentEvents = []; // every order webhook call (not deduped), for debugging
+const STARTED_AT = new Date().toISOString();
+
+// Contract clause 2.4: Deliveroo order data must be deleted within 48 hours.
+const ORDER_RETENTION_HOURS = 48;
+
+// Render's free plan spins the service down after 15 idle minutes, and the
+// ~25s cold start outlasts Deliveroo's webhook timeout, so we ping our own
+// public URL to stay awake. KEEP_ALIVE=false turns it off (e.g. on a paid plan).
+const keepAliveUrl =
+  process.env.KEEP_ALIVE === "false"
+    ? null
+    : process.env.KEEP_ALIVE_URL || process.env.RENDER_EXTERNAL_URL || null;
 
 // PLUs (pos_item_ids) we can fulfil. Sandbox menu by default; in production
 // this becomes your Linnworks SKUs. Override with DELIV_VALID_PLUS (comma list).
@@ -293,7 +305,14 @@ app.get("/debug/status", async (req, res) => {
     return res.status(401).json({ error: "Bad sync secret" });
   }
   try {
-    res.json({ ok: true, ...(await db.counts()), ready: config.flags });
+    res.json({
+      ok: true,
+      ...(await db.counts()),
+      startedAt: STARTED_AT,
+      uptimeMinutes: Math.round(process.uptime() / 60),
+      keepAlive: keepAliveUrl || "off",
+      ready: config.flags,
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -463,14 +482,21 @@ app.post("/debug/cat/raw", async (req, res) => {
   }
 });
 
-// Show the most recent Deliveroo orders we've received (raw payloads).
+// Show the most recent Deliveroo orders we've received (raw payloads), with
+// their latest status and whether they've been released to Linnworks.
 app.get("/debug/orders", async (req, res) => {
   if (!requireSecret(req, res)) return;
   try {
-    const { rows } = await db.getOrdersSince(null, 1, 20);
+    const rows = await db.recentOrders(20);
     res.json({
       count: rows.length,
-      orders: rows.map((r) => ({ order_id: r.order_id, received_at: r.received_at, raw: r.raw })),
+      orders: rows.map((r) => ({
+        order_id: r.order_id,
+        received_at: r.received_at,
+        status: r.status,
+        accepted_at: r.accepted_at,
+        raw: r.raw,
+      })),
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -554,7 +580,7 @@ app.post("/deliveroo/order-webhook", async (req, res) => {
   if (recentEvents.length > 30) recentEvents.pop();
 
   try {
-    await db.saveOrder(orderId, raw);
+    await db.saveOrder(orderId, raw, status);
     console.log(`[webhook] ${event || "(no event)"} ${orderId} status=${status}`);
 
     // On the "accepted" event, send a sync status: succeeded if we can fulfil
@@ -764,6 +790,23 @@ async function start() {
     console.log(`Server running on port ${config.port} (env=${config.deliverooEnv})`);
     console.log("Ready flags:", JSON.stringify(config.flags));
   });
+
+  if (keepAliveUrl) {
+    setInterval(() => {
+      fetch(`${keepAliveUrl}/`, { signal: AbortSignal.timeout(30000) }).catch((e) =>
+        console.error("[keep-alive] ping failed:", e.message)
+      );
+    }, 10 * 60 * 1000);
+    console.log(`[keep-alive] pinging ${keepAliveUrl}/ every 10 minutes`);
+  }
+
+  const purge = () =>
+    db
+      .purgeOrdersOlderThan(ORDER_RETENTION_HOURS)
+      .then((n) => n && console.log(`[purge] deleted ${n} order(s) older than ${ORDER_RETENTION_HOURS}h`))
+      .catch((e) => console.error("[purge] failed:", e.message));
+  purge();
+  setInterval(purge, 60 * 60 * 1000);
 }
 
 start().catch((err) => {

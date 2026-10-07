@@ -17,9 +17,16 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
 
 - [ ] 💰⚠️ **Upgrade Render web service to Starter (always-on, ~$7/mo).**
   Evidence this is mandatory: Deliveroo's sandbox log showed
-  `CatalogueWebhook … Client.Timeout exceeded` against our sleeping free-tier service —
-  in production, **order webhooks would be lost the same way**. Contract also requires
+  `CatalogueWebhook … Client.Timeout exceeded` against our sleeping free-tier service,
+  and in Oct 2026 Ashley's production test order hit the same timeout on
+  `/deliveroo/order-webhook` (cold start measured at ~22s). Contract also requires
   99.8% uptime (Appendix 1).
+  *Stopgap in place:* the app pings its own public URL every 10 min
+  (`RENDER_EXTERNAL_URL`, or `KEEP_ALIVE_URL`) so the free instance never idles. That
+  stops the cold-start timeouts but not Render's free-tier restarts, which wipe the
+  in-memory order store, and the free plan's 750 h/month only covers one always-on
+  service. Set `KEEP_ALIVE=false` after upgrading. `/debug/status` shows
+  `startedAt` / `uptimeMinutes` / `keepAlive` to confirm it's working.
 - [ ] 💰⚠️ **Persistent database** — either upgrade Render Postgres (~$7/mo) or create a
   free [Neon](https://neon.tech) Postgres (doesn't expire like Render's free tier).
   Then re-add `DATABASE_URL` in Render → Environment (External URL if Render DB).
@@ -56,9 +63,12 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
 
 ## 4. Code hardening (build before switching real orders on)
 
-- [ ] ⚠️ **48-hour data purge** — contract Clause 2.4 requires Deliveroo order data
-  deleted within 48 h of receipt. Add a purge job (delete `deliveroo_orders` rows older
-  than 48 h once pulled by Linnworks).
+- [x] ⚠️ **48-hour data purge** — contract Clause 2.4 requires Deliveroo order data
+  deleted within 48 h of receipt. Done: an hourly job deletes orders received more than
+  48 h ago (Linnworks collects them within ~15 min).
+- [x] **Only accepted orders go to Linnworks** — orders are stored from `order.new` but
+  released to `/linnworks/orders` only once accepted, filtered on `accepted_at`; any
+  order later rejected/cancelled before collection is withheld.
 - [ ] **Webhook signature verification** using `DELIV_WEBHOOK_SECRET` (reject spoofed
   webhook calls).
 - [ ] **Rotate `SYNC_SECRET`** (current value was used throughout testing) and consider
