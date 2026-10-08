@@ -62,18 +62,22 @@ menu first.
 - [x] Catalogue API certified (Scenario 3 passed 8 Oct 2026).
 - [x] Read access and a no-op write verified on the live shop; full toggles verified on
   TIM-Test-22 (unavailable and hidden).
-- [ ] Finish the SKU mapping review → regenerate `sku-map.json` (Linnworks SKU →
-  Deliveroo item id) and deploy.
-- [ ] Check coverage (read-only):
-  `GET /debug/menu/check?brandId=lava-wholesale-gb&siteId=755952`.
-- [ ] In Render set `DELIV_BRAND_ID=lava-wholesale-gb` and `DELIV_SITE_ID=755952`. Stock
-  stays **staged** (logs what it would change) until the next step.
-- [ ] Choose the out-of-stock behaviour: `hidden` (default; survives Deliveroo's morning
-  stock reset and our restarts) or `DELIV_OUT_OF_STOCK_STATUS=unavailable` (greyed out as
-  sold out; Deliveroo clears it each morning and the app re-applies it hourly while it
-  is running).
-- [ ] Switch on: `DELIV_STOCK_SYNC=live`. Pilot one product to 0 in Linnworks → it
-  disappears on Deliveroo; restore → it returns.
+- [x] **Switched on 8 Oct 2026.** Production now defaults to brand `lava-wholesale-gb`,
+  site `755952` and stock sync live, so no Render env vars are needed.
+  `DELIV_STOCK_SYNC=off` stops it.
+- [x] Out of stock = `hidden` (user's choice). It survives Deliveroo's morning stock
+  reset and our restarts.
+- [x] Interim `sku-map.json`: only the MATCHED + MANUAL rows of the review (125 SKUs, 133
+  Deliveroo items; a SKU can list duplicate listings). Nothing else on the menu is ever
+  touched, and a Linnworks `Reference` is only trusted if it is a mapped item id.
+- [ ] Finish the SKU mapping review in the Google Sheet "Deliveroo SKU mapping review"
+  → regenerate `sku-map.json` from the approved/amended rows → deploy.
+- [ ] Check coverage (read-only): `GET /debug/menu/check`.
+- [ ] Emergency undo if anything is hidden wrongly: `POST /debug/menu/restore-all`
+  (makes every hidden/unavailable item orderable).
+- [ ] Confirm Linnworks is pushing stock: `/debug/status` → `linnworksCalls`
+  (per-endpoint counts with a 6-character token fingerprint). Once Linnworks' token is
+  known, reject other tokens on the `/linnworks/*` endpoints.
 
 ## 4. Code hardening (build before switching real orders on)
 

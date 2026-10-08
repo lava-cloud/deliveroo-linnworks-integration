@@ -52,7 +52,7 @@ Deliveroo sends new orders to `/deliveroo/order-webhook`, which we store in Post
 | **Catalogue API certification** | ✅ **7/7 scenarios passed** (Scenario 3 on 8 Oct 2026), portal shows Production: Live |
 | **Orders API certification** | ✅ **all 12 sandbox scenarios passed** (receive order → POS sync status; PLU validation for missing/mismatched) |
 | Orders production | ✅ **Live** — production order events delivered within seconds (test order #2387, 8 Oct 2026) |
-| Live-shop stock sync | ✅ code ready via **Menu API v2** (site 755952 read + write verified); switched on with `DELIV_STOCK_SYNC=live` after the SKU mapping review |
+| Live-shop stock sync | ✅ **live** since 8 Oct 2026 via **Menu API v2**, out of stock = hidden, limited to the 133 high-confidence mapped items until the SKU review is finished |
 | Order → Linnworks mapping | ✅ real Deliveroo format mapped (nested body.order, pos_item_id→SKU, pence→pounds, modifiers as lines) |
 | Order auto-accept | 🔜 future (tablet used for now) |
 
@@ -89,9 +89,11 @@ Linnworks channel: `/linnworks/add-new-user`, `/user-config`, `/save-config`,
 See `.env.example`. Key ones:
 
 - `DELIV_ENV` (`sandbox`/`production`), `DELIV_CLIENT_ID`, `DELIV_CLIENT_SECRET`
-- `DELIV_BRAND_ID` (`lava-wholesale-gb`), `DELIV_SITE_ID` (`755952`)
-- `DELIV_STOCK_SYNC=live` switches live stock changes on; `DELIV_OUT_OF_STOCK_STATUS`
-  = `hidden` (default) or `unavailable`
+- `DELIV_BRAND_ID` / `DELIV_SITE_ID` — default to `lava-wholesale-gb` / `755952` in
+  production
+- `DELIV_STOCK_SYNC` — live by default in production; `off` stops live stock changes
+- `DELIV_OUT_OF_STOCK_STATUS` = `hidden` (default) or `unavailable`
+- `SKU_MAP_PATH` — alternative SKU map file (tests)
 - `KEEP_ALIVE=false` once on an always-on plan
 - `DATABASE_URL` (Render Postgres)
 - `SYNC_SECRET` (protects `/debug/*`)

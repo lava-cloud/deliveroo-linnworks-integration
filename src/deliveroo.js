@@ -148,6 +148,19 @@ async function reapplyUnavailable() {
   return missing.length;
 }
 
+// Emergency undo: make every hidden or unavailable item on the live menu
+// orderable again, whoever set it.
+async function restoreAll() {
+  const { status, body } = await getSiteUnavailabilities();
+  if (status !== 200) throw new Error(`Unavailabilities fetch failed (${status})`);
+  const ids = [...(body.unavailable_ids || []), ...(body.hidden_ids || [])];
+  if (ids.length) {
+    await postUnavailabilities(ids.map((id) => ({ item_id: id, status: "available" })));
+  }
+  for (const id of ids) desiredStatus.delete(id);
+  return { restored: ids.length };
+}
+
 // Send POS "sync status" to confirm we ingested an order (Orders API).
 // POST /order/v1/orders/{id}/sync_status  { occurred_at, status, reason, notes }
 async function sendOrderSyncStatus(orderId, status = "succeeded", reason = "", notes = "") {
@@ -230,6 +243,7 @@ module.exports = {
   getAccessToken,
   updateAvailability,
   reapplyUnavailable,
+  restoreAll,
   getSiteMenu,
   getSiteUnavailabilities,
   sendOrderSyncStatus,

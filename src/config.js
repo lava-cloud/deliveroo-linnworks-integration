@@ -6,6 +6,8 @@
 // defaults, and tells the rest of the app which features are "ready".
 // ---------------------------------------------------------------------------
 
+const isProduction = (process.env.DELIV_ENV || "sandbox") === "production";
+
 const config = {
   // Which Deliveroo environment to talk to: "sandbox" (default) or "production".
   deliverooEnv: process.env.DELIV_ENV || "sandbox",
@@ -15,13 +17,10 @@ const config = {
     clientId: process.env.DELIV_CLIENT_ID || "",
     clientSecret: process.env.DELIV_CLIENT_SECRET || "",
 
-    // These three come from Deliveroo's POS/Integrator onboarding (TIM).
-    // Until they exist, stock-sync is "staged" — it logs what it WOULD do
-    // instead of making a real call. The moment you paste them into Render,
-    // real stock updates start working with no code change.
-    brandId: process.env.DELIV_BRAND_ID || "",
+    // Lava Wholesale's production brand and live site; env vars override.
+    brandId: process.env.DELIV_BRAND_ID || (isProduction ? "lava-wholesale-gb" : ""),
     catalogueId: process.env.DELIV_CATALOGUE_ID || "",
-    siteId: process.env.DELIV_SITE_ID || "",
+    siteId: process.env.DELIV_SITE_ID || (isProduction ? "755952" : ""),
 
     // Optional extras you already have (not required for stock sync).
     adminId: process.env.DELIV_ADMIN_ID || "",
@@ -51,11 +50,10 @@ const config = {
 };
 
 // Derived Deliveroo host names based on the chosen environment.
-const isProd = config.deliverooEnv === "production";
-config.deliveroo.authUrl = isProd
+config.deliveroo.authUrl = isProduction
   ? "https://auth.developers.deliveroo.com/oauth2/token"
   : "https://auth-sandbox.developers.deliveroo.com/oauth2/token";
-config.deliveroo.apiBase = isProd
+config.deliveroo.apiBase = isProduction
   ? "https://api.developers.deliveroo.com"
   : "https://api-sandbox.developers.deliveroo.com";
 
@@ -78,10 +76,10 @@ config.flags = {
   databaseReady: Boolean(config.databaseUrl),
 };
 
-// Stock changes touch the live shop, so they need an explicit switch on top
-// of the IDs: DELIV_STOCK_SYNC=live. Until then updates are logged only.
-config.flags.stockSyncLive =
-  config.flags.deliverooStockReady && process.env.DELIV_STOCK_SYNC === "live";
+// Stock changes touch the live shop. Production defaults to live; set
+// DELIV_STOCK_SYNC=off to stop them (updates are then logged only).
+const stockSync = process.env.DELIV_STOCK_SYNC || (isProduction ? "live" : "off");
+config.flags.stockSyncLive = config.flags.deliverooStockReady && stockSync === "live";
 
 // "hidden" survives Deliveroo's morning stock reset; "unavailable" (greyed
 // out as sold out) is cleared by it and has to be re-applied.

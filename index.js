@@ -22,7 +22,16 @@ const config = require("./src/config");
 const db = require("./src/db");
 const deliveroo = require("./src/deliveroo");
 const catalogue = require("./src/catalogue");
-const skuMap = require("./sku-map.json"); // { "Linnworks-or-Channel-SKU": "DeliverooItemID" }
+// { "<Linnworks SKU>": "<Deliveroo item id>" | ["<item id>", ...] } — a SKU can
+// cover duplicate Deliveroo listings. Only item ids listed here are ever
+// changed on Deliveroo.
+const skuMap = Object.fromEntries(
+  Object.entries(require(process.env.SKU_MAP_PATH || "./sku-map.json")).map(([sku, ids]) => [
+    sku,
+    [].concat(ids),
+  ])
+);
+const mappedItemIds = new Set(Object.values(skuMap).flat());
 
 // In-memory state for the sandbox catalogue scenarios.
 const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebhook: null };
@@ -30,6 +39,7 @@ const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebho
 const syncedOrders = new Set();
 let lastSync = null;
 const recentEvents = []; // every order webhook call (not deduped), for debugging
+const lwCalls = {}; // per Linnworks endpoint: { count, lastAt, tokens: { first 6 chars: n } }
 const STARTED_AT = new Date().toISOString();
 
 // Contract clause 2.4: Deliveroo order data must be deleted within 48 hours.
@@ -289,8 +299,8 @@ app.get("/", (req, res) => {
       deliverooStock: config.flags.stockSyncLive
         ? `Live (out of stock = ${config.outOfStockStatus})`
         : config.flags.deliverooStockReady
-          ? "Staged — set DELIV_STOCK_SYNC=live to switch on"
-          : "Staged — set DELIV_BRAND_ID and DELIV_SITE_ID",
+          ? "Staged — DELIV_STOCK_SYNC is off"
+          : "Staged — no brand/site configured",
       database: config.flags.databaseReady
         ? "Postgres (orders & config persist)"
         : "In-memory (lost on restart — add a database)",
@@ -314,6 +324,9 @@ app.get("/debug/status", async (req, res) => {
       uptimeMinutes: Math.round(process.uptime() / 60),
       keepAlive: keepAliveUrl || "off",
       ready: config.flags,
+      mappedSkus: Object.keys(skuMap).length,
+      mappedItems: mappedItemIds.size,
+      linnworksCalls: lwCalls,
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -563,20 +576,32 @@ app.get("/debug/menu/check", async (req, res) => {
     if (menu.status !== 200) return res.json({ menuStatus: menu.status, body: menu.body });
     const items = (menu.body.menu && menu.body.menu.items) || [];
     const ids = new Set(items.map((i) => i.id));
-    const mapped = Object.entries(skuMap);
-    const missing = mapped.filter(([, id]) => !ids.has(id));
+    const missing = Object.entries(skuMap).flatMap(([sku, list]) =>
+      list.filter((id) => !ids.has(id)).map((id) => ({ sku, id }))
+    );
     const unav = await deliveroo.getSiteUnavailabilities(brandId, siteId);
     res.json({
       menuName: menu.body.name,
       menuItems: items.length,
       sellableItems: items.filter((i) => i.type === "ITEM").length,
-      skuMapEntries: mapped.length,
-      skuMapOnMenu: mapped.length - missing.length,
-      skuMapNotOnMenu: missing.slice(0, 20).map(([sku, id]) => ({ sku, id })),
+      skuMapSkus: Object.keys(skuMap).length,
+      skuMapItems: mappedItemIds.size,
+      skuMapItemsOnMenu: mappedItemIds.size - missing.length,
+      skuMapNotOnMenu: missing.slice(0, 20),
       itemsWithPlu: items.filter((i) => i.plu).length,
       unavailabilities: unav.body,
       stockSync: { live: config.flags.stockSyncLive, outOfStockStatus: config.outOfStockStatus },
     });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Emergency undo: make every hidden/unavailable item on the live menu orderable.
+app.post("/debug/menu/restore-all", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    res.json(await deliveroo.restoreAll());
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -635,6 +660,16 @@ app.post("/deliveroo/order-webhook", async (req, res) => {
 // ===========================================================================
 // LINNWORKS CHANNEL INTEGRATION ENDPOINTS
 // ===========================================================================
+
+app.use("/linnworks", (req, res, next) => {
+  const s = (lwCalls[req.path] = lwCalls[req.path] || { count: 0, lastAt: null, tokens: {} });
+  const token = getAuthToken(req.body);
+  const fp = token ? String(token).slice(0, 6) : "(none)";
+  s.count++;
+  s.lastAt = new Date().toISOString();
+  s.tokens[fp] = (s.tokens[fp] || 0) + 1;
+  next();
+});
 
 // ----- Setup wizard: AddNewUser (NO AuthorizationToken on this one) -----
 // We mint a token that uniquely identifies this connected account and store a
@@ -761,7 +796,7 @@ app.post("/linnworks/post-sale-options", (req, res) => {
 app.post("/linnworks/products", (req, res) => {
   const Products = Object.keys(skuMap).map((sku) => ({
     SKU: sku,
-    Reference: skuMap[sku],
+    Reference: skuMap[sku][0],
     Title: sku,
   }));
   res.json({ Error: null, Products });
@@ -785,27 +820,24 @@ app.post("/linnworks/inventory-update", async (req, res) => {
     return res.json({ Error: "Missing Products array", Products: [] });
   }
 
-  // Map each channel SKU to a Deliveroo item id.
-  // The Deliveroo item id can come from the mapping "Reference", from
-  // sku-map.json, or the SKU may already BE the Deliveroo item id.
+  // A SKU in sku-map.json can cover several Deliveroo listings. A Reference is
+  // only trusted if it is one of the mapped item ids.
   const items = [];
   const perProduct = [];
+  let unmapped = 0;
   for (const p of products) {
     const sku = p.SKU;
     const qty = Number(p.Quantity ?? 0);
-    const itemId = p.Reference || skuMap[sku] || sku;
-    if (!itemId) {
-      perProduct.push({ SKU: sku, Error: "No Deliveroo item mapping" });
-      continue;
-    }
-    items.push({ itemId, sku, available: qty > 0, stockLevel: qty });
+    const ids = skuMap[sku] || (mappedItemIds.has(p.Reference) ? [p.Reference] : []);
+    if (!ids.length) unmapped++;
+    for (const itemId of ids) items.push({ itemId, sku, available: qty > 0, stockLevel: qty });
     perProduct.push({ SKU: sku, Error: null });
   }
 
   try {
     const result = await deliveroo.updateAvailability(items);
     console.log(
-      `[lw] InventoryUpdate: ${items.length} item(s), ` +
+      `[lw] InventoryUpdate: ${products.length} product(s), ${unmapped} unmapped, ` +
         (result.staged ? "STAGED" : `${result.sent} sent, ${result.skipped} not on menu`)
     );
     res.json({ Error: null, Products: perProduct });
