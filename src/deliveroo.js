@@ -62,6 +62,12 @@ const MENU_CACHE_MS = 15 * 60 * 1000;
 const MENU_FORCE_REFRESH_MS = 5 * 60 * 1000;
 let menuCache = { at: 0, ids: null };
 const desiredStatus = new Map(); // itemId -> last status we set
+// Items deleted from the shop in the catalogue review: kept hidden, never
+// made available again by stock sync or the emergency restore.
+let retired = new Set();
+const setRetired = (ids) => {
+  retired = new Set(ids);
+};
 
 const siteMenuPath = (brandId = config.deliveroo.brandId, siteId = config.deliveroo.siteId) =>
   `/menu/v2/brands/${brandId}/sites/${siteId}/menu`;
@@ -106,6 +112,7 @@ async function postUnavailabilities(entries) {
 // items = [{ itemId, available }] where itemId is the Deliveroo item id.
 // Returns { staged, sent, skipped }.
 async function updateAvailability(items) {
+  items = items.filter((it) => !retired.has(it.itemId));
   if (!items.length) {
     return { staged: false, sent: 0, skipped: 0 };
   }
@@ -149,16 +156,31 @@ async function reapplyUnavailable() {
 }
 
 // Emergency undo: make every hidden or unavailable item on the live menu
-// orderable again, whoever set it.
+// orderable again, whoever set it, except retired items.
 async function restoreAll() {
   const { status, body } = await getSiteUnavailabilities();
   if (status !== 200) throw new Error(`Unavailabilities fetch failed (${status})`);
-  const ids = [...(body.unavailable_ids || []), ...(body.hidden_ids || [])];
+  const all = [...(body.unavailable_ids || []), ...(body.hidden_ids || [])];
+  const ids = all.filter((id) => !retired.has(id));
   if (ids.length) {
     await postUnavailabilities(ids.map((id) => ({ item_id: id, status: "available" })));
   }
   for (const id of ids) desiredStatus.delete(id);
-  return { restored: ids.length };
+  return { restored: ids.length, keptRetired: all.length - ids.length };
+}
+
+// Hide every retired item that is on the live menu and not hidden yet.
+async function hideRetired() {
+  if (!config.flags.stockSyncLive || !retired.size) return { hidden: 0, alreadyHidden: 0, notOnMenu: 0 };
+  const { status, body } = await getSiteUnavailabilities();
+  if (status !== 200) throw new Error(`Unavailabilities fetch failed (${status})`);
+  const hidden = new Set(body.hidden_ids || []);
+  const known = await menuItemIds(true);
+  const onMenu = [...retired].filter((id) => known.has(id));
+  const todo = onMenu.filter((id) => !hidden.has(id));
+  if (todo.length) await postUnavailabilities(todo.map((id) => ({ item_id: id, status: "hidden" })));
+  for (const id of todo) desiredStatus.set(id, "hidden");
+  return { hidden: todo.length, alreadyHidden: onMenu.length - todo.length, notOnMenu: retired.size - onMenu.length };
 }
 
 // Send POS "sync status" to confirm we ingested an order (Orders API).
@@ -244,6 +266,8 @@ module.exports = {
   updateAvailability,
   reapplyUnavailable,
   restoreAll,
+  setRetired,
+  hideRetired,
   getSiteMenu,
   getSiteUnavailabilities,
   sendOrderSyncStatus,

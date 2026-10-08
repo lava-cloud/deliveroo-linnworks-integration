@@ -31,6 +31,20 @@ const skuMap = Object.fromEntries(
     [].concat(ids),
   ])
 );
+// Products deleted from the shop in the catalogue review:
+// [{ item_id, sku, title, retired_on }]. They stay hidden on Deliveroo and are
+// dropped from the SKU map, so stock sync never shows them again.
+let retiredItems = [];
+try {
+  retiredItems = require(process.env.RETIRED_ITEMS_PATH || "./retired-items.json");
+} catch (_) {}
+const retiredIds = new Set(retiredItems.map((r) => r.item_id));
+for (const [sku, ids] of Object.entries(skuMap)) {
+  const kept = ids.filter((id) => !retiredIds.has(id));
+  if (kept.length) skuMap[sku] = kept;
+  else delete skuMap[sku];
+}
+deliveroo.setRetired(retiredIds);
 const mappedItemIds = new Set(Object.values(skuMap).flat());
 // Deliveroo product title per SKU, shown as the channel title in Linnworks.
 let skuTitles = {};
@@ -334,6 +348,7 @@ app.get("/debug/status", async (req, res) => {
       ready: config.flags,
       mappedSkus: Object.keys(skuMap).length,
       mappedItems: mappedItemIds.size,
+      retiredItems: retiredIds.size,
       linnworksCalls: lwCalls,
     });
   } catch (err) {
@@ -605,7 +620,33 @@ app.get("/debug/menu/check", async (req, res) => {
   }
 });
 
-// Emergency undo: make every hidden/unavailable item on the live menu orderable.
+// Retired (deleted) items and whether each is hidden on the live menu now.
+app.get("/debug/menu/retired", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    const unav = await deliveroo.getSiteUnavailabilities();
+    const hidden = new Set((unav.body && unav.body.hidden_ids) || []);
+    res.json({
+      count: retiredItems.length,
+      items: retiredItems.map((r) => ({ ...r, hiddenNow: hidden.has(r.item_id) })),
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Hide retired items now (also runs at startup and hourly).
+app.post("/debug/menu/hide-retired", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  try {
+    res.json(await deliveroo.hideRetired());
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Emergency undo: make every hidden/unavailable item on the live menu
+// orderable, except retired (deleted) items.
 app.post("/debug/menu/restore-all", async (req, res) => {
   if (!requireSecret(req, res)) return;
   try {
@@ -888,11 +929,19 @@ async function start() {
   purge();
   setInterval(purge, 60 * 60 * 1000);
 
+  const hideRetired = () =>
+    deliveroo
+      .hideRetired()
+      .then((r) => r.hidden && console.log(`[stock] hid ${r.hidden} retired item(s)`))
+      .catch((e) => console.error("[stock] hiding retired items failed:", e.message));
+  hideRetired();
+
   setInterval(() => {
     deliveroo
       .reapplyUnavailable()
       .then((n) => n && console.log(`[stock] re-applied ${n} unavailable item(s) after reset`))
       .catch((e) => console.error("[stock] re-apply failed:", e.message));
+    hideRetired();
   }, 60 * 60 * 1000);
 }
 

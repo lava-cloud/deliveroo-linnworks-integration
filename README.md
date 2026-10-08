@@ -82,6 +82,11 @@ Linnworks channel: `/linnworks/add-new-user`, `/user-config`, `/save-config`,
 `/despatch`, `/cancel`, `/refund`, `/post-sale-options`, `/products`,
 `/inventory-update`, `/price-update`.
 
+Live menu (protected, header `x-sync-secret`): `GET /debug/menu/check` (SKU-map
+coverage), `GET /debug/menu/retired` (deleted items and whether each is hidden now),
+`POST /debug/menu/hide-retired` (hide them now; also runs at startup and hourly),
+`POST /debug/menu/restore-all` (emergency undo; never un-hides retired items).
+
 ---
 
 ## Environment variables (set in Render)
@@ -93,7 +98,7 @@ See `.env.example`. Key ones:
   production
 - `DELIV_STOCK_SYNC` — live by default in production; `off` stops live stock changes
 - `DELIV_OUT_OF_STOCK_STATUS` = `hidden` (default) or `unavailable`
-- `SKU_MAP_PATH` — alternative SKU map file (tests)
+- `SKU_MAP_PATH` / `RETIRED_ITEMS_PATH` — alternative SKU map / retired list (tests)
 - `KEEP_ALIVE=false` once on an always-on plan
 - `DATABASE_URL` (Render Postgres)
 - `SYNC_SECRET` (protects `/debug/*`)
@@ -109,8 +114,13 @@ See `.env.example`. Key ones:
 - `src/config.js` — reads env vars, computes "ready" flags + Deliveroo hosts.
 - `src/deliveroo.js` — cached OAuth token + (staged) availability update.
 - `src/db.js` — Postgres (orders + per-account config), in-memory fallback.
-- `sku-map.json` — optional fallback SKU→Deliveroo-item map (mapping is normally
-  done in Linnworks now).
+- `sku-map.json` — approved SKU → Deliveroo item id(s); only these items are ever
+  changed on Deliveroo. `sku-titles.json` — channel titles shown in Linnworks.
+- `retired-items.json` — items deleted from the shop: kept hidden, dropped from the
+  SKU map at startup, skipped by stock sync and restore-all.
+- `tools/build-sku-map.js` — SKU matcher (writes into the repo; test in a copy).
+- `tools/catalogue_apply.py` — local tool: catalogue review sheet → Deliveroo upload
+  files (see below).
 
 ---
 
@@ -154,22 +164,54 @@ site instead, and Deliveroo documents it for menus built in their own tools:
 - `unavailable` is cleared by Deliveroo's morning stock reset; `hidden` is not. The app
   defaults to `hidden` for zero stock and re-applies `unavailable` hourly if chosen.
 
-## Catalogue / listings (decided: defer)
+## Catalogue changes: review sheet → Catalogue Manager
 
-Products are created/edited in Deliveroo **Catalogue Manager** for now; Linnworks
-only maps SKUs and syncs stock + orders. Listing creation from Linnworks is **not**
-enabled (`IsListingSupported: False`).
+The shop's products live in Deliveroo **Catalogue Manager**. Changes go through one
+Google Sheet, "Deliveroo catalogue review", built from the live menu, Linnworks and
+lavastore.co.uk:
 
-If we later want to drive the catalogue from Linnworks, the preferred route is
-**Option B**: middleware builds the Deliveroo master-catalogue JSON from product
-data and uploads via the Catalogue API (`POST /catalogue/uploads` →
-`PATCH /update-listings`). This needs the full **Catalogue API** scope (not just
-the Stock API). The full Linnworks Generic Listing Tool route (Option C) is
-heavier and not recommended unless a Linnworks-native listing UI is required.
+- **Products** tab — every item on the shop, with a Decision per row (Keep as is /
+  Apply proposed changes / Delete from Deliveroo), proposed title, price and
+  description, margin and price-cap checks, and Deliveroo rule flags.
+- **Add products** tab — Linnworks items not on Deliveroo; mark Add = Yes.
+- **Listing standard** tab — the fields and rules every new listing follows.
+
+Apply the decisions:
+
+1. Export the sheet as .xlsx (Drive export keeps the calculated values) and save the
+   live menu (`GET /menu/v2/brands/lava-wholesale-gb/sites/755952/menu`).
+2. `python tools/catalogue_apply.py review.xlsx menu.json --write-repo` writes
+   `catalogue-update.csv` (Catalogue Manager bulk edit: approved changes, plus PLU =
+   SKU, barcodes and 20% VAT for every kept item), `new-products.csv` (new-item upload),
+   1200 x 800 images and `summary.md` (every warning) to
+   `../deliveroo-uploads/<date>/`. `--write-repo` adds deleted items to
+   `retired-items.json` and removes them from `sku-map.json`.
+3. Commit and push: the deploy hides retired items for good.
+4. Upload both CSVs and the images in Catalogue Manager (Partner Hub). After new
+   items appear, add their ids to `sku-map.json` so stock sync covers them.
+
+Facts the sheet and the tool rely on (sources in the sheet):
+
+- Fee: 22.5% of the inc-VAT price on delivery orders (12% pick-up), plus VAT on the
+  fee (cover sheet signed 28 Oct 2025; Core Service Pack 11.1).
+- Price cap: Deliveroo may suspend the shop when a Deliveroo price is 35% or more
+  above the same item on lavastore.co.uk (Core Service Pack 13.4; Value Programme
+  "Action" threshold).
+- Restricted items policy (8 Sep 2026): nothing 10kg+, 10L+ or over 40cm on any side;
+  no gas cylinders, corrosives or blades; solvent glue, aerosols and anti-freeze need
+  Age restricted + max quantity; 5–9.99kg items max quantity 2; over £275 needs
+  permission; lithium batteries need V/Ah/Wh in the description.
+- On 8 Oct 2026, 236 of the 241 live items were set to 0% VAT on Deliveroo; the update
+  file sets 20% (customer prices are unchanged).
+
+The Catalogue API is certified (7/7) and is the later route for images and fully
+automatic listing from Linnworks, but the live shop isn't an API catalogue yet, so
+Catalogue Manager uploads are the route today.
 
 ## Next steps
 
-See [GOLIVE.md](GOLIVE.md) for the ordered checklist. In short: finish the SKU mapping
-review, switch stock sync on, test an accepted order end to end with Ashley, then
-upgrade Render (always-on + database) before real orders. Later: auto-accept, then
-commercial App Store packaging.
+See [GOLIVE.md](GOLIVE.md) for the ordered checklist. In short: decisions in the
+catalogue review sheet, then the Catalogue Manager upload (which also backfills PLUs,
+needed before real orders), an accepted test order end to end with Ashley, and the
+Render upgrade (always-on + database). Later: auto-accept, then commercial App Store
+packaging.

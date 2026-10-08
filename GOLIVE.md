@@ -67,17 +67,35 @@ menu first.
   `DELIV_STOCK_SYNC=off` stops it.
 - [x] Out of stock = `hidden` (user's choice). It survives Deliveroo's morning stock
   reset and our restarts.
-- [x] Interim `sku-map.json`: only the MATCHED + MANUAL rows of the review (125 SKUs, 133
-  Deliveroo items; a SKU can list duplicate listings). Nothing else on the menu is ever
-  touched, and a Linnworks `Reference` is only trusted if it is a mapped item id.
-- [ ] Finish the SKU mapping review in the Google Sheet "Deliveroo SKU mapping review"
-  → regenerate `sku-map.json` from the approved/amended rows → deploy.
+- [x] `sku-map.json` = the approved/amended rows of the "Deliveroo SKU mapping review"
+  sheet (130 SKUs, 137 Deliveroo items; a SKU can cover duplicate listings). Nothing
+  else on the menu is ever touched, and a Linnworks `Reference` is only trusted if it
+  is a mapped item id. NO (customer returns) SKUs are never mapped.
+- [x] Linnworks Deliveroo channel enabled with inventory sync (8 Oct 2026); all 130 SKUs
+  linked and stock flowing (`/debug/status` → `linnworksCalls`, token fingerprint 057302).
+- [ ] 30 rows were approved without a Final SKU: type the SKUs in the mapping sheet,
+  regenerate `sku-map.json`, deploy.
 - [ ] Check coverage (read-only): `GET /debug/menu/check`.
 - [ ] Emergency undo if anything is hidden wrongly: `POST /debug/menu/restore-all`
-  (makes every hidden/unavailable item orderable).
-- [ ] Confirm Linnworks is pushing stock: `/debug/status` → `linnworksCalls`
-  (per-endpoint counts with a 6-character token fingerprint). Once Linnworks' token is
-  known, reject other tokens on the `/linnworks/*` endpoints.
+  (makes every hidden/unavailable item orderable, except retired items).
+- [ ] Reject other tokens on the `/linnworks/*` endpoints now Linnworks' token is known.
+
+## 3b. Catalogue: titles, prices, PLUs, deletes, new products
+
+- [x] Catalogue review sheet "Deliveroo catalogue review" built (8 Oct 2026): fee
+  22.5% + VAT, 30% target, 35% webstore price cap, Deliveroo rule flags, titles and
+  descriptions from lavastore.co.uk, listing standard.
+- [x] Deletes: `retired-items.json` keeps deleted items hidden for good (startup and
+  hourly), out of the SKU map, and safe from restore-all.
+- [ ] Decisions made in the sheet (Products and Add products tabs).
+- [ ] `python tools/catalogue_apply.py …` → commit the retired items → deploy.
+- [ ] Upload `catalogue-update.csv` in Catalogue Manager. **Needed before real orders**:
+  it sets PLU = Linnworks SKU (orders otherwise sync as failed) and 20% VAT (236 items
+  are at 0% on Deliveroo).
+- [ ] Upload the images (1200 x 800) and `new-products.csv`; add the new item ids to
+  `sku-map.json`.
+- [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
+  (Core Service Pack 7.1.6).
 
 ## 4. Code hardening (build before switching real orders on)
 
@@ -99,13 +117,12 @@ menu first.
 
 ## 5. Linnworks side
 
-- [ ] **SKU mapping**: in the Linnworks channel mapping screen, map each Linnworks SKU to
-  its Deliveroo item id (sent to us as `Reference` on inventory updates). Start with a
-  pilot subset (e.g. 10 products).
+- [x] **SKU mapping**: Linnworks auto-linked all 130 SKUs from our Products endpoint
+  (Reference = Deliveroo item id), 8 Oct 2026.
 - [ ] Confirm Linnworks polls `/linnworks/orders` and imports a test order end-to-end
   (order lines, prices, customer name; modifiers arrive as separate lines).
-- [ ] Confirm Linnworks stock changes hit `/linnworks/inventory-update` and (once
-  `DELIV_STOCK_SYNC=live`) flip availability on Deliveroo.
+- [x] Linnworks stock changes hit `/linnworks/inventory-update` and flip availability on
+  Deliveroo (21 zero-stock items hidden on 8 Oct 2026).
 - [ ] Confirm despatch flow: dispatching in Linnworks calls `/linnworks/despatch` (we
   acknowledge; no Deliveroo action needed under tablet model).
 
