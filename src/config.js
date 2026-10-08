@@ -25,6 +25,12 @@ const config = {
     // Optional extras you already have (not required for stock sync).
     adminId: process.env.DELIV_ADMIN_ID || "",
     companyId: process.env.DELIV_COMPANY_ID || "",
+
+    // Webhook secret (Dev Portal -> Webhooks -> Webhook secrets -> production).
+    // With it set, every webhook's signature is checked and counted; bad ones
+    // are only rejected once DELIV_WEBHOOK_ENFORCE=true.
+    webhookSecret: process.env.DELIV_WEBHOOK_SECRET || "",
+    webhookEnforce: process.env.DELIV_WEBHOOK_ENFORCE === "true",
   },
 
   // Linnworks application credentials (set these in Render once maintenance ends).

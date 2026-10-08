@@ -98,6 +98,9 @@ See `.env.example`. Key ones:
   production
 - `DELIV_STOCK_SYNC` — live by default in production; `off` stops live stock changes
 - `DELIV_OUT_OF_STOCK_STATUS` = `hidden` (default) or `unavailable`
+- `DELIV_WEBHOOK_SECRET` — production webhook secret from the Dev Portal; every webhook's
+  signature is then checked and counted in `/debug/status`. `DELIV_WEBHOOK_ENFORCE=true`
+  rejects bad ones (401) — switch it on once real webhooks show as valid.
 - `SKU_MAP_PATH` / `RETIRED_ITEMS_PATH` — alternative SKU map / retired list (tests)
 - `KEEP_ALIVE=false` once on an always-on plan
 - `DATABASE_URL` (Render Postgres)

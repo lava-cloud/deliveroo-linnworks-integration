@@ -145,7 +145,39 @@ const brandIdFor = (req) =>
   (req.body && req.body.brandId) || config.deliveroo.brandId || SANDBOX_BRAND;
 
 const app = express();
-app.use(express.json({ limit: "2mb" }));
+// Keep the raw bytes: Deliveroo's webhook signature is over the body exactly as sent.
+app.use(express.json({ limit: "2mb", verify: (req, res, buf) => (req.rawBody = buf) }));
+
+// Deliveroo signs each webhook with a hex HMAC-SHA256 of
+// "<X-Deliveroo-Sequence-Guid> <raw body>" (legacy POS events use " \n ").
+const webhookSignatures = {};
+function checkDeliverooSignature(req) {
+  const secret = config.deliveroo.webhookSecret;
+  let result = "unchecked";
+  if (secret) {
+    const guid = req.get("x-deliveroo-sequence-guid") || "";
+    const sig = (req.get("x-deliveroo-hmac-sha256") || "").trim().toLowerCase();
+    result = "missing";
+    if (guid && sig) {
+      result = "invalid";
+      for (const sep of [" ", " \n "]) {
+        const mac = crypto
+          .createHmac("sha256", secret)
+          .update(Buffer.concat([Buffer.from(guid + sep), req.rawBody || Buffer.alloc(0)]))
+          .digest("hex");
+        if (mac.length === sig.length && crypto.timingSafeEqual(Buffer.from(mac), Buffer.from(sig))) {
+          result = "valid";
+          break;
+        }
+      }
+    }
+  }
+  webhookSignatures[result] = (webhookSignatures[result] || 0) + 1;
+  if (result === "missing" || result === "invalid") {
+    console.warn(`[webhook] ${result} signature on ${req.path}`);
+  }
+  return result === "valid" || result === "unchecked" || !config.deliveroo.webhookEnforce;
+}
 
 // --- helpers ---------------------------------------------------------------
 
@@ -349,6 +381,11 @@ app.get("/debug/status", async (req, res) => {
       mappedSkus: Object.keys(skuMap).length,
       mappedItems: mappedItemIds.size,
       retiredItems: retiredIds.size,
+      webhookSignatures: {
+        secretSet: Boolean(config.deliveroo.webhookSecret),
+        enforce: config.deliveroo.webhookEnforce,
+        ...webhookSignatures,
+      },
       linnworksCalls: lwCalls,
     });
   } catch (err) {
@@ -409,6 +446,7 @@ app.post("/debug/deliveroo-stock-test", async (req, res) => {
 // --- Catalogue events webhook (the "Missing" webhook in the portal) --------
 // Register this URL in Dev Portal -> Webhooks -> Catalogue events.
 app.post("/deliveroo/catalogue-webhook", (req, res) => {
+  if (!checkDeliverooSignature(req)) return res.status(401).send("Bad signature");
   catState.lastWebhook = { at: new Date().toISOString(), body: req.body };
   console.log("[catalogue-webhook]", JSON.stringify(req.body));
   res.status(200).send("OK");
@@ -665,6 +703,7 @@ app.get("/debug/cat/state", (req, res) => {
 // --- Deliveroo order webhook ----------------------------------------------
 
 app.post("/deliveroo/order-webhook", async (req, res) => {
+  if (!checkDeliverooSignature(req)) return res.status(401).send("Bad signature");
   const raw = req.body || {};
   // Deliveroo nests the order under body.order; the event type is top-level.
   const order = (raw.body && raw.body.order) || raw.order || raw;

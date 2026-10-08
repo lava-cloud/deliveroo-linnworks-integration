@@ -45,8 +45,14 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
   `/deliveroo/catalogue-webhook`.
 - [x] Production discovery: brand `lava-wholesale-gb`, live site `755952`, test site
   `TIM-Test-22`.
-- [ ] **Generate production webhook secret** (Webhooks → Webhook secrets → For
-  production) → save as `DELIV_WEBHOOK_SECRET` in Render (for signature checks, §4).
+- [x] Production webhook secret exists (Webhooks → Webhook secrets → production;
+  checked 8 Oct 2026). Orders API: sandbox testing complete, eligible, Production Live.
+  The dashboard's "Testing guidance 0 / 4" page 404s on Deliveroo's side; nothing to do.
+- [x] Production logs (30 Sep – 8 Oct 2026): no failures since the keep-alive fix; the
+  only failures were the 7 Oct cold-start timeout and our own 8 Oct API tests.
+- [ ] Copy the production secret into Render as `DELIV_WEBHOOK_SECRET` (user: secrets
+  aren't entered by Claude). Check `/debug/status` → `webhookSignatures.valid` rises on
+  the next order event, then set `DELIV_WEBHOOK_ENFORCE=true`.
 - [ ] Sandbox credential `Lava_Catalogue_Scenario_Test` (created 8 Oct 2026 for
   Scenario 3) can be deleted; nothing in production uses it.
 
@@ -105,8 +111,9 @@ menu first.
 - [x] **Only accepted orders go to Linnworks** — orders are stored from `order.new` but
   released to `/linnworks/orders` only once accepted, filtered on `accepted_at`; any
   order later rejected/cancelled before collection is withheld.
-- [ ] **Webhook signature verification** using `DELIV_WEBHOOK_SECRET` (reject spoofed
-  webhook calls).
+- [x] **Webhook signature verification** using `DELIV_WEBHOOK_SECRET`: hex HMAC-SHA256
+  of "<sequence guid> <raw body>", checked on the order and catalogue webhooks, counted
+  in `/debug/status`; log-only until `DELIV_WEBHOOK_ENFORCE=true`.
 - [ ] **Rotate `SYNC_SECRET`** (current value was used throughout testing) and consider
   gating `/debug/*` endpoints behind `NODE_ENV`/flag or removing them for production.
 - [ ] **Re-test order persistence** once DB is live: send test order → restart service →
