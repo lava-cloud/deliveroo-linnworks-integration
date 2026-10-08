@@ -32,6 +32,14 @@ const skuMap = Object.fromEntries(
   ])
 );
 const mappedItemIds = new Set(Object.values(skuMap).flat());
+// Deliveroo product title per SKU, shown as the channel title in Linnworks.
+let skuTitles = {};
+try {
+  skuTitles = require(process.env.SKU_TITLES_PATH || "./sku-titles.json");
+} catch (_) {}
+// Last quantity Linnworks sent per SKU. Linnworks compares it with what it last
+// submitted on every Products call and re-sends stock when they differ.
+const lastQuantity = new Map();
 
 // In-memory state for the sandbox catalogue scenarios.
 const catState = { uploadUrl: null, uploadId: null, catalogueId: null, lastWebhook: null };
@@ -793,13 +801,19 @@ app.post("/linnworks/post-sale-options", (req, res) => {
 // ----- Products: list channel products for mapping -----
 // We return the SKUs we know about from sku-map.json so the merchant can map
 // Linnworks inventory to Deliveroo items inside Linnworks.
+// Request: { AuthorizationToken, PageNumber }  Response: { Error, HasMorePages, Products }
 app.post("/linnworks/products", (req, res) => {
-  const Products = Object.keys(skuMap).map((sku) => ({
-    SKU: sku,
-    Reference: skuMap[sku][0],
-    Title: sku,
-  }));
-  res.json({ Error: null, Products });
+  const page = Number((req.body && req.body.PageNumber) || 1);
+  const Products =
+    page > 1
+      ? []
+      : Object.keys(skuMap).map((sku) => ({
+          SKU: sku,
+          Title: skuTitles[sku] || sku,
+          Quantity: lastQuantity.get(sku) ?? 0,
+          Reference: skuMap[sku][0],
+        }));
+  res.json({ Error: null, HasMorePages: false, Products });
 });
 
 // ----- PriceUpdate: acknowledge (Deliveroo pricing handled separately) -----
@@ -836,6 +850,7 @@ app.post("/linnworks/inventory-update", async (req, res) => {
 
   try {
     const result = await deliveroo.updateAvailability(items);
+    for (const p of products) lastQuantity.set(p.SKU, Number(p.Quantity ?? 0));
     console.log(
       `[lw] InventoryUpdate: ${products.length} product(s), ${unmapped} unmapped, ` +
         (result.staged ? "STAGED" : `${result.sent} sent, ${result.skipped} not on menu`)
