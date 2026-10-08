@@ -165,12 +165,12 @@ def main():
         if r.get("Status") == "Returns listing":
             warn.append(f"{label}: customer returns listing left on the menu; mark it Delete")
             continue
-        if not sku:
-            continue  # unlinked: nothing to backfill until it has a SKU
-        if is_returns_sku(sku):
+        if sku and is_returns_sku(sku):
             warn.append(f"{label}: SKU {sku} is a customer return (NO) and must not be sold")
             continue
-        apply = decision == "Apply proposed changes"
+        apply = decision == "Apply proposed changes" and bool(sku)
+        if decision == "Apply proposed changes" and not sku:
+            warn.append(f"{label}: has no SKU, so only its VAT rate is corrected; link it first")
         current_desc = item.get("description")
         current_desc = current_desc.get("en", "") if isinstance(current_desc, dict) else (current_desc or "")
         barcode = str(r.get("Barcode") or "").strip()
@@ -178,7 +178,7 @@ def main():
             warn.append(f"{label}: barcode {barcode} fails the check digit, left off (fix it in Linnworks)")
             barcode = ""
         if not apply:
-            # Keep as is (or not decided yet): only the PLU and a missing barcode change.
+            # Keep as is (or not decided yet): only the PLU, a missing barcode and the VAT rate change.
             classes = item.get("classifications") or []
             update_rows.append({
                 "item_id": iid, "item_name": item["name"]["en"], "item_description": current_desc,
@@ -305,7 +305,7 @@ def main():
 
     lines = [f"# Deliveroo catalogue changes, {dt.date.today().isoformat()}", "",
              f"- Existing items in catalogue-update.csv: {len(update_rows)} "
-             f"({done['apply']} with approved changes, {done['keep']} kept as they are but given PLU and barcode)",
+             f"({done['apply']} with approved changes, {done['keep']} kept as they are with PLU, barcode and VAT fixed)",
              f"- Deleted (retired, hidden for good): {done['delete']}" + ("" if a.write_repo else " (not written: no --write-repo)"),
              f"- VAT rate corrected to 20% (was 0% on Deliveroo): {sum(1 for x in vat_fixes if x in {u['item_id'] for u in update_rows})}",
              f"- New products in new-products.csv: {done['add']}",
