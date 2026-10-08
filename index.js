@@ -286,9 +286,11 @@ app.get("/", (req, res) => {
     environment: config.deliverooEnv,
     ready: config.flags,
     notes: {
-      deliverooStock: config.flags.deliverooStockReady
-        ? "Live"
-        : "Staged — waiting for Deliveroo Brand/Catalogue/Site IDs",
+      deliverooStock: config.flags.stockSyncLive
+        ? `Live (out of stock = ${config.outOfStockStatus})`
+        : config.flags.deliverooStockReady
+          ? "Staged — set DELIV_STOCK_SYNC=live to switch on"
+          : "Staged — set DELIV_BRAND_ID and DELIV_SITE_ID",
       database: config.flags.databaseReady
         ? "Postgres (orders & config persist)"
         : "In-memory (lost on restart — add a database)",
@@ -549,6 +551,37 @@ app.post("/debug/cat/upload-status", async (req, res) => {
   }
 });
 
+// Read-only: how much of sku-map.json points at items on the live menu, plus
+// the menu's current unavailable/hidden items. Query: ?brandId=&siteId=
+app.get("/debug/menu/check", async (req, res) => {
+  if (!requireSecret(req, res)) return;
+  const brandId = req.query.brandId || config.deliveroo.brandId;
+  const siteId = req.query.siteId || config.deliveroo.siteId;
+  if (!brandId || !siteId) return res.status(400).json({ error: "Pass ?brandId=&siteId=" });
+  try {
+    const menu = await deliveroo.getSiteMenu(brandId, siteId);
+    if (menu.status !== 200) return res.json({ menuStatus: menu.status, body: menu.body });
+    const items = (menu.body.menu && menu.body.menu.items) || [];
+    const ids = new Set(items.map((i) => i.id));
+    const mapped = Object.entries(skuMap);
+    const missing = mapped.filter(([, id]) => !ids.has(id));
+    const unav = await deliveroo.getSiteUnavailabilities(brandId, siteId);
+    res.json({
+      menuName: menu.body.name,
+      menuItems: items.length,
+      sellableItems: items.filter((i) => i.type === "ITEM").length,
+      skuMapEntries: mapped.length,
+      skuMapOnMenu: mapped.length - missing.length,
+      skuMapNotOnMenu: missing.slice(0, 20).map(([sku, id]) => ({ sku, id })),
+      itemsWithPlu: items.filter((i) => i.plu).length,
+      unavailabilities: unav.body,
+      stockSync: { live: config.flags.stockSyncLive, outOfStockStatus: config.outOfStockStatus },
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Inspect scenario state (upload ids, last webhook received).
 app.get("/debug/cat/state", (req, res) => {
   if (!requireSecret(req, res)) return;
@@ -773,7 +806,7 @@ app.post("/linnworks/inventory-update", async (req, res) => {
     const result = await deliveroo.updateAvailability(items);
     console.log(
       `[lw] InventoryUpdate: ${items.length} item(s), ` +
-        (result.staged ? "STAGED (no Deliveroo IDs yet)" : `${result.sent} sent`)
+        (result.staged ? "STAGED" : `${result.sent} sent, ${result.skipped} not on menu`)
     );
     res.json({ Error: null, Products: perProduct });
   } catch (err) {
@@ -807,6 +840,13 @@ async function start() {
       .catch((e) => console.error("[purge] failed:", e.message));
   purge();
   setInterval(purge, 60 * 60 * 1000);
+
+  setInterval(() => {
+    deliveroo
+      .reapplyUnavailable()
+      .then((n) => n && console.log(`[stock] re-applied ${n} unavailable item(s) after reset`))
+      .catch((e) => console.error("[stock] re-apply failed:", e.message));
+  }, 60 * 60 * 1000);
 }
 
 start().catch((err) => {

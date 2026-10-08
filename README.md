@@ -49,9 +49,10 @@ Deliveroo sends new orders to `/deliveroo/order-webhook`, which we store in Post
 | Database (Postgres) | ✅ orders & config persist |
 | Linnworks channel connected | ✅ AddNewUser/UserConfig/SaveConfig handshake verified |
 | Order import to Linnworks | ✅ code ready (needs live Deliveroo orders) |
-| **Catalogue API certification** | ✅ **6/7 scenarios passed** (1,2,4,5,6,7). Scenario 3 blocked by a faulty Deliveroo validator — escalated with full evidence. Whole pipeline proven live: upload → process → webhook → listings → **item_unavailabilities stock sync** |
+| **Catalogue API certification** | ✅ **7/7 scenarios passed** (Scenario 3 on 8 Oct 2026), portal shows Production: Live |
 | **Orders API certification** | ✅ **all 12 sandbox scenarios passed** (receive order → POS sync status; PLU validation for missing/mismatched) |
-| Orders production access | ✅ **approved** — portal shows 4 go-live steps (see GOLIVE.md) |
+| Orders production | ✅ **Live** — production order events delivered within seconds (test order #2387, 8 Oct 2026) |
+| Live-shop stock sync | ✅ code ready via **Menu API v2** (site 755952 read + write verified); switched on with `DELIV_STOCK_SYNC=live` after the SKU mapping review |
 | Order → Linnworks mapping | ✅ real Deliveroo format mapped (nested body.order, pos_item_id→SKU, pence→pounds, modifiers as lines) |
 | Order auto-accept | 🔜 future (tablet used for now) |
 
@@ -64,9 +65,8 @@ else `failed` with `pos_item_id_not_found` (missing PLU) or `pos_item_id_mismatc
 `DELIV_VALID_PLUS` (sandbox menu by default → your Linnworks SKUs in production);
 `PLU_NAMES` in index.js maps PLU→expected title for mismatch detection.
 
-**The one remaining blocker is Deliveroo onboarding** (TIM assignment + Brand/Catalogue/
-Site IDs). When those arrive, paste them into Render env vars and stock sync goes live
-with no code change.
+Production order events, the live menu and live stock writes are all verified; what
+remains is the SKU mapping review and switching stock sync on (see GOLIVE.md).
 
 ---
 
@@ -89,7 +89,10 @@ Linnworks channel: `/linnworks/add-new-user`, `/user-config`, `/save-config`,
 See `.env.example`. Key ones:
 
 - `DELIV_ENV` (`sandbox`/`production`), `DELIV_CLIENT_ID`, `DELIV_CLIENT_SECRET`
-- `DELIV_BRAND_ID`, `DELIV_CATALOGUE_ID`, `DELIV_SITE_ID` ← **from Deliveroo TIM (pending)**
+- `DELIV_BRAND_ID` (`lava-wholesale-gb`), `DELIV_SITE_ID` (`755952`)
+- `DELIV_STOCK_SYNC=live` switches live stock changes on; `DELIV_OUT_OF_STOCK_STATUS`
+  = `hidden` (default) or `unavailable`
+- `KEEP_ALIVE=false` once on an always-on plan
 - `DATABASE_URL` (Render Postgres)
 - `SYNC_SECRET` (protects `/debug/*`)
 
@@ -127,11 +130,27 @@ Discovered empirically via the processing-error webhook (not in Deliveroo's docs
 - The presigned `upload_url` accepts **unauthenticated PUT only** (S3 rejects an
   added Authorization header: "Only one auth mechanism allowed"); plain JSON
   only (gzip → "invalid json: \x1f").
-- **Scenario 3 in the certification portal is unpassable** as of Jul 2026: its
-  validator is provably blind to uploads (identical failure whether processing
-  succeeds or fails; sandbox presigned URLs point at a production-named bucket).
-  Raised with Deliveroo as a Technical Incident — needs their fix or a manual
-  scenario completion. All other scenarios (1,2,4,5,6,7) passed.
+- **Scenario 3** failed every run in Jun–Jul 2026 (sandbox presigned URLs point at a
+  production-named bucket, and the validator never registered our uploads). It passed
+  on 8 Oct 2026 with: Scenario 2 run → PUT the catalogue to its upload_url → start
+  Scenario 3 with that catalogue id → while it polls, POST a **new** upload and PUT the
+  same catalogue id again. The validator passed one second after that upload's
+  `catalogue_upload: success` webhook. Sandbox credentials must be created with the
+  Retail Platform suite ticked, or the scenarios show "API credentials: Missing".
+
+## Stock sync on the live shop (Menu API v2)
+
+The live shop's menu is built in Catalogue Manager, so it has no API catalogue id and
+the Catalogue API's `item_unavailabilities` route can't address it. Menu API v2 works by
+site instead, and Deliveroo documents it for menus built in their own tools:
+
+- `GET /menu/v2/brands/{brand}/sites/{site}/menu` → the live menu (item ids = the
+  `item_id` column of the Catalogue Manager export).
+- `POST …/menu/item_unavailabilities` with
+  `{"item_unavailabilities":[{"item_id","status":"available|unavailable|hidden"}]}`
+  updates only the listed items; one unknown id fails the whole request (400).
+- `unavailable` is cleared by Deliveroo's morning stock reset; `hidden` is not. The app
+  defaults to `hidden` for zero stock and re-applies `unavailable` hourly if chosen.
 
 ## Catalogue / listings (decided: defer)
 
@@ -148,11 +167,7 @@ heavier and not recommended unless a Linnworks-native listing UI is required.
 
 ## Next steps
 
-1. **Deliveroo:** chase TIM via developer portal; obtain Brand/Catalogue/Site IDs;
-   set site to tablet-accept + partner-fulfilled.
-2. When IDs arrive: add `DELIV_BRAND_ID` / `DELIV_CATALOGUE_ID` / `DELIV_SITE_ID` in
-   Render. Verify stock sync via a Linnworks inventory change.
-3. Point Deliveroo's order webhook at `/deliveroo/order-webhook`.
-4. Map a few SKUs in Linnworks; confirm orders import and stock decrements.
-5. Upgrade Render to Starter (always-on) before go-live.
-6. Later: build & certify middleware auto-accept; then commercial App Store packaging.
+See [GOLIVE.md](GOLIVE.md) for the ordered checklist. In short: finish the SKU mapping
+review, switch stock sync on, test an accepted order end to end with Ashley, then
+upgrade Render (always-on + database) before real orders. Later: auto-accept, then
+commercial App Store packaging.

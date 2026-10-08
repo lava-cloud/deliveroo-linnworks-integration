@@ -44,11 +44,6 @@ const config = {
   // Set SYNC_SECRET in Render to any random string.
   syncSecret: process.env.SYNC_SECRET || "",
 
-  // Optional: full override for the Retail Catalogue "unavailabilities" URL.
-  // Use {brand}, {catalogue}, {site} placeholders. If blank we build a
-  // sensible default — confirm the exact path with your Deliveroo TIM.
-  deliverooUnavailabilitiesUrl: process.env.DELIV_UNAVAILABILITIES_URL || "",
-
   // How often (minutes) to auto-run stock sync. 0 = off (manual only).
   stockSyncIntervalMinutes: Number(process.env.STOCK_SYNC_INTERVAL_MINUTES || 0),
 
@@ -73,7 +68,6 @@ config.flags = {
     config.deliveroo.clientId &&
       config.deliveroo.clientSecret &&
       config.deliveroo.brandId &&
-      config.deliveroo.catalogueId &&
       config.deliveroo.siteId
   ),
   linnworksReady: Boolean(
@@ -83,5 +77,15 @@ config.flags = {
   ),
   databaseReady: Boolean(config.databaseUrl),
 };
+
+// Stock changes touch the live shop, so they need an explicit switch on top
+// of the IDs: DELIV_STOCK_SYNC=live. Until then updates are logged only.
+config.flags.stockSyncLive =
+  config.flags.deliverooStockReady && process.env.DELIV_STOCK_SYNC === "live";
+
+// "hidden" survives Deliveroo's morning stock reset; "unavailable" (greyed
+// out as sold out) is cleared by it and has to be re-applied.
+config.outOfStockStatus =
+  process.env.DELIV_OUT_OF_STOCK_STATUS === "unavailable" ? "unavailable" : "hidden";
 
 module.exports = config;

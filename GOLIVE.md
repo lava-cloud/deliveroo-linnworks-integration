@@ -1,13 +1,15 @@
 # Go-Live Checklist — Deliveroo ⇄ Linnworks
 
-Status at time of writing (15 Jul 2026):
-- **Orders API:** 12/12 scenarios passed, **production approved** (4 go-live steps showing in portal).
-- **Catalogue API:** 6/7 scenarios passed (1,2,4,5,6,7). Scenario 3 blocked by a faulty
-  Deliveroo validator — escalated to Ashley (evidence: their success webhooks + passing
-  scenarios 5–7 which repeat the same flow). Production for Catalogue unlocks when resolved.
-- Full pipeline proven in sandbox: upload → process → webhook → listings → **stock
-  unavailabilities** (`PATCH /brands/{b}/catalogue/{id}/item_unavailabilities/{site}`), plus
-  order ingestion + POS sync status.
+Status (8 Oct 2026):
+- **Orders API:** 12/12 scenarios passed, portal shows **Production: Live**. Production
+  order events reach `/deliveroo/order-webhook` within seconds (test order #2387: placed
+  → 200, rejected → 200).
+- **Catalogue API:** **7/7 scenarios passed** (Scenario 3 passed 8 Oct 2026), portal shows
+  **Production: Live**.
+- **Live-shop stock control proven:** production credentials read the live menu of site
+  755952 (273 items; ids match the Catalogue Manager export) and can write item
+  availability through Menu API v2. The portals' "0 / 4 go live steps" checklists never
+  update and can be ignored.
 
 Work through the sections in order. Items marked 💰 cost money; ⚠️ are hard requirements.
 
@@ -35,31 +37,43 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
   with email alerts. Contract SLA: respond in 30 min / resolve in 2 h for critical
   (orders not flowing). Know who gets the alert out of hours.
 
-## 2. Deliveroo portal — Orders API go-live (4 steps shown in portal)
+## 2. Deliveroo portal — production setup
 
-- [ ] **Generate production API credentials** (portal step 1).
-- [ ] In Render → Environment set:
-  - `DELIV_CLIENT_ID` / `DELIV_CLIENT_SECRET` = production values
-  - `DELIV_ENV` = `production`
-- [ ] **Set production Order events webhook** (portal step 2):
-  `https://deliveroo-linnworks-integration.onrender.com/deliveroo/order-webhook`
-- [ ] **Generate production webhook secret** (portal step 3) → save as
-  `DELIV_WEBHOOK_SECRET` in Render (code TODO below to verify signatures).
-- [ ] **Confirm completion / connect** (portal step 4).
-- [ ] Re-run brand/site discovery against production (`GET /debug/deliveroo-discover`)
-  and record the **production brand_id** (sandbox one was `17b449e6-…`; production will
-  differ). Site id = `755952` (Admin ID). Set `DELIV_BRAND_ID` / `DELIV_SITE_ID`.
+- [x] Production API credentials (Linnworks_Integration / Linnworks_Integrationv2,
+  retail_platform, expire 31/07/2029) in Render with `DELIV_ENV=production`.
+- [x] Production webhooks: Order events → `/deliveroo/order-webhook`, Catalogue →
+  `/deliveroo/catalogue-webhook`.
+- [x] Production discovery: brand `lava-wholesale-gb`, live site `755952`, test site
+  `TIM-Test-22`.
+- [ ] **Generate production webhook secret** (Webhooks → Webhook secrets → For
+  production) → save as `DELIV_WEBHOOK_SECRET` in Render (for signature checks, §4).
+- [ ] Sandbox credential `Lava_Catalogue_Scenario_Test` (created 8 Oct 2026 for
+  Scenario 3) can be deleted; nothing in production uses it.
 
-## 3. Catalogue API production (when Scenario 3 is resolved)
+## 3. Stock sync to the live shop (Menu API v2)
 
-- [ ] Confirm Scenario 3 marked complete → Catalogue API production unlocks.
-- [ ] Set production **Catalogue events webhook**:
-  `https://deliveroo-linnworks-integration.onrender.com/deliveroo/catalogue-webhook`
-- [ ] Identify the **production catalogue_id** (the catalogue managed via Catalogue
-  Manager — ask Ashley/TIM how to reference it, or list via API). Set
-  `DELIV_CATALOGUE_ID` in Render.
-- [ ] Verify stock sync against production: toggle one item unavailable/available and
-  check it greys out on the live storefront.
+The live menu is built in Catalogue Manager, so it has no API catalogue id. Menu API v2
+addresses it by site instead:
+`GET/POST /menu/v2/brands/lava-wholesale-gb/sites/755952/menu/item_unavailabilities`
+(`{"item_unavailabilities":[{"item_id","status":"available|unavailable|hidden"}]}`).
+Any unknown item id fails the whole request, so the app checks ids against the live
+menu first.
+
+- [x] Catalogue API certified (Scenario 3 passed 8 Oct 2026).
+- [x] Read access and a no-op write verified on the live shop; full toggles verified on
+  TIM-Test-22 (unavailable and hidden).
+- [ ] Finish the SKU mapping review → regenerate `sku-map.json` (Linnworks SKU →
+  Deliveroo item id) and deploy.
+- [ ] Check coverage (read-only):
+  `GET /debug/menu/check?brandId=lava-wholesale-gb&siteId=755952`.
+- [ ] In Render set `DELIV_BRAND_ID=lava-wholesale-gb` and `DELIV_SITE_ID=755952`. Stock
+  stays **staged** (logs what it would change) until the next step.
+- [ ] Choose the out-of-stock behaviour: `hidden` (default; survives Deliveroo's morning
+  stock reset and our restarts) or `DELIV_OUT_OF_STOCK_STATUS=unavailable` (greyed out as
+  sold out; Deliveroo clears it each morning and the app re-applies it hourly while it
+  is running).
+- [ ] Switch on: `DELIV_STOCK_SYNC=live`. Pilot one product to 0 in Linnworks → it
+  disappears on Deliveroo; restore → it returns.
 
 ## 4. Code hardening (build before switching real orders on)
 
@@ -87,7 +101,7 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
 - [ ] Confirm Linnworks polls `/linnworks/orders` and imports a test order end-to-end
   (order lines, prices, customer name; modifiers arrive as separate lines).
 - [ ] Confirm Linnworks stock changes hit `/linnworks/inventory-update` and (once
-  Catalogue production is live) flip availability on Deliveroo.
+  `DELIV_STOCK_SYNC=live`) flip availability on Deliveroo.
 - [ ] Confirm despatch flow: dispatching in Linnworks calls `/linnworks/despatch` (we
   acknowledge; no Deliveroo action needed under tablet model).
 
@@ -103,14 +117,15 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
 
 - [ ] Place a small real order → accept on tablet → verify: webhook received, sync
   status `succeeded` sent, order imported to Linnworks, stock decremented.
-- [ ] Set one product to 0 stock in Linnworks → verify it shows unavailable on Deliveroo.
+- [ ] Set one product to 0 stock in Linnworks → verify it is hidden (or greyed out) on
+  Deliveroo.
 - [ ] Restore stock → verify it returns to available.
 - [ ] Check `/debug/status` counters and Render logs for errors.
 
 ## 8. Open questions / waiting on Deliveroo
 
-- Scenario 3 validator fix or manual completion (escalated 15 Jul).
-- Production `catalogue_id` for the Catalogue-Manager-managed catalogue.
+- Ashley to let one TIM-Test-22 order be accepted, to test acceptance → sync status →
+  Linnworks import (asked 8 Oct 2026, TIS-30247).
 - Production site config change (tablet Yes / partner-fulfilled).
 
 ## 9. Phase 2 (post-launch, commercial)
