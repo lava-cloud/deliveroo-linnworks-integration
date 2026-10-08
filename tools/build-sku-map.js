@@ -67,23 +67,31 @@ const dIdx = Object.fromEntries(dHeader.map((h, i) => [h.trim(), i]));
 const dItems = dRows.slice(1).filter((r) => r[dIdx.item_id]);
 
 const lRows = parseCsv(fs.readFileSync(LINN_CSV, "utf8"));
+// NO SKUs (SKU or title starting "NO", or SKU ending "- NO") are customer
+// returns and must never be sold on Deliveroo.
+const isReturnsSku = (sku, title = "") =>
+  /^\s*NO\b/i.test(sku) || /\bNO\s*$/i.test(sku) || /^\s*NO\s*[-_]/i.test(title);
 const lItems = lRows.slice(1)
   .map((r) => ({ sku: r[0], barcode: r[1] || "", title: r[2] || "" }))
   .filter((r) => r.sku && r.title)
   // never auto-match damaged/defective stock SKUs
-  .filter((r) => !/defect|damaged/i.test(r.title) && !/-\s*DEF\b/i.test(r.sku));
+  .filter((r) => !/defect|damaged/i.test(r.title) && !/-\s*DEF\b/i.test(r.sku))
+  .filter((r) => !isReturnsSku(r.sku, r.title));
+const returnsSkus = new Set(
+  lRows.slice(1).filter((r) => r[0] && isReturnsSku(r[0], r[2] || "")).map((r) => r[0])
+);
 
 // --- variant handling ------------------------------------------------------
-// Linnworks titles carry variant prefixes (SINGLE -, NO -, 10 PACK -) and
-// trailing **CODE** junk. Deliveroo names mark the NO variant with a trailing
-// "- No" and packs with "N X ... Multipack". Match on the CORE title, then use
-// the variant tag to pick the right SKU.
+// Linnworks titles carry variant prefixes (SINGLE -, 10 PACK -) and trailing
+// **CODE** junk. Deliveroo names mark returns listings with a trailing "- No"
+// (these have no candidates, since NO SKUs are filtered out above) and packs
+// with "N X ... Multipack". Match on the CORE title, then use the variant tag
+// to pick the right SKU.
 function linnVariant(title) {
   let core = title.replace(/\*\*[^*]+\*\*/g, " ").trim();
   let tag = "SINGLE";
   let m;
   if ((m = core.match(/^\s*SINGLE\s*-\s*/i))) core = core.slice(m[0].length);
-  else if ((m = core.match(/^\s*NO\s*-\s*/i))) { tag = "NO"; core = core.slice(m[0].length); }
   else if ((m = core.match(/^\s*(\d+)\s*PACK\s*-\s*/i))) { tag = "PACK:" + m[1]; core = core.slice(m[0].length); }
   return { tag, core: core.trim() };
 }
@@ -149,6 +157,12 @@ const ambiguous = [];  // {d, candidates:[{li,score}]}
 const unmatched = [];  // {d, best}
 for (const r of dItems) {
   const dName = r[dIdx.item_name];
+
+  // Deliveroo listings made from returns ("... - No") are deleted, never mapped.
+  if (delivVariant(dName).tag === "NO") {
+    unmatched.push({ d: r, best: null, returns: true });
+    continue;
+  }
 
   // --- Pass 1: eBay title (exact, then fuzzy) -> custom label -> SKU
   if (ebParsed.length) {
@@ -358,9 +372,11 @@ if (fs.existsSync(prevPath)) {
     const prev = parseCsv(fs.readFileSync(prevPath, "utf8"));
     const ph = prev[0];
     const pid = ph.indexOf("item_id"), pplu = ph.indexOf("plu"), pbar = ph.indexOf("barcodes");
-    for (const r of prev.slice(1))
-      if (r[pid] && r[pplu] && r[pplu].trim())
-        manual.set(r[pid], { plu: r[pplu].trim(), barcodes: (r[pbar] || "").trim() });
+    for (const r of prev.slice(1)) {
+      const plu = (r[pplu] || "").trim();
+      if (r[pid] && plu && !isReturnsSku(plu) && !returnsSkus.has(plu))
+        manual.set(r[pid], { plu, barcodes: (r[pbar] || "").trim() });
+    }
   } catch (e) {
     console.warn("Could not read previous reviewed CSV:", e.message);
   }
@@ -484,8 +500,8 @@ const resultRows = dItems.map((r) => {
     status = "REVIEW";
     candidates = ambByItem.get(id).candidates.slice(0, 3).map((c) => ({ sku: c.li.sku, title: c.li.title, score: c.score }));
   } else {
-    status = "UNMATCHED";
     const u = unmByItem.get(id);
+    status = u && u.returns ? "RETURNS" : "UNMATCHED";
     if (u && u.best) candidates = [{ sku: u.best.li.sku, title: u.best.li.title, score: u.best.score }];
   }
   return {
