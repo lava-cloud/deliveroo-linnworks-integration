@@ -370,7 +370,10 @@ const matchedByItemId = new Map(matches.map((m) => [m.d[dIdx.item_id], m]));
 let manualKept = 0, manualConflicts = [];
 for (const r of dItems) {
   const m = matchedByItemId.get(r[dIdx.item_id]);
-  const man = manual.get(r[dIdx.item_id]);
+  let man = manual.get(r[dIdx.item_id]);
+  // A previous-file PLU only counts as a USER edit when it differs from (or
+  // adds to) the current auto-match — otherwise it's just an old auto-fill.
+  if (man && m && m.li.sku === man.plu) { manual.delete(r[dIdx.item_id]); man = null; }
   const copy = [...r];
   if (man) {
     manualKept++;
@@ -462,6 +465,35 @@ if (unmatched.length) {
   lines.push(``);
 }
 fs.writeFileSync(path.join(repoRoot, "mapping-report.md"), lines.join("\n"));
+
+// 4. structured results for the review-workbook builder
+const dupeItemIds = new Set();
+for (const [, ms] of dupes) for (const m of ms) dupeItemIds.add(m.d[dIdx.item_id]);
+const ambByItem = new Map(ambiguous.map((a) => [a.d[dIdx.item_id], a]));
+const unmByItem = new Map(unmatched.map((u) => [u.d[dIdx.item_id], u]));
+const resultRows = dItems.map((r) => {
+  const id = r[dIdx.item_id];
+  const m = matchedByItemId.get(id);
+  const man = manual.get(id);
+  let status, sku = "", method = "", score = null, candidates = [];
+  if (man) { status = "MANUAL"; sku = man.plu; method = "manual"; }
+  else if (m) {
+    sku = m.li.sku; method = m.method; score = m.score;
+    status = m.score < 0.78 || m.method === "model" || m.method === "idf" || m.method === "title+label-mismatch" ? "CHECK" : "MATCHED";
+  } else if (ambByItem.has(id)) {
+    status = "REVIEW";
+    candidates = ambByItem.get(id).candidates.slice(0, 3).map((c) => ({ sku: c.li.sku, title: c.li.title, score: c.score }));
+  } else {
+    status = "UNMATCHED";
+    const u = unmByItem.get(id);
+    if (u && u.best) candidates = [{ sku: u.best.li.sku, title: u.best.li.title, score: u.best.score }];
+  }
+  return {
+    item_id: id, deliveroo_title: r[dIdx.item_name], status, sku, method,
+    score, candidates, ebayLabel: r._ebayLabel || "", dupe: dupeItemIds.has(id),
+  };
+});
+fs.writeFileSync(path.join(repoRoot, "tools", "match-results.json"), JSON.stringify(resultRows, null, 2));
 
 console.log(`Deliveroo items: ${dItems.length} | Linnworks SKUs: ${lItems.length}`);
 console.log(`Matched: ${matches.length} (exact ${matches.filter((m) => m.method === "exact").length} / fuzzy ${matches.filter((m) => m.method === "fuzzy").length})`);

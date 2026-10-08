@@ -1,6 +1,6 @@
 # Deliveroo ↔ Linnworks mapping report
 
-Manual PLU entries preserved from your reviewed CSV: **168**
+Manual PLU entries preserved from your reviewed CSV: **8**
 
 Deliveroo items: 241 · Linnworks SKUs: 1226
 Matched: **169** (ebay-exact 92, fuzzy 35, title+label-mismatch 15, ebay-fuzzy 10, exact 8, idf 2, model 7)

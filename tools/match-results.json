@@ -1,0 +1,3462 @@
+[
+  {
+    "item_id": "a9c4406f-3d8d-4c27-a67c-2c33173e399b",
+    "deliveroo_title": "1 Channel 7-Day Thermostat Replaces Honeywell St9100c St9100a St6100",
+    "status": "MATCHED",
+    "sku": "600352",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4ddfdf66-2801-493f-aad1-44ab3e8fdb21",
+    "deliveroo_title": "1/2\" Salvus Caterhose Commercial Yellow Gas Catering Pipe Hose 1.5M Long 1500Mm",
+    "status": "MANUAL",
+    "sku": "500007",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "FBA_LABELNV-CKW0-E2OI",
+    "dupe": false
+  },
+  {
+    "item_id": "14708db5-4917-454a-9aef-05a92f2bcdee",
+    "deliveroo_title": "1/2\" Toilet Fill Valve Wras Approved Cistern Fill Valve Adjustable Inlet",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1900187",
+        "title": "SINGLE - NV Side Entry Fill Valve 1/2\" WRAS approved Brass Tail **PRFSFBW-D**",
+        "score": 0.5714285714285714
+      }
+    ],
+    "ebayLabel": "S2-99HF-Q3K3",
+    "dupe": false
+  },
+  {
+    "item_id": "c25942f6-1288-4ee1-98e3-23ae3365d20c",
+    "deliveroo_title": "10 X Fernox F1 Protector 56599 500Ml Central Heating Inhibitor Multipack",
+    "status": "MATCHED",
+    "sku": "900161",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "99a2497b-5c82-4b38-abe2-6d66051ffe36",
+    "deliveroo_title": "10\" Wide Opening Adjustable Wrench Spanner - 50Mm Jaw Opening",
+    "status": "MATCHED",
+    "sku": "2000031",
+    "method": "fuzzy",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b3ddcb7e-a2a0-437b-8adf-6b49a971304f",
+    "deliveroo_title": "11\" Backer Immersion Heater 3Kw Copper Element Side Entry 2.25 Bsp Uk Made",
+    "status": "MATCHED",
+    "sku": "700001",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "7bfe3eb7-dcf6-4c7f-a8bd-a62061a90c17",
+    "deliveroo_title": "110Mm Air Admittance Valve Durgo Push Fit Black",
+    "status": "MATCHED",
+    "sku": "1200097",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0b431a6c-5a85-4f70-85c3-eb9c8123947e",
+    "deliveroo_title": "12\" Wide Opening Adjustable Wrench Spanner - 60Mm Jaw Opening",
+    "status": "MATCHED",
+    "sku": "2000033",
+    "method": "fuzzy",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "73546ee6-5145-4d2c-a6f4-2668d10d50f5",
+    "deliveroo_title": "15Mm Barrier Pipe Pex White 15Mm - 100M Coil Pushfit Plumbing",
+    "status": "MATCHED",
+    "sku": "1200017",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "df5cf358-c1bc-4211-87ae-d448fdd4a61c",
+    "deliveroo_title": "15Mm Lever Ball Valve Dual Handle Full Bore Wras Approved Blue and Red Isolation",
+    "status": "CHECK",
+    "sku": "2200038",
+    "method": "title+label-mismatch",
+    "score": 0.9655172413793104,
+    "candidates": [],
+    "ebayLabel": "FBA_6R-E86B-4CYQ",
+    "dupe": false
+  },
+  {
+    "item_id": "25f74c44-e15d-49b8-bd7f-b1a268447943",
+    "deliveroo_title": "1L Litre Folding Plumbers Bucket",
+    "status": "MANUAL",
+    "sku": "2000065",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8e3b11ad-147e-45cd-ae05-3a54bf4db33e",
+    "deliveroo_title": "2 Port Motorised Zone Valve Head Fits Honeywell V4043h 22Mm and 28Mm",
+    "status": "MANUAL",
+    "sku": "2200063",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "dcdcb0b3-5273-4891-adee-3f66196f5a85",
+    "deliveroo_title": "22Mm Barrier Pipe Pex White - 25M Coil Push Fit Plumbing Pipe Wras Approved",
+    "status": "CHECK",
+    "sku": "1200018",
+    "method": "fuzzy",
+    "score": 0.631578947368421,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "43ee5bff-fed5-4ec1-b9f9-6941d7658bf1",
+    "deliveroo_title": "27\" Backer Immersion Heater 3Kw Copper Element 2.25 Bsp Thermostat Uk Made",
+    "status": "MATCHED",
+    "sku": "700005",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "9d8281af-f251-4e19-aa58-fb39234ec86a",
+    "deliveroo_title": "3/4\" Salus Caterhose Commercial Yellow Gas Catering Pipe Hose 1.5M Long 1500Mm",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "500011",
+        "title": "SINGLE - SALVUS 3/4\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.8
+      },
+      {
+        "sku": "500012",
+        "title": "NO - SALVUS 3/4\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.8
+      },
+      {
+        "sku": "500007",
+        "title": "SINGLE - SALVUS 1/2\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.6666666666666666
+      }
+    ],
+    "ebayLabel": "SB-2JCY-PBSQ",
+    "dupe": false
+  },
+  {
+    "item_id": "4b7ba6db-bf86-4390-89fc-fdbd5c0b6db8",
+    "deliveroo_title": "3/4\" Salvus Caterhose Commercial Yellow Gas Catering Pipe Hose 1.0M Long 1000Mm",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "500011",
+        "title": "SINGLE - SALVUS 3/4\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.8
+      },
+      {
+        "sku": "500012",
+        "title": "NO - SALVUS 3/4\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.8
+      },
+      {
+        "sku": "500013",
+        "title": "SINGLE - SALVUS 3/4\" 1m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.75
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e11a6d53-f621-4f6e-812a-862121a6d5e9",
+    "deliveroo_title": "4\" Wide Opening Adjustable Wrench Spanner - 17Mm Jaw Opening",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000025",
+        "title": "SINGLE - TT 4\" Wide Opening Wrench - 19mm Jaw Opening **TTWA4**",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2000026",
+        "title": "NO - TT \" Wide Opening Wrench - 19mm Jaw Opening",
+        "score": 0.5714285714285714
+      },
+      {
+        "sku": "2000027",
+        "title": "SINGLE - TT 6\" Wide Opening Wrench - 34mm Jaw Opening **TTWA6**",
+        "score": 0.5333333333333333
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "7c9329a8-539c-48d3-8ae2-4e7c926b37a1",
+    "deliveroo_title": "50Ml Gel That Rapid Blue Stuff - Wras Approved Thread Sealer 50Gs",
+    "status": "MATCHED",
+    "sku": "2000068",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4564d9ae-8051-43ef-ae9e-c5f18046852d",
+    "deliveroo_title": "6\" Wide Opening Adjustable Wrench Spanner - 34Mm Jaw Opening",
+    "status": "MATCHED",
+    "sku": "2000027",
+    "method": "fuzzy",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4fa73e77-35d5-4a12-a969-8a3d8c9aba1b",
+    "deliveroo_title": "611 Plumbing Solvent Weld Cement Abs & U-pvc 250Ml Plastic Pipe Adhesive Glue",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900034",
+        "title": "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 250ml",
+        "score": 0.7692307692307693
+      },
+      {
+        "sku": "900054",
+        "title": "NO-Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 250ml",
+        "score": 0.7692307692307693
+      },
+      {
+        "sku": "900033",
+        "title": "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 125ml",
+        "score": 0.6923076923076923
+      }
+    ],
+    "ebayLabel": "ED-CXZJ-5AVJ",
+    "dupe": false
+  },
+  {
+    "item_id": "53941ca3-e09d-4f69-89e6-a63e46a52ff0",
+    "deliveroo_title": "7 Day 2 Channel Programmer - Replaces Honeywell St9400c",
+    "status": "CHECK",
+    "sku": "600136",
+    "method": "title+label-mismatch",
+    "score": 0.7058823529411765,
+    "candidates": [],
+    "ebayLabel": "FPP14206",
+    "dupe": false
+  },
+  {
+    "item_id": "63029f26-9cc8-4e15-9b33-63ffeb77ea38",
+    "deliveroo_title": "8\" Wide Opening Adjustable Wrench Spanner - 38Mm Jaw Opening",
+    "status": "MATCHED",
+    "sku": "2000029",
+    "method": "fuzzy",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "75152510-ede0-4f21-9688-75097f4a30bb",
+    "deliveroo_title": "Adjustable Pipe Cutters Suitable for Copper Brass Aluminium Tube 3Mm-30mm",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000037",
+        "title": "SINGLE - TT Compact Tube Cutter for Copper, Aluminium and Brass 3-22mm **CM**",
+        "score": 0.45454545454545453
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d28d37d3-d792-4283-b95a-37375bdd8d86",
+    "deliveroo_title": "Adjustable Toilet Dual Flush Valve Push Button Cable Flush System Replacement",
+    "status": "CHECK",
+    "sku": "1900069",
+    "method": "fuzzy",
+    "score": 0.6666666666666666,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "771a8b3d-ff97-41a0-8faf-55ee4b55995e",
+    "deliveroo_title": "Adjustable Toilet Dual Flush Valve Push Button Toilet Flush System Replacement",
+    "status": "CHECK",
+    "sku": "1900069",
+    "method": "fuzzy",
+    "score": 0.6086956521739131,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "f05ac773-9a2d-450a-8f7c-176c3d5930fb",
+    "deliveroo_title": "Air Admittance Valve 32/40/50Mm Internal Vent Push Fit and Solvent Weld Systems",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1200201",
+        "title": "SINGLE - White Durgo 32/40/50mm Air Admittance Valve Solvent Weld",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "900302",
+        "title": "SINGLE - Black Durgo 32/40/50mm Air Admittance Valve Solvent Weld",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "1200097",
+        "title": "SINGLE - 110mm Black Durgo Air Admittance Valve Push Fit Black",
+        "score": 0.45454545454545453
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "53f52c18-843a-4333-8e70-862c651c6db7",
+    "deliveroo_title": "Banico Zvc22 22Mm 2 Port Motorised Valve Replacement Honeywell 2 Port Valve",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2200086",
+        "title": "LavaTherm Motorised 2 Port Valve 22mm",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2200060",
+        "title": "NO - Vitow VT1 Motorised 2 Port Valve 22mm",
+        "score": 0.625
+      },
+      {
+        "sku": "2200085",
+        "title": "TTH222MZV - TotalHome 2 Port 22mm Motorised Valve",
+        "score": 0.625
+      }
+    ],
+    "ebayLabel": "FBA_ZVC22",
+    "dupe": false
+  },
+  {
+    "item_id": "83400910-ddec-4edc-9be8-5ae3e146b7e5",
+    "deliveroo_title": "Banico Zvmc22 22Mm 3 Port Motorised Valve Replacement for Honeywell 3 Port Valve",
+    "status": "CHECK",
+    "sku": "2200001",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "FBA_ZVMC22",
+    "dupe": false
+  },
+  {
+    "item_id": "6787b01c-a4bf-4fd4-9c66-38efb5a15fd2",
+    "deliveroo_title": "Black Swan Pcdc Powder Crystal Drain Cleaner",
+    "status": "CHECK",
+    "sku": "900005",
+    "method": "title+label-mismatch",
+    "score": 0.9333333333333333,
+    "candidates": [],
+    "ebayLabel": "46-ISSE-5S19",
+    "dupe": true
+  },
+  {
+    "item_id": "a018d56c-85b8-407b-b386-ed35a18cffd9",
+    "deliveroo_title": "Black Swan Powder Crystal Drain Cleaner 1Lb",
+    "status": "MATCHED",
+    "sku": "900005",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "8ebb5bfd-9213-4790-bdb2-1656fa855a3a",
+    "deliveroo_title": "Black Swan Pvc3 Heavy Body Pvc Solvent Cement Clear 236Ml Plumbing Pipe Glue",
+    "status": "CHECK",
+    "sku": "900009",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "BS-PVC3",
+    "dupe": false
+  },
+  {
+    "item_id": "c67b2042-3388-410f-b4d7-6c50786c58de",
+    "deliveroo_title": "Black Swan Pvci Pvc Solvent Cement Clear Small 118 Ml Plumbing Plastic Pipe Glue",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900033",
+        "title": "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 125ml",
+        "score": 0.46153846153846156
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e637ff5e-1f13-44bd-9232-e7da2304ac1e",
+    "deliveroo_title": "Black Swan Stay Soft Plumbers Putty Put2 White",
+    "status": "CHECK",
+    "sku": "900008",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "FBA_BF-V0C6-QTAV",
+    "dupe": false
+  },
+  {
+    "item_id": "2727c849-0897-4a9a-821a-4f25dfa92504",
+    "deliveroo_title": "Black Thermostatic Radiator Valve Trv Designer Angled 15Mm",
+    "status": "MATCHED",
+    "sku": "2100048",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2a8da57e-2405-4f8c-a7a3-9f954c1f3bdc",
+    "deliveroo_title": "Bm22 Boilermag Domestic 22Mm Magnetic Filter 2 Free Bm3 Central Heating Cleaner",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "400001",
+        "title": "BoilerMag BM22 Magnetic Heating Filter 22mm",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "400002",
+        "title": "NO - BoilerMag BM22 Magnetic Heating Filter 22mm",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "400057",
+        "title": "SINGLE - Magblu 22mm Magnetic Boiler Filter Black",
+        "score": 0.3333333333333333
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e917345b-4797-413c-9740-14d64291bbd4",
+    "deliveroo_title": "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate 500Ml",
+    "status": "MANUAL",
+    "sku": "NA",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c942694b-0a5c-4619-9c59-53e3b3810e1c",
+    "deliveroo_title": "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate. Box of 8 X 500Ml",
+    "status": "MANUAL",
+    "sku": "NA",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "443838e1-da5b-45e5-8bf3-e6b5c1ca6338",
+    "deliveroo_title": "Brushed Brass Angled Manual Radiator Towel Rail Valve 15Mm",
+    "status": "MATCHED",
+    "sku": "2100083",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "192801a0-86d1-4835-9e82-08490c3e7bf0",
+    "deliveroo_title": "Brushed Brass Corner Manual Radiator Towel Rail Valve 15Mm",
+    "status": "MATCHED",
+    "sku": "2100087",
+    "method": "ebay-fuzzy",
+    "score": 0.9473684210526315,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e5a11ce7-4bc3-4117-8d94-08f6b1376faa",
+    "deliveroo_title": "Brushed Brass Straight Manual Radiator Towel Rail Valve 15Mm",
+    "status": "MATCHED",
+    "sku": "2100085",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "fd2b1438-8e05-4d07-94f8-4e138fbb7048",
+    "deliveroo_title": "Calmag Water Filter Jug Purifier Dispenser 2 Litre Capacity Ideal for Fridge",
+    "status": "MANUAL",
+    "sku": "NA",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d73fc070-4fa2-46e1-b3ea-4e42fccedc71",
+    "deliveroo_title": "Compact Mini Pipe Cutter for Copper, Aluminium and Brass Tube 3Mm-22mm",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000037",
+        "title": "SINGLE - TT Compact Tube Cutter for Copper, Aluminium and Brass 3-22mm **CM**",
+        "score": 0.782608695652174
+      },
+      {
+        "sku": "2000038",
+        "title": "NO - TT Compact Tube Cutter for Copper, Aluminium and Brass 3-22mm CM",
+        "score": 0.75
+      },
+      {
+        "sku": "200026",
+        "title": "SINGLE - Amtech 22mm Pipe Cutter",
+        "score": 0.375
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d75b77a3-694d-4fae-a1c5-db17b11caa40",
+    "deliveroo_title": "Cross Head Chrome Plated Tap Conversion Kit, Silver, 0.5-Inch",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1800026",
+        "title": "TCK3 1/2\" Tap Conversion Kit Cross Head Chrome Plated",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "1800027",
+        "title": "NO -  TCK3 1/2\" Tap Conversion Kit Cross Head Chrome Plated",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "1800064",
+        "title": "TCK4 Tap Conversion Kit Lever MV",
+        "score": 0.35294117647058826
+      }
+    ],
+    "ebayLabel": "TCK3",
+    "dupe": false
+  },
+  {
+    "item_id": "809ed035-34eb-4126-a0aa-302736b31aaa",
+    "deliveroo_title": "Danfoss Hpa2 2 Port Actuator Zone Valve Head",
+    "status": "MATCHED",
+    "sku": "2200050",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "98c5a5dd-e9bf-4d48-8f0c-cf0eb192f484",
+    "deliveroo_title": "Danfoss Hsa3 3 Port Valve Actuator Zone Valve Head",
+    "status": "MATCHED",
+    "sku": "2200049",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0ce2debc-6f1c-4362-ad68-3e7001eaaf83",
+    "deliveroo_title": "Danfoss Randall Hp22|2 Port | 22Mm Zone Valve by Danfoss Randall",
+    "status": "MATCHED",
+    "sku": "2200025",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "Z9-NTYA-O2DG",
+    "dupe": false
+  },
+  {
+    "item_id": "66f2efe3-5baf-4b03-8a41-a9d22b39a28e",
+    "deliveroo_title": "Delta Dore 2300 Connected Pack Smart Wireless Thermostat 6050681",
+    "status": "MATCHED",
+    "sku": "600176",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "70c829b9-f531-42b7-9ab8-102800c0a64a",
+    "deliveroo_title": "Delta Dore 6053073 Tybox 137+ Thermostat Programmable Wireless - No",
+    "status": "MATCHED",
+    "sku": "600013",
+    "method": "ebay-fuzzy",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "47e40a28-e2f2-4a5a-a569-29ffac0a7530",
+    "deliveroo_title": "Delta Dore 6053073 Tybox 137+ Thermostat Programmable Wireless White",
+    "status": "MATCHED",
+    "sku": "600012",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e23cd210-4cd0-4236-a557-99a850a54a8c",
+    "deliveroo_title": "Designer Anthracite Thermostatic Radiator Valve Trv Twin Pack - Angled",
+    "status": "MATCHED",
+    "sku": "2100041",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8f130e7f-d1e0-4863-881a-7c15e6cfadda",
+    "deliveroo_title": "Designer Anthracite Thermostatic Radiator Valve Trv Twin Pack - Corner",
+    "status": "MATCHED",
+    "sku": "2100037",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "fa0cd06d-3a77-4d03-8199-ae7a72dc4d98",
+    "deliveroo_title": "Designer Anthracite Thermostatic Radiator Valve Trv Twin Pack - Straight",
+    "status": "MATCHED",
+    "sku": "2100039",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d9386919-7672-4558-9bfe-9e217fc650e4",
+    "deliveroo_title": "Designer Thermostatic Radiator Valves Angled Corner Straight Trv Various Colours",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100047",
+        "title": "Premium BK-TRV301A Design Twin Pack TRV Black Angled",
+        "score": 1
+      },
+      {
+        "sku": "2100043",
+        "title": "Premium BK-TRV101C Design Twin Pack TRV Black Corner",
+        "score": 1
+      },
+      {
+        "sku": "2100045",
+        "title": "Premium BK-TRV201S Design Twin Pack TRV Black Straight",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0ef5faab-01e2-4fa9-9c69-a7a2c9308df3",
+    "deliveroo_title": "Designer Trv Thermostat Radiator Valve Brushed Nickel Angled Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100204",
+        "title": "LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Angled",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100204 - NO",
+        "title": "NO - LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Angled",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100062",
+        "title": "NO - NK-TRV301A Design Twin Pack TRV Brushed Nickel Angled",
+        "score": 0.631578947368421
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "08b293d9-29ac-4b44-b396-ae80db2c22bb",
+    "deliveroo_title": "Designer Trv Thermostat Radiator Valve Brushed Nickel Corner Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100216",
+        "title": "LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Corner",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100216 - NO",
+        "title": "NO - LavaTherm TRV Brushed Nickel Thermostatic Radiator Valve Corner",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100060",
+        "title": "NO - NK-TRV101C Design Twin Pack TRV Brushed Nickel Corner",
+        "score": 0.631578947368421
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4c91fa32-37ea-4359-b6e1-9f16524636bc",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Black Angled Twin Pack",
+    "status": "CHECK",
+    "sku": "2100200",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "ffd36f12-5a92-4717-b749-568c650bd126",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Black Corner Twin Pack",
+    "status": "CHECK",
+    "sku": "2100213",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "f16e63a8-cadf-4bc5-8dc4-e42d978eb19e",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Black Straight Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100207",
+        "title": "LavaTherm TRV Black Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100207 - NO",
+        "title": "NO - LavaTherm TRV Black Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100007",
+        "title": "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack",
+        "score": 0.7
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d6671334-ce06-4d99-a965-dc59bbca8c0d",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Brushed Brass Angled Twin Pack",
+    "status": "CHECK",
+    "sku": "2100203",
+    "method": "fuzzy",
+    "score": 0.7777777777777778,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "1bb1a32c-a490-4c5c-b85c-eee465bdf99a",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Brushed Brass Corner Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100203",
+        "title": "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100203 - NO",
+        "title": "NO - LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Angled",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2100209",
+        "title": "LavaTherm TRV Brushed Brass Thermostatic Radiator Valve Straight",
+        "score": 0.6666666666666666
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6eab7ce6-cd8d-4845-8d32-aadf2d20e24d",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Chrome Angled Twin Pack",
+    "status": "CHECK",
+    "sku": "2100201",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "165a66cf-23e9-4381-996e-133de104f5aa",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Chrome Corner Twin Pack",
+    "status": "CHECK",
+    "sku": "2100214",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "41547b2d-3d86-4232-9f6d-1292f412bc68",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve Chrome Straight Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100208",
+        "title": "LavaTherm TRV Chrome Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100208 - NO",
+        "title": "NO - LavaTherm TRV Chrome Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100007",
+        "title": "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack",
+        "score": 0.7
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "da2fab74-77ad-4cd6-8156-ffd91ce1d9ba",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve White Angled Twin Pack",
+    "status": "CHECK",
+    "sku": "2100206",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "18708e98-1152-45b9-9cd3-b87fad9e8625",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve White Corner Twin Pack",
+    "status": "CHECK",
+    "sku": "2100218",
+    "method": "fuzzy",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c5398f62-dee1-4d15-9a4e-7a525532247e",
+    "deliveroo_title": "Designer Trv Thermostatic Radiator Valve White Straight Twin Pack",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100212",
+        "title": "LavaTherm TRV White Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100212 - NO",
+        "title": "NO - LavaTherm TRV White Thermostatic Radiator Valve Straight",
+        "score": 0.75
+      },
+      {
+        "sku": "2100007",
+        "title": "NO - NV Anthracite Straight TRV Thermostatic Radiator Valve and Lockshield Twin Pack",
+        "score": 0.7
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6df42bc3-8efb-4945-a082-424dd8898c95",
+    "deliveroo_title": "Drain Snake Pipe Cleaner 6Mm X 3M Rotary Unblocker 3 Metres",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000051",
+        "title": "Drain Snake Pipe Cleaner 6mm x 3m SPC",
+        "score": 0.7368421052631579
+      },
+      {
+        "sku": "2000052",
+        "title": "NO - TT Drain Snake Pipe Cleaner 6mm x 3m SPC",
+        "score": 0.7
+      },
+      {
+        "sku": "1100034",
+        "title": "MDPE  25MM X 3/4\" ADAPTER FI",
+        "score": 0.2222222222222222
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e4906cfe-abbf-42fd-a510-a297889f421c",
+    "deliveroo_title": "Drayton 0707260 Trv4 Thermostatic Radiator Matching Lockshield Valve, 15Mm",
+    "status": "MATCHED",
+    "sku": "2100022",
+    "method": "fuzzy",
+    "score": 0.9473684210526315,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "59036ebe-b629-418d-ba94-d32fffe20d1a",
+    "deliveroo_title": "Drayton 0707260 Trv4 White Thermostatic Radiator Lockshield Valve 15Mm No",
+    "status": "MANUAL",
+    "sku": "NA",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "NO-C0-H9BN-10C8",
+    "dupe": false
+  },
+  {
+    "item_id": "b8cb14e6-801c-401a-aa78-dedf48b4f8bb",
+    "deliveroo_title": "Drayton 08 09 099 Rt212 Trv Thermostatic Radiator Valve Sensing Head",
+    "status": "MANUAL",
+    "sku": "NA",
+    "method": "manual",
+    "score": null,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6bc7eed0-0f4c-465c-b2d7-2afe91a4c082",
+    "deliveroo_title": "Drayton Mai 3 Port Actuator Head 27651",
+    "status": "MATCHED",
+    "sku": "2200065",
+    "method": "fuzzy",
+    "score": 0.8571428571428571,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c94e05a1-32dc-4788-a87c-e2d9305f1ab0",
+    "deliveroo_title": "Drayton Trv4 Thermostatic Valve Head Only 0707007 Replacement Trv4 Radiator",
+    "status": "CHECK",
+    "sku": "2100020",
+    "method": "title+label-mismatch",
+    "score": 0.8421052631578947,
+    "candidates": [],
+    "ebayLabel": "707007",
+    "dupe": false
+  },
+  {
+    "item_id": "e6e7bb9f-89d0-43e9-a525-170a4be8cb0c",
+    "deliveroo_title": "Drayton Za5 2 Port Actuator Head 27650",
+    "status": "MATCHED",
+    "sku": "2200053",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "bcca3275-b7f0-4157-9b70-d14c3743d476",
+    "deliveroo_title": "Duca Replacement Vaillant Ecotec Plus 5 Wire Boiler Pump 178983",
+    "status": "MATCHED",
+    "sku": "1300018",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "dbd335b4-530c-443c-a990-3c580bd39237",
+    "deliveroo_title": "Engo Controls Zigbee Smart Plug Eplug-zb-uk",
+    "status": "MATCHED",
+    "sku": "600530",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6705a00c-8521-4282-9381-c57b6ccef22c",
+    "deliveroo_title": "Engo E20i Smart Thermostat Wireless Programmable Wifi App Alexa",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "E20i",
+        "title": "ENGO Wireless Programmable Smart Thermostat - E20i",
+        "score": 1
+      },
+      {
+        "sku": "600262",
+        "title": "ENGO **E20i-B** Wireless Programmable Smart Thermostat - Black",
+        "score": 1
+      },
+      {
+        "sku": "600264",
+        "title": "ENGO **E20i-W** Wireless Programmable Smart Thermostat - White",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b48f2795-393f-4585-94f3-f6a00a1d56e7",
+    "deliveroo_title": "Engo E40-230 Wired Smart Thermostat Zigbee 3.0 Programmable",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "E40-230",
+        "title": "E40-230",
+        "score": 1
+      },
+      {
+        "sku": "600526",
+        "title": "ENGO **E40-230W** Zigbee Wired Programmable Thermostat - White",
+        "score": 1
+      },
+      {
+        "sku": "600528",
+        "title": "ENGO **E40-230B** Zigbee Wired Programmable Thermostat - Black",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4d21508f-9486-4186-8ca7-22c713b866e1",
+    "deliveroo_title": "Engo E40-batw Battery Powered Smart Thermostat Zigbee 3.0",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "E40-BAT",
+        "title": "E40-BAT",
+        "score": 1
+      },
+      {
+        "sku": "600522",
+        "title": "ENGO **E40-BATW** ZigBee Wireless Programmable Thermostat - White",
+        "score": 1
+      },
+      {
+        "sku": "600524",
+        "title": "ENGO **E40-BATB** ZigBee Wireless Programmable Thermostat - Black",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4445d3e3-ab68-43f5-8b6e-cb4ea6b87c15",
+    "deliveroo_title": "Engo E7-rf Wireless Thermostat",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "E7-RF",
+        "title": "ENGO E7-RF Wireless Thermostat",
+        "score": 1
+      },
+      {
+        "sku": "600546",
+        "title": "ENGO **E7-RFW** Wireless Thermostat - White",
+        "score": 1
+      },
+      {
+        "sku": "600548",
+        "title": "ENGO **E7-RFB** Wireless Thermostat - Black",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "480cd0e5-f4c6-4a03-bbb3-e1c8e8caeb86",
+    "deliveroo_title": "Engo E901-rf Programmable Wireless Thermostat 7 Day",
+    "status": "MATCHED",
+    "sku": "600302",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2cd4db7a-6a2b-434b-b668-00475f9af797",
+    "deliveroo_title": "Engo E901-wifi Wireless Programmable Smart Wifi Thermostat Alexa App",
+    "status": "MATCHED",
+    "sku": "600258",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "3a8da0a1-150f-46b4-8c2d-dbe23e81e745",
+    "deliveroo_title": "Engo Ecam Smart Indoor Wifi Security Camera 360° Motion Tracking Alexa",
+    "status": "MATCHED",
+    "sku": "600270",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6ca0fd69-1f11-4d9b-aaca-59595b2acdc1",
+    "deliveroo_title": "Engo Ecam-e27 Wi-fi Smart Bulb Camera 4Mp Indoor Cctv with Night Vision",
+    "status": "MATCHED",
+    "sku": "600538",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "af5f9054-3ad9-4c09-a1dc-3bf12dad1333",
+    "deliveroo_title": "Engo Ecam-l2 Wi-fi Smart Floodlight Camera 4Mp Outdoor Security Light L2",
+    "status": "MATCHED",
+    "sku": "600542",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "ed7ef5f9-78ea-45ee-b3f0-b360aa94674e",
+    "deliveroo_title": "Engo Ecam-li Wifi Smart Floodlight Camera 4Mp Outdoor Cctv Security",
+    "status": "MATCHED",
+    "sku": "600540",
+    "method": "ebay-fuzzy",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "9e630ffa-5744-46b1-a2fe-26505c558990",
+    "deliveroo_title": "Engo Ecam-solar Wi-fi Smart Outdoor Camera 4Mp Hd Solar Cctv Ip65",
+    "status": "MATCHED",
+    "sku": "600544",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "ac007c2c-238e-4183-a499-3637a7b72d67",
+    "deliveroo_title": "Engo Ecb8-230 8 Channel Wiring Centre for Underfloor Heating System",
+    "status": "MATCHED",
+    "sku": "600310",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2c6a1bf2-8646-48cd-9f24-6278e764e2a4",
+    "deliveroo_title": "Engo Hot Water Timer Programmable Immersion Heater Wifi Water Heater",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "EHW",
+        "title": "ENGO EHW-B WiFi Hot Water Timer - Black",
+        "score": 1
+      },
+      {
+        "sku": "600534",
+        "title": "ENGO **EHW-W** WiFi Hot Water Timer - White",
+        "score": 1
+      },
+      {
+        "sku": "600536",
+        "title": "ENGO **EHW-B** WiFi Hot Water Timer - Black",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8c96b878-9bc7-4be8-b653-4d67899bfe1f",
+    "deliveroo_title": "Engo Ufh Thermal Actuator E30nc-230 Underfloor Heating Manifold 230V",
+    "status": "MATCHED",
+    "sku": "600314",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "7849a058-a147-465b-8732-e96fe3e6b5a6",
+    "deliveroo_title": "Engo Ufh Thermal Actuator E30nc-230 Underfloor Heating Manifold 230V",
+    "status": "MATCHED",
+    "sku": "600314",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "633411f2-c735-4ea7-bd9c-b5000305b468",
+    "deliveroo_title": "Extreme Solder Mat - 1200C Rated",
+    "status": "MATCHED",
+    "sku": "2000011",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "80cf81df-e984-47f6-b074-e888a0221165",
+    "deliveroo_title": "Fernox 62664 Tf1 Heat Pump Antifreeze Valve 28Mm Compression",
+    "status": "MATCHED",
+    "sku": "2200071",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "9489415a-b071-4a20-8820-7c4f405557e9",
+    "deliveroo_title": "Fernox 62664 Tfi Heat Pump Antifreeze Valve 28Mm Compression",
+    "status": "MATCHED",
+    "sku": "2200071",
+    "method": "fuzzy",
+    "score": 0.8888888888888888,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "fbfc5439-d8e3-49fc-8c7f-dc987e334796",
+    "deliveroo_title": "Fernox 62665 Tfi Heat Pump Antifreeze Valve 1.25\" Male Thread",
+    "status": "MATCHED",
+    "sku": "2200073",
+    "method": "ebay-fuzzy",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "9168eba9-5cad-4158-a0f0-7fa904e16137",
+    "deliveroo_title": "Fernox 62665 Tfi Heat Pump Antifreeze Valve 1.25\" Male Thread",
+    "status": "MATCHED",
+    "sku": "2200073",
+    "method": "ebay-fuzzy",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "44207cca-1f30-444e-ba06-1d297e9ca194",
+    "deliveroo_title": "Fernox F1 F8 Heating Treatment Pack - Radiator Cleaner & Inhibitor Kit",
+    "status": "MATCHED",
+    "sku": "900163",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "88cee29d-f97e-4fab-9246-ed43445cda8e",
+    "deliveroo_title": "Fernox F1 Inhibitor Central Heating Boiler Protector 500Ml",
+    "status": "CHECK",
+    "sku": "900021",
+    "method": "title+label-mismatch",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "OX-QPHO-ZQFN",
+    "dupe": true
+  },
+  {
+    "item_id": "f0f5a985-2348-4ab2-99e8-7d1fef818aa9",
+    "deliveroo_title": "Fernox F1 Protector Central Heating Inhibitor 500Ml - Improved System Efficiency",
+    "status": "MATCHED",
+    "sku": "900021",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "da859b06-b92e-424a-8f17-f746cb5b884f",
+    "deliveroo_title": "Fernox F4 Express Leak Sealer 400Ml Radiator & Central Heating Leak Sealant",
+    "status": "MATCHED",
+    "sku": "900228",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "467d7492-9a5c-400e-a593-3fcd7cd3351d",
+    "deliveroo_title": "Fernox Power Cleaner F8 500Ml Central Heating Radiator Flush Sludge Remove Flush",
+    "status": "MATCHED",
+    "sku": "900023",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "cb89b802-5889-45e0-86e7-4922ec703f3f",
+    "deliveroo_title": "Fernox Tfi Sigma Hp 28Mm 62615 Heat Pump Filter",
+    "status": "CHECK",
+    "sku": "400037",
+    "method": "fuzzy",
+    "score": 0.7619047619047619,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c9dc27a1-80da-4dd3-99bb-6c2c61aeb667",
+    "deliveroo_title": "Fernox Tfi Sigma Ub Filter 22Mm 62631 Under Boiler",
+    "status": "MATCHED",
+    "sku": "400039",
+    "method": "fuzzy",
+    "score": 0.8888888888888888,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e970f607-b068-4de1-808c-4a8179cc73f7",
+    "deliveroo_title": "Fernox Water Hawk 400 G Jointing Compound, Wras Approved Leak & Water Sealant",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900232",
+        "title": "SINGLE - Fernox **Water Hawk** Jointing Compound 400g 61023",
+        "score": 1
+      },
+      {
+        "sku": "900232 - NO",
+        "title": "NO - Fernox 61023 Water Hawk Jointing Compound 400g",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e2de9445-6a46-43a5-9d24-085527d2e1b5",
+    "deliveroo_title": "Filter Set for Lavatap Tremercati 3 in 1 Boiling Water Tap System Tmboil-03",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "KOGE_TAP_KITS",
+        "title": "PARENT - Koge 3 in 1 Boiling Water Tap Kits",
+        "score": 0.5217391304347826
+      }
+    ],
+    "ebayLabel": "TMBOIL-03",
+    "dupe": false
+  },
+  {
+    "item_id": "48bef621-dc13-4e9c-af9d-f5fb91e43fbf",
+    "deliveroo_title": "Flexible Toilet Pan Connector Wc Waste Soil Pipe 250-500Mm",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1900006",
+        "title": "SINGLE - Flexible Toilet Pan Connector Universal WC Flexi 260 - 560mm",
+        "score": 0.5263157894736842
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0d4beb44-9cf4-4161-b0d1-012c14e7a9fa",
+    "deliveroo_title": "Flomasta Twist-loc Push Fit Elbow Plastic Plumbing Pipes Fitting -22Mm",
+    "status": "MATCHED",
+    "sku": "1200015",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "ba972ed9-7d99-4c7b-9887-c681193afa58",
+    "deliveroo_title": "Flomasta Twistloc Spt67666m Plastic Push-fit Equal Tee 15Mm-2 Pack",
+    "status": "MATCHED",
+    "sku": "1200014",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4626df83-954c-4a0d-8c88-0581b082a5b1",
+    "deliveroo_title": "Flush Daddy T68 Bottom Entry Long Life Toilet Fill Valve 1/2 Inch Brass Thread",
+    "status": "MATCHED",
+    "sku": "1900039",
+    "method": "ebay-fuzzy",
+    "score": 0.9655172413793104,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8fc79107-dea7-48b3-a0c8-031d4454daa9",
+    "deliveroo_title": "Flushdaddy Dual Flush Toilet Cistern Bottom Entry for Low Level Toilet Pan",
+    "status": "MATCHED",
+    "sku": "1900093",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "ea0129cc-d6e6-41bf-9709-fe12f76e245a",
+    "deliveroo_title": "Flushdaddy Hideaway Compact Concealed Cistern Cist12 Dual Flush 6L/3l Wras",
+    "status": "MATCHED",
+    "sku": "1900095",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b1039eac-916a-44ae-8b05-d97573412b9b",
+    "deliveroo_title": "Flushdaddy Lolik Cistern Repair Kit Dual Flush Valve & Bottom Entry Fill Valve",
+    "status": "MATCHED",
+    "sku": "1900043",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "5948997a-d563-4056-b53e-392b9473ecbd",
+    "deliveroo_title": "Flushdaddy Lolik Long Life Cistern Spares Pack",
+    "status": "CHECK",
+    "sku": "1900043",
+    "method": "title+label-mismatch",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "LOLIK",
+    "dupe": true
+  },
+  {
+    "item_id": "f6ee3222-c60d-4115-974d-6a3af8a3aad9",
+    "deliveroo_title": "Flushdaddy Nj208 Bottom Entry Adjustable Wc Toilet Fill Valve 1/2 Inch",
+    "status": "MATCHED",
+    "sku": "1900033",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b65c812b-3050-4cc1-b509-5f4e4a4f28c8",
+    "deliveroo_title": "Flushdaddy Np254 Dual Flush Drop Valve 1.5\" & 2\" Wras Toilet Cistern Replacement",
+    "status": "MATCHED",
+    "sku": "1900057",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "0ef64724-5a87-4baa-b8e0-f05e0aaa0ba0",
+    "deliveroo_title": "Flushdaddy Np254 Dual Flush Drop Valve 1.5\" and 2\"",
+    "status": "MATCHED",
+    "sku": "1900057",
+    "method": "fuzzy",
+    "score": 0.9473684210526315,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "dd02464f-e43f-45b2-a5d3-030ee6b223dc",
+    "deliveroo_title": "H&v 15Mm Electrolytic Scale Reducer Wras Approved Limescale Inhibitor",
+    "status": "MATCHED",
+    "sku": "400015",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "423d763c-ee87-47c4-b314-9933e5af0068",
+    "deliveroo_title": "Heatmiser 2 Wire Thermal Actuator Ta230",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600114",
+        "title": "Heatmiser UFH Underfloor Heating Thermal Actuator 230v TA230",
+        "score": 0.5714285714285714
+      }
+    ],
+    "ebayLabel": "A_THERACTTA230",
+    "dupe": false
+  },
+  {
+    "item_id": "228f8868-7145-4dd2-8d3b-61c5b2e633b4",
+    "deliveroo_title": "Heatmiser Ds1 V2 Dial Room Thermostat Ufh",
+    "status": "MATCHED",
+    "sku": "600030",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6a96b5ba-4bc4-41ee-8fb5-2b025483fc01",
+    "deliveroo_title": "Heatmiser Ds1-lv2 Room Thermostat with Display Ufh",
+    "status": "MATCHED",
+    "sku": "600032",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c2a81457-3e98-4115-8ba7-628f3745fbec",
+    "deliveroo_title": "Heatmiser Neoair Bundle - Neoair V3 White/rf Switch/neoair Stand",
+    "status": "MATCHED",
+    "sku": "600034",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "18679adb-9032-463a-b8f8-620397a38c36",
+    "deliveroo_title": "Heatmiser Neoair V3 Smart Wireless Programmable Room Thermostat Black",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600262",
+        "title": "ENGO **E20i-B** Wireless Programmable Smart Thermostat - Black",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "600070-V3",
+        "title": "Heatmiser NeoStat V3 Programmable Thermostat - Sapphire Black",
+        "score": 0.625
+      },
+      {
+        "sku": "600096",
+        "title": "Heatmiser Slimline RF V3 Wireless Programmable Thermostat",
+        "score": 0.625
+      }
+    ],
+    "ebayLabel": "FBA_NEOAIRv3B",
+    "dupe": false
+  },
+  {
+    "item_id": "8a3afc92-f0dd-43c0-8ac9-c6d948f693ec",
+    "deliveroo_title": "Heatmiser Neoair V3 Smart Wireless Programmable Room Thermostat Silver",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600096",
+        "title": "Heatmiser Slimline RF V3 Wireless Programmable Thermostat",
+        "score": 0.625
+      },
+      {
+        "sku": "600097",
+        "title": "NO - Heatmiser Slimline RF V3 Wireless Programmable Thermostat",
+        "score": 0.625
+      },
+      {
+        "sku": "600186-V3",
+        "title": "Heatmiser NeoStat V3  Programmable Thermostat - Platinum Silver",
+        "score": 0.625
+      }
+    ],
+    "ebayLabel": "FBA_NEOv3S",
+    "dupe": false
+  },
+  {
+    "item_id": "d35db7a5-0523-43a1-974c-265fe6e38ffc",
+    "deliveroo_title": "Heatmiser Neoair V3 Wireless Heating Control Bundle with Hub & Rf Switch",
+    "status": "MATCHED",
+    "sku": "600402",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2581df4e-9467-493c-b23d-93d1fa1491c2",
+    "deliveroo_title": "Heatmiser Neohub Gen 2 Smart Wifi Hub",
+    "status": "CHECK",
+    "sku": "600048",
+    "method": "title+label-mismatch",
+    "score": 0.7272727272727273,
+    "candidates": [],
+    "ebayLabel": "S1-SGUY-PPQK",
+    "dupe": false
+  },
+  {
+    "item_id": "93c9af4b-b1bd-4e88-9cb1-6e7bd5bff0b4",
+    "deliveroo_title": "Heatmiser Neohub Mini Ot+ Neoair V3 Smart Opentherm Thermostat",
+    "status": "MATCHED",
+    "sku": "600052",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2f134fb1-3b38-42c7-acee-7febe994ab59",
+    "deliveroo_title": "Heatmiser Neokit 1V2 - Black - Damaged Box",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600055",
+        "title": "NO - Heatmiser Neokit 1 V2 - Black",
+        "score": 0.5454545454545454
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "00b6c9df-b1a8-44c7-b013-fd9959eb1327",
+    "deliveroo_title": "Heatmiser Neokit-e V2 Black Neostat-e Smart Electric Floor Heating Thermostat",
+    "status": "MATCHED",
+    "sku": "600080V2",
+    "method": "fuzzy",
+    "score": 0.9,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "0291f06c-dd28-4713-9bdd-bc68f03bddb0",
+    "deliveroo_title": "Heatmiser Neostat 12V V2 - Programmable Thermostat - Platinum Silver",
+    "status": "MATCHED",
+    "sku": "600064",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c491e65b-d927-42e6-8544-df45ddd9d5fa",
+    "deliveroo_title": "Heatmiser Neostat 12V V2 - Programmable Thermostat - Platinum Silver - No",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600064",
+        "title": "Heatmiser NeoStat 12v V2 Programmable Thermostat (Platinum Silver)",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "NO-4T-VPRY-3NMM",
+    "dupe": false
+  },
+  {
+    "item_id": "65b2444e-abc2-4e8b-9c21-9698fca95b15",
+    "deliveroo_title": "Heatmiser Neostat 12V V2 - Programmable Thermostat - Sapphire Black",
+    "status": "MATCHED",
+    "sku": "600066",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "JA-X0SA-Y5W8",
+    "dupe": false
+  },
+  {
+    "item_id": "e26a64f0-c2c3-473e-8694-cc191f1a4fb3",
+    "deliveroo_title": "Heatmiser Neostat 12Vv2 Programmable Thermostat - Glacier White",
+    "status": "MATCHED",
+    "sku": "600068",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "14-7O0X-E1SW",
+    "dupe": false
+  },
+  {
+    "item_id": "a890d41b-0a39-4add-9a19-073e65c75805",
+    "deliveroo_title": "Heatmiser Neostat 12Vv2 Programmable Thermostat - White - No",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600069",
+        "title": "NO - Heatmiser NeoStat V2 12V Programmable Thermostat V2 - White",
+        "score": 0.7692307692307693
+      },
+      {
+        "sku": "600072",
+        "title": "Heatmiser NeoStat V3 Programmable Thermostat - Glacier White",
+        "score": 0.7692307692307693
+      },
+      {
+        "sku": "600072-V2",
+        "title": "Heatmiser NeoStat V2 Programmable Thermostat - Glacier White",
+        "score": 0.7692307692307693
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "15ce616e-ad78-4713-928c-7001b8bfa64f",
+    "deliveroo_title": "Heatmiser Neostat V2 Programmable Thermostat - Black",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600070",
+        "title": "Heatmiser NeoStat V2 Programmable Thermostat - Sapphire Black",
+        "score": 0.9230769230769231
+      },
+      {
+        "sku": "600071",
+        "title": "NO - Heatmiser NeoStat V2 Black Programmable Digital Thermostat",
+        "score": 0.9230769230769231
+      },
+      {
+        "sku": "600066",
+        "title": "Heatmiser NeoStat 12v V2 Programmable Thermostat (Sapphire Black)",
+        "score": 0.8571428571428571
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "97953db4-0452-49e6-bfdb-cbc2f00b6a83",
+    "deliveroo_title": "Heatmiser Neostat V2 Programmable Thermostat - Glacier White",
+    "status": "MATCHED",
+    "sku": "600072-V2",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "bb3e1f5d-e45a-49c0-8355-6b53123667b3",
+    "deliveroo_title": "Heatmiser Neostat V2 Smart Thermostat - for Wet Underfloor Heating Only",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "neoStat-V2",
+        "title": "NeoStat V2 Parent",
+        "score": 1
+      },
+      {
+        "sku": "600072",
+        "title": "Heatmiser NeoStat V3 Programmable Thermostat - Glacier White",
+        "score": 1
+      },
+      {
+        "sku": "600186",
+        "title": "Heatmiser NeoStat V2  Programmable Thermostat - Platinum Silver",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e0adf20e-d1c4-4fc2-b158-903761401f8a",
+    "deliveroo_title": "Heatmiser Neostat Wifi Thermostat - Carbon Black",
+    "status": "MATCHED",
+    "sku": "600074",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2427253a-4868-4a9c-a3d6-808f1c8af8a1",
+    "deliveroo_title": "Heatmiser Neostat Wifi Thermostat - White",
+    "status": "CHECK",
+    "sku": "600078",
+    "method": "title+label-mismatch",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "FBA_S5-9NKD-VTSO",
+    "dupe": false
+  },
+  {
+    "item_id": "f47ce246-bbff-4da3-939d-a037de388d99",
+    "deliveroo_title": "Heatmiser Neostat-e V2 - Electric Underfloor Heating Ufh Thermostat - White",
+    "status": "MATCHED",
+    "sku": "600082V2",
+    "method": "fuzzy",
+    "score": 0.8421052631578947,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4d755ce0-d9c5-4328-9184-f436da5e4c4c",
+    "deliveroo_title": "Heatmiser Neostat-e V2 Electric Underfloor Heating Ufh Thermostat - Black",
+    "status": "CHECK",
+    "sku": "600080V2",
+    "method": "title+label-mismatch",
+    "score": 0.8421052631578947,
+    "candidates": [],
+    "ebayLabel": "YO-FXDE-FWVR",
+    "dupe": true
+  },
+  {
+    "item_id": "e06fa03b-9f79-4a74-9a8c-d2841a5ce276",
+    "deliveroo_title": "Heatmiser Neostat-e V2 Smart Thermostat for Electric Underfloor Heating",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600080V2",
+        "title": "Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - Black",
+        "score": 0.7368421052631579
+      },
+      {
+        "sku": "600081",
+        "title": "NO - Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - Black",
+        "score": 0.7368421052631579
+      },
+      {
+        "sku": "600082V2",
+        "title": "Heatmiser NeoStat-E V2 Electric Floor Heating Thermostat - White",
+        "score": 0.7368421052631579
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "33a43578-4c30-408e-a4d3-a47a2d1c63dc",
+    "deliveroo_title": "Heatmiser Neostat-hw V2 - Hot Water Programmer - Glacier White",
+    "status": "MATCHED",
+    "sku": "600085",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "897895c9-2b1a-4512-b8e7-a86856237ea5",
+    "deliveroo_title": "Heatmiser Rf Wireless Air Sensor for Neohub Touch V2 Edge Thermostat",
+    "status": "MATCHED",
+    "sku": "600116",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "683ac1d3-e470-4166-826f-1ab1b3445cd9",
+    "deliveroo_title": "Heatmiser Rf-switch V2 - Wireless Receiver Use with Neoair Slimline Rf",
+    "status": "CHECK",
+    "sku": "600092",
+    "method": "title+label-mismatch",
+    "score": 0.75,
+    "candidates": [],
+    "ebayLabel": "LS-AQ3Q-1EIG",
+    "dupe": false
+  },
+  {
+    "item_id": "80deaf17-80d3-4624-aa53-e0da535bc9d0",
+    "deliveroo_title": "Heatmiser Slimline Rf Kit V3",
+    "status": "MATCHED",
+    "sku": "600094",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "50bc13f7-66e7-4862-9c4a-b4e22d867fbf",
+    "deliveroo_title": "Heatmiser Slimline Rf V3 Wireless Programmable Thermostat (No Receiver)",
+    "status": "MATCHED",
+    "sku": "600096",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "581b163b-4732-4d69-b357-6fbab66fd8a5",
+    "deliveroo_title": "Heatmiser Slimline Rf V3 Wireless Programmable Thermostat (No Receiver) - No",
+    "status": "MATCHED",
+    "sku": "600096",
+    "method": "ebay-fuzzy",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "5c6b10ad-99ee-4b72-9efa-33f0f72f2af1",
+    "deliveroo_title": "Heatmiser Slimline V4 Wired 230V Programmable Thermostat - Not Battery",
+    "status": "CHECK",
+    "sku": "600098",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "31939379-ae18-4900-9c6e-886e2e556ded",
+    "deliveroo_title": "Heatmiser Slimline V4 Wired Programmable Thermostat - White",
+    "status": "CHECK",
+    "sku": "600098",
+    "method": "title+label-mismatch",
+    "score": 0.9333333333333333,
+    "candidates": [],
+    "ebayLabel": "LS-FFQQ-CGNH",
+    "dupe": true
+  },
+  {
+    "item_id": "3035452e-7b3d-4860-b54d-c7b0baf74dcb",
+    "deliveroo_title": "Heatmiser Ta230 230V Underfloor Heating Thermal Actuator",
+    "status": "MATCHED",
+    "sku": "600114",
+    "method": "fuzzy",
+    "score": 0.9333333333333333,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "e07d83e5-83f8-48d9-b9fe-a71e7de1607c",
+    "deliveroo_title": "Heatmiser Ta230 230V Underfloor Heating Thermal Actuator",
+    "status": "MATCHED",
+    "sku": "600114",
+    "method": "fuzzy",
+    "score": 0.9333333333333333,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "124c8fc3-5b6b-4dae-beda-9166990aa709",
+    "deliveroo_title": "Heatmiser Uh4-4 Zone 230V Ufh Wiring Centre Underfloor Heating",
+    "status": "MATCHED",
+    "sku": "600106",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "ZL-QUCD-X89B",
+    "dupe": false
+  },
+  {
+    "item_id": "98862adf-45d4-416b-9394-cd1c5acb837a",
+    "deliveroo_title": "Heatmiser Uh8 - 230V 8 Zone Wiring Centre",
+    "status": "MATCHED",
+    "sku": "600109",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "79acd064-d89b-45e0-badb-b800ab740654",
+    "deliveroo_title": "Heatmiser Uh8 8 Zone 230V Underfloor Heating Wiring Centre",
+    "status": "MATCHED",
+    "sku": "600108",
+    "method": "fuzzy",
+    "score": 0.875,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e36ba44f-c5a6-4b3b-b65a-a6837588987a",
+    "deliveroo_title": "Heatmiser Uh8-rf V2 8 Zone Wiring Centre Rf Wireless Use with Slimline-rf Neoair",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600112",
+        "title": "Heatmiser UH8-RF 8 Zone Wiring Centre",
+        "score": 0.7
+      },
+      {
+        "sku": "600113",
+        "title": "NO - Heatmiser UH8-RF 8 Zone Wiring Centre",
+        "score": 0.7
+      },
+      {
+        "sku": "600108",
+        "title": "Heatmiser UH8 - 230v 8 Zone Wiring Centre",
+        "score": 0.6
+      }
+    ],
+    "ebayLabel": "UH8-RF",
+    "dupe": false
+  },
+  {
+    "item_id": "cc84b669-a9c0-4521-85b3-ab40a0495940",
+    "deliveroo_title": "Heatmiser Wireless Air Sensor",
+    "status": "MATCHED",
+    "sku": "600117",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8d2a392d-b8e2-49e0-bdc1-ffae24158373",
+    "deliveroo_title": "Heavy Duty Silicone Sealant Mastic Gun Upto 400Ml Cartridge",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900157",
+        "title": "KeyPlumb Silicone Sealant 280ml - White",
+        "score": 0.2857142857142857
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "9d5afacf-f0cf-4963-a6c3-a7391d18e8eb",
+    "deliveroo_title": "Heavy Duty Spring Loaded Adjustable Pipe Cutter 6Mm-67mm Metal Tube",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000041",
+        "title": "SINGLE - TT Heavy Duty Spring Loaded Adjustable Tube Cutter 6-67mmm **CA2**",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "2000042",
+        "title": "NO - TT Heavy Duty Spring Loaded Adjustable Tube Cutter 6-67mmm CA2",
+        "score": 0.6363636363636364
+      },
+      {
+        "sku": "2000039",
+        "title": "SINGLE - TT Adjustable Tube Cutter with Reamer 3-30mm **CST**",
+        "score": 0.3157894736842105
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2879ead0-127a-4463-92b8-50bc51e30e3c",
+    "deliveroo_title": "Hemspan Inditherm Hemp Insulation 370Mm (50Mm Thick) 8 Batts",
+    "status": "MATCHED",
+    "sku": "800028",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b128a2f1-e9b5-42e0-ade9-d04c85218d52",
+    "deliveroo_title": "Honeywell R200 Co2 Carbon Monoxide Detector Alarm",
+    "status": "MATCHED",
+    "sku": "100001",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "fa8c6104-69fc-4001-9308-bf69838964a9",
+    "deliveroo_title": "Honeywell R200S 10 Year Smoke Alarm",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "100027",
+        "title": "SINGLE - Honeywell R200S Smoke Alarm",
+        "score": 0.8
+      },
+      {
+        "sku": "100019",
+        "title": "SINGLE - WisuAlarm 10 Year Standalone CO Alarm Sealed Battery",
+        "score": 0.42857142857142855
+      },
+      {
+        "sku": "100011",
+        "title": "Kidde 7CO 10 year Life Carbon Monoxide Alarm AA Battery Powered",
+        "score": 0.35294117647058826
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "24f5c55e-ea73-45cd-9b76-70978577c298",
+    "deliveroo_title": "Horstmann Secure Z222 Zoneplus 22Mm 2 Port Motorised Valve with Auxiliary Switch",
+    "status": "MATCHED",
+    "sku": "2200078",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "fb962ec7-e395-4459-b744-23a150f4cfac",
+    "deliveroo_title": "Ideal Standard Dual Flush Valve Sv93467 1.5\" Pneumatic Armitage Ev98167",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1900012",
+        "title": "Ideal Standard Dual Flush Valve SV93467 Replacement 1.5\" Pneumatic Armitage EV98167",
+        "score": 0.9565217391304348
+      },
+      {
+        "sku": "1900013",
+        "title": "NO - Ideal Standard Dual Flush Valve Body Ideal Standard SV93467 1.5\" Pneumatic Armitage EV98167",
+        "score": 0.9565217391304348
+      },
+      {
+        "sku": "1900209",
+        "title": "10 PACK - Ideal Standard EV98167 Dual Flush Valve",
+        "score": 0.7058823529411765
+      }
+    ],
+    "ebayLabel": "FBA_I3-XZ8V-6BZA",
+    "dupe": false
+  },
+  {
+    "item_id": "1cb67803-2a84-4ff8-8c29-88af968bb7a8",
+    "deliveroo_title": "Jepp Toilet Flush Pipe & Cone Kit Wc Inlet Seal Cistern Pan Connector",
+    "status": "MATCHED",
+    "sku": "1900047",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "97f3abd2-0990-4951-a0c2-b8bf05986eb1",
+    "deliveroo_title": "La-co Slic-tite Jointing Compound 120Ml - Ptfe Plumbers Paste Pipe",
+    "status": "MATCHED",
+    "sku": "900220",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e251ee8a-8afb-478d-bf52-409703ce0e0a",
+    "deliveroo_title": "Laundreez Travel Clothes Washer - Wash Your Clothes on Holiday Camping Dry Bag",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1100013",
+        "title": "SINGLE - Laundreez Travel Laundry Bag",
+        "score": 0.4
+      }
+    ],
+    "ebayLabel": "LAUNDREEZ",
+    "dupe": false
+  },
+  {
+    "item_id": "9c6168d6-f25d-4512-8de5-dd8dd3f61796",
+    "deliveroo_title": "Lavaplumb 15Mm Pushfit Elbow White -10 Pack",
+    "status": "MATCHED",
+    "sku": "1200141",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "986fb67d-dd88-4446-899a-77c197ba4b6d",
+    "deliveroo_title": "Lavaplumb 480Mm Manhole Cover Lifting Key - Zinc Plated Steel Triangle Handle",
+    "status": "MATCHED",
+    "sku": "200037",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "dc7bbfbe-6a08-4d10-9d0c-b4bc057aefa1",
+    "deliveroo_title": "Lavaplumb Manhole Cover Lifting Keys Pair - 125Mm Cast Iron T Handle Tools",
+    "status": "MATCHED",
+    "sku": "200035",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "8f0fd9ed-54d3-413f-ad36-359659535aed",
+    "deliveroo_title": "Lavaplumb Pipe Cutter 6-32Mm Plastic Tube Cutter for Pex Pvc Ppr Poly Pipes",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900212",
+        "title": "SINGLE - LavaPlumb Pipe Cutter",
+        "score": 0.375
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "3f1c0e1d-a35e-484e-90c5-2787e1f148ff",
+    "deliveroo_title": "Lavaplumb Pushfit Fittings 15Mm 22Mm Push Fit Plumbing",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "LavaPlumbPFfittings",
+        "title": "LavaPlumb Pushfit Fittings",
+        "score": 1
+      },
+      {
+        "sku": "1200145",
+        "title": "SINGLE - LavaPlumb 15mm Pushfit Tee White - 10 Pack",
+        "score": 1
+      },
+      {
+        "sku": "1200147",
+        "title": "SINGLE - LavaPlumb 22mm Pushfit Tee White - 5 Pack",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b509e5f0-b7ad-4904-82b0-c0d2182e14f1",
+    "deliveroo_title": "Lavaplumb Ufh Pipe Clip Tacker Gun Stapler for 40Mm 60Mm Underfloor Heating",
+    "status": "MATCHED",
+    "sku": "900216",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e59c6d33-143e-48a6-b296-778f5aed0db0",
+    "deliveroo_title": "Lavatap 15Mm Pex Barrier Pipe White Plastic Plumbing - 50M",
+    "status": "MATCHED",
+    "sku": "1200133",
+    "method": "fuzzy",
+    "score": 0.875,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "003988d9-6afe-430e-831d-200df5b3d180",
+    "deliveroo_title": "Lavatap 20Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (100M)",
+    "status": "MATCHED",
+    "sku": "1200105",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "7a1cb7c0-b639-4030-ae0e-d7df40904587",
+    "deliveroo_title": "Lavatap 20Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (25M)",
+    "status": "MATCHED",
+    "sku": "1200101",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "da37bd00-0c36-4832-bd36-b545dc371468",
+    "deliveroo_title": "Lavatap 20Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (50M)",
+    "status": "CHECK",
+    "sku": "1200103",
+    "method": "fuzzy",
+    "score": 0.6666666666666666,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "606165d7-820e-4150-abb2-aae7307b73a1",
+    "deliveroo_title": "Lavatap 25Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (100M)",
+    "status": "MATCHED",
+    "sku": "1200111",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "060b9f9c-1ac8-4611-a3b7-66fa42ede9ea",
+    "deliveroo_title": "Lavatap 25Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (25M)",
+    "status": "MATCHED",
+    "sku": "1200107",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "f52a830b-1b94-4c13-b26e-841bf18e1e5b",
+    "deliveroo_title": "Lavatap 25Mm Mdpe Pipe Mains Water Supply Blue Polyethylene Underground (50M)",
+    "status": "CHECK",
+    "sku": "1200109",
+    "method": "fuzzy",
+    "score": 0.6666666666666666,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "1f2b7979-acf4-48dc-a13d-ba1dc42715af",
+    "deliveroo_title": "Lavatap End Feed Copper Pipe Fittings 15Mm 22Mm Endfeed Bucket 180 Piece",
+    "status": "MATCHED",
+    "sku": "1200113",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e14168bf-7603-4dae-9bc3-a5c5cf8cdf80",
+    "deliveroo_title": "Lavatap Pit Bull Silicone Spray 400Ml - Lubricant for Doors Windows Hinges Seals",
+    "status": "MATCHED",
+    "sku": "200043",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b892cc6b-680a-402a-a6c0-26a23a64ff29",
+    "deliveroo_title": "Lavatap Plumb Tub - Flexible Radiator Drain Tray",
+    "status": "MATCHED",
+    "sku": "2000015",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "83cf18e5-e81c-4757-af31-0429e741b62c",
+    "deliveroo_title": "Lavatap Radiator Drain Down Hose Central Heating - 15M",
+    "status": "MATCHED",
+    "sku": "2000067",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c934dd4a-9639-4bc0-869b-9ad1231279cc",
+    "deliveroo_title": "Lavatap Radiator Maintenance Kit - Plumb Tub Tray & Vacuum Seal Radiator Bungs",
+    "status": "MATCHED",
+    "sku": "2000070",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "301239a0-c0be-417f-a4f2-2a2d215a631b",
+    "deliveroo_title": "Lavatap Radiator Valve Change Kit - Tool for Radiator - 15Mm & 22Mm Pipes",
+    "status": "MATCHED",
+    "sku": "200037",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "6cd5418d-caaa-454c-aa92-bc12f422a33b",
+    "deliveroo_title": "Lavatap Sentinel X800 Central Heating Cleaner Il - Sludge Remover Radiator Flush",
+    "status": "MATCHED",
+    "sku": "900028",
+    "method": "ebay-fuzzy",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "4eb4e464-6a1e-4328-9695-ac914dd33191",
+    "deliveroo_title": "Lavatherm Central Heating Inhibitor Super Concentrate Boiler Radiator 500Ml",
+    "status": "MATCHED",
+    "sku": "900230",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "49855e26-9e16-44aa-bb04-b5c3e20252a6",
+    "deliveroo_title": "Lavatherm Pipe Insulation Lagging Wool Felt Wrap",
+    "status": "CHECK",
+    "sku": "800005",
+    "method": "idf",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "bb14e81c-d46f-453e-b59c-2725f35b65a9",
+    "deliveroo_title": "Lavatherm Pipe Insulation Lagging Wool Felt Wrap X2",
+    "status": "MATCHED",
+    "sku": "900246",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "9e759e61-aa0c-4b53-b392-1446b59a3372",
+    "deliveroo_title": "Lavatherm Pipe Insulation Lagging Wool Felt Wrap X3",
+    "status": "MATCHED",
+    "sku": "800003",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "eeda1962-a3f4-450b-956e-95ed16b188fe",
+    "deliveroo_title": "Lavatherm Pipe Insulation Lagging Wool Felt Wrap XL",
+    "status": "MATCHED",
+    "sku": "800005",
+    "method": "fuzzy",
+    "score": 0.9333333333333333,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "743c68ac-f243-4120-94a5-87647a48463b",
+    "deliveroo_title": "Lead-free Solder Wire 500G 3.25mm Plumbing Solder",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900145",
+        "title": "SINGLE - 500g Lead Free Solder Wire Reel",
+        "score": 0.7142857142857143
+      },
+      {
+        "sku": "900294",
+        "title": "SINGLE - Lead Free Solder Wire Reel 250g",
+        "score": 0.5714285714285714
+      },
+      {
+        "sku": "Parent_Solder-Wire",
+        "title": "Lead Free Solder Wire Reel - PARENT",
+        "score": 0.5714285714285714
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "5c847142-2ab9-4843-a78c-29927ded561f",
+    "deliveroo_title": "Limetron Lime15 Water Conditioner 15 Mm",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "400017",
+        "title": "Limetron Water Conditioner 15mm",
+        "score": 0.6
+      },
+      {
+        "sku": "400018",
+        "title": "NO - Limetron Water Conditioner 15mm",
+        "score": 0.6
+      },
+      {
+        "sku": "400019",
+        "title": "Limetron Water Conditioner 22mm",
+        "score": 0.6
+      }
+    ],
+    "ebayLabel": "DR-DA4U-5T9O",
+    "dupe": false
+  },
+  {
+    "item_id": "ed52bef9-5de7-47af-b22e-1d169f20f00b",
+    "deliveroo_title": "Limetron Lime22 Water Conditioner, Green, 22 Mm",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "400017",
+        "title": "Limetron Water Conditioner 15mm",
+        "score": 0.5454545454545454
+      }
+    ],
+    "ebayLabel": "PZ-1VS9-RK4V",
+    "dupe": false
+  },
+  {
+    "item_id": "e4b13340-937e-4627-9444-1421621ed466",
+    "deliveroo_title": "Lowara Ecocirc M Central Heating Circulator Pump 130Mm 25-6/130 Ups2 Ups3 6M",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1300003",
+        "title": "Lowara Ecocirc M 25-6/130 Energy Efficient Domestic Circulator Pump - 60B0L1011",
+        "score": 0.6153846153846154
+      },
+      {
+        "sku": "1300004",
+        "title": "NO - Lowara Ecocirc M 25-6/130 Energy Efficient Domestic Circulator Pump - 60B0L1011",
+        "score": 0.6153846153846154
+      },
+      {
+        "sku": "1300020",
+        "title": "Lowara Ecocirc M 25-6/130 Domestic Hot Water Pump - 60B0L1014",
+        "score": 0.56
+      }
+    ],
+    "ebayLabel": "FBA_BW-9FUQ-83QG",
+    "dupe": false
+  },
+  {
+    "item_id": "1c0ee328-49ae-436c-9c47-957507e20a65",
+    "deliveroo_title": "Mark Vitow Torca Torrent Shower Valve On/off Cartridge, Brass",
+    "status": "CHECK",
+    "sku": "1600029",
+    "method": "title+label-mismatch",
+    "score": 0.6,
+    "candidates": [],
+    "ebayLabel": "TORCA",
+    "dupe": false
+  },
+  {
+    "item_id": "684b2240-96ee-4f0f-b65e-a89c345d4f3d",
+    "deliveroo_title": "Mark Vitow Torrent Shower Valve Thermostatic Cartridge - Torc",
+    "status": "MATCHED",
+    "sku": "1600028",
+    "method": "fuzzy",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "57710bf6-f38c-49d5-83c0-fc08172c035b",
+    "deliveroo_title": "Mdpe Blue Water Pipe P80 Underground Agriculture Polytunnel Tube",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "MDPEPipeGroup",
+        "title": "MDPE Pipe Sizes",
+        "score": 1
+      },
+      {
+        "sku": "1200101",
+        "title": "LavaTap 20mm MDPE Pipe Blue - 25m Roll",
+        "score": 1
+      },
+      {
+        "sku": "1200111",
+        "title": "LavaTap 25mm MDPE Pipe Blue - 100m Roll",
+        "score": 1
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2ec16ea8-5355-4781-84ed-b442d7b827fc",
+    "deliveroo_title": "Midbrass Salvus Hob Mate Gas Hob Connecting Hose Kitemark 649380 Bsi Approved",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "500015",
+        "title": "NO - SALVUS HOBMATE GAS HOB CONNECTING HOSE MIDBRASS",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "500014",
+        "title": "SINGLE - Salvus HobMate Gas Hob Connecting Hose",
+        "score": 0.5882352941176471
+      },
+      {
+        "sku": "500007",
+        "title": "SINGLE - SALVUS 1/2\" 1.5m CATERHOSE COMMERCIAL YELLOW GAS CATERING HOSE",
+        "score": 0.2857142857142857
+      }
+    ],
+    "ebayLabel": "M1-QOPV-WG92",
+    "dupe": false
+  },
+  {
+    "item_id": "3a26cc70-f333-4ec0-96a5-63d9f42510e6",
+    "deliveroo_title": "Midbrass Water Hammer Arrestor Suitable for Uk Washing Machines 3/4\"",
+    "status": "MATCHED",
+    "sku": "1200007",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "FBA_FI-T7ZZ-69LC",
+    "dupe": false
+  },
+  {
+    "item_id": "32dac752-440e-49e2-adb9-78163c0bd5e4",
+    "deliveroo_title": "Monobloc Tap Spanner Set with Tommy Bar 8-13 Mm Box Spanner",
+    "status": "MATCHED",
+    "sku": "200039",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "43fabd48-9066-4c80-ba93-4f72de982773",
+    "deliveroo_title": "Nv Steel Wire Wool Medium Grade 150G Roll",
+    "status": "MATCHED",
+    "sku": "2000004",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b1fdfd64-112d-4ef7-a921-8235d2112655",
+    "deliveroo_title": "Olive Removal Nipper Tool for 15Mm 22Mm 28Mm Cutter Splitter Alternative",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000023",
+        "title": "SINGLE - TT Olive Nipper Tool for 15, 22 and 28mm olives **OC**",
+        "score": 0.47619047619047616
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6fd60ca8-d003-49bb-8077-1805ef9dafe7",
+    "deliveroo_title": "Outdoor Garden Diy Tap Kit Self Cutting Bibtap Easy Fitment",
+    "status": "CHECK",
+    "sku": "1100009",
+    "method": "title+label-mismatch",
+    "score": 0.8695652173913043,
+    "candidates": [],
+    "ebayLabel": "FBA_ZM-KGDP-PCTA",
+    "dupe": false
+  },
+  {
+    "item_id": "47290671-63dc-41d8-b404-374f09cfd73e",
+    "deliveroo_title": "Outside Tap 1/2\" Hose Pipe Bibtap Wras Approved Double Check Outdoor Garden Tap",
+    "status": "MATCHED",
+    "sku": "1100011",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "c3ab0ced-5bde-457f-9893-e1dde4372065",
+    "deliveroo_title": "Pe-x Barrier Pipe 15Mm X 25M Plastic Pushfit Plumbing White Wras Approved",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "1200016",
+        "title": "LavaTap PEX Barrier Pipe White 15mm - 25M",
+        "score": 0.631578947368421
+      },
+      {
+        "sku": "1200204",
+        "title": "Altopoly 15mm x 25m PB Barrier Pipe - White",
+        "score": 0.6
+      },
+      {
+        "sku": "1200017",
+        "title": "LavaTap PEX Barrier Pipe White 15mm - 100M",
+        "score": 0.5263157894736842
+      }
+    ],
+    "ebayLabel": "FBA_JO-2M6B-DU6Y",
+    "dupe": false
+  },
+  {
+    "item_id": "0a43ad40-a3e4-48fd-b859-64fa861c4bf1",
+    "deliveroo_title": "Pit Bull Pvc Solvent Cement Pipe Glue for Plumbing",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "900033",
+        "title": "SINGLE - Weld-On Solvent Cement For ABS And PVC Plastic Plumbing Pipe 125ml",
+        "score": 0.5714285714285714
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "f90eb53e-8191-446e-a287-6c4138f97d0b",
+    "deliveroo_title": "Pitbull 12Pc Bi-metal Holesaw Kit 22-57Mm Hole Saw Set Plumbers Tools",
+    "status": "MATCHED",
+    "sku": "200041",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "288d5686-3c83-487e-8957-4901eb962a43",
+    "deliveroo_title": "Pitbull 4 in 1 Copper Pipe Cleaner Tool - 15Mm 22Mm",
+    "status": "MATCHED",
+    "sku": "900210",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "e14acf05-9465-4a45-8a4b-960f02693a52",
+    "deliveroo_title": "Precision Lead Welding Torch with Ignitor Suitable for Propane and Mapp Gas",
+    "status": "MATCHED",
+    "sku": "2000018",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "67440974-46a9-44db-9ede-006172cf1c70",
+    "deliveroo_title": "Pro Honeywell Wireless Programmable Thermostat CM927 CM921 CM727 Replacement",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600138",
+        "title": "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat",
+        "score": 0.5
+      }
+    ],
+    "ebayLabel": "FBA2_J2-2GJB-S2L8",
+    "dupe": false
+  },
+  {
+    "item_id": "8e1b4f6c-02d7-48d2-8153-598362257533",
+    "deliveroo_title": "Pro Honeywell Wireless Programmable Thermostat Cm927 Cm921 Cm727 Replacement No",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600138",
+        "title": "TTHWFP - TotalHome Honeywell Wireless Programmable Room Thermostat",
+        "score": 0.47058823529411764
+      }
+    ],
+    "ebayLabel": "NO-FBA2_J2-2GJB-S2L8",
+    "dupe": false
+  },
+  {
+    "item_id": "2884d795-32b8-4204-900b-5d2f18ef57d0",
+    "deliveroo_title": "Pro Tap Spanner Set and Accessory Kit for Tap Removal",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000016",
+        "title": "SINGLE - TT Pro Tap Set and Accessory Kit **PTBNSS**",
+        "score": 0.75
+      },
+      {
+        "sku": "2000016 - NO",
+        "title": "NO - Pro Tap Set and Accessory Kit PTBNSS",
+        "score": 0.75
+      },
+      {
+        "sku": "200039",
+        "title": "SINGLE - TT Monoblock Tap Back Nut Spanner Set **SMB**",
+        "score": 0.375
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "920928c1-a807-4a21-8581-f84cb2f901bb",
+    "deliveroo_title": "Profire Adjustable Manual Blow Torch Tpe",
+    "status": "MATCHED",
+    "sku": "2000045",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "89506ea4-444f-4e23-93a2-f03ab340341f",
+    "deliveroo_title": "Prosolve Aerosol Sink and Drain Unblocker Works Instantly 200Ml",
+    "status": "CHECK",
+    "sku": "2000049",
+    "method": "fuzzy",
+    "score": 0.6666666666666666,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "3efaf591-2131-4a21-89be-b67b7540af63",
+    "deliveroo_title": "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206",
+    "status": "CHECK",
+    "sku": "600172",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "03c60f8e-c696-4d24-87a3-a201a00d86e1",
+    "deliveroo_title": "Prowired Programmable Room Thermostat Replaces Honeywell Cm907 Cm707 Fpp15206 No",
+    "status": "CHECK",
+    "sku": "600172",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "1fcfbd46-d73a-4237-9b8d-384cadb1c039",
+    "deliveroo_title": "Radiator Drain Down Hose for Central Heating System - 15M",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2000064",
+        "title": "NO - TT Radiator Drain Down Hose - 15m DDH",
+        "score": 0.625
+      },
+      {
+        "sku": "2000067",
+        "title": "SINGLE - LavaTap Radiator Drain Down Hose - 15m DDH",
+        "score": 0.625
+      },
+      {
+        "sku": "2000017",
+        "title": "SINGLE - TT Radiator Drain Down Hose 15mm **DDH**",
+        "score": 0.5333333333333333
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "1e21444c-10c9-4670-96b0-fc21a1356bbb",
+    "deliveroo_title": "Radmag Internal Magnetic Filter for Towel Rail Radiators",
+    "status": "MATCHED",
+    "sku": "400025",
+    "method": "exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "L0-4DHX-6I16",
+    "dupe": false
+  },
+  {
+    "item_id": "d00c2425-8969-41c3-a266-0241a85e7794",
+    "deliveroo_title": "Salvus Turbo Torch Mapp Gas Propane Plumbing Blow Torch Gun",
+    "status": "REVIEW",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "500029",
+        "title": "KIT - Salvus Turbo Torch Blow Torch Kit + 1 x Salvus Mapp Gas",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "50028",
+        "title": "KIT - Salvus Turbo Torch Blow Torch Kit + 2 x Salvus Mapp Gas",
+        "score": 0.6666666666666666
+      },
+      {
+        "sku": "500020",
+        "title": "SINGLE - Salvus Turbo Torch Blow Torch",
+        "score": 0.6153846153846154
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0381e9f2-7b20-4b62-9719-4f8d8ebaa255",
+    "deliveroo_title": "Secure C1727 Smart Programmable Thermostat 2 Channel Bluetooth App Control",
+    "status": "MATCHED",
+    "sku": "600128",
+    "method": "fuzzy",
+    "score": 0.8235294117647058,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "d20d3a7d-8893-407a-b622-2bb7cffda342",
+    "deliveroo_title": "Secure Meters H3747 4 Channel Programmable Replaces Horstmann H37xl H47xl",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600133",
+        "title": "NO - Horstmann H47XL 4 Channel Programmer",
+        "score": 0.5333333333333333
+      }
+    ],
+    "ebayLabel": "FBA_H3747",
+    "dupe": false
+  },
+  {
+    "item_id": "d3bff6ac-442c-4e71-966a-53a988bad0a2",
+    "deliveroo_title": "Secure Radbot 1 Intelligent Al Radiator Thermostatic Smart Valve",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "2100016",
+        "title": "LavaTherm TRV HEAD Curve Chrome Thermostatic Radiator Valve TRV Head M30 x 1.5",
+        "score": 0.38095238095238093
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "6a8268b0-1141-4223-b21d-8264a9e7b151",
+    "deliveroo_title": "Sentinel X100 & X800 Il Heating Cleaner & Inhibitor Pack - Treats 100L System",
+    "status": "MATCHED",
+    "sku": "900234",
+    "method": "ebay-fuzzy",
+    "score": 0.9166666666666666,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b25051e5-bea9-4f8f-8edc-ae020ba57cb8",
+    "deliveroo_title": "Sentinel X100 1 Litre Inhibitor for Central Heating Systems",
+    "status": "CHECK",
+    "sku": "900218",
+    "method": "fuzzy",
+    "score": 0.7142857142857143,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b3b29b81-6ac2-462f-ae75-dd3c64c1fbe3",
+    "deliveroo_title": "Sentinel X100 Super Concentrate Central Heating Inhibitor 500Ml",
+    "status": "MATCHED",
+    "sku": "900127",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b7bdb214-202e-433f-9f29-74206d04ae6b",
+    "deliveroo_title": "Shower Fixing Plate Kit for Fast Secure Installation of Shower Bar Mixer Sho104s",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "601-B09-5BC",
+        "title": "Chrome Bar Shower Mixer Kit with Riser Rail",
+        "score": 0.4
+      }
+    ],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "75488905-9c49-421a-84ae-ba6bf1636550",
+    "deliveroo_title": "Side Entry Fill Valve 1/2\" Wras Approved Brass Tail-prfsfbw-d",
+    "status": "MATCHED",
+    "sku": "1900188",
+    "method": "fuzzy",
+    "score": 0.96,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "5a5eab27-a4ab-458b-9118-db348ce39028",
+    "deliveroo_title": "Siemens Rde100.jrf 7 Day Wireless Programmable Thermostat and Receiver",
+    "status": "CHECK",
+    "sku": "600196",
+    "method": "model",
+    "score": 0.95,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "f346f807-11ec-4891-bd42-9f09471dcca5",
+    "deliveroo_title": "Siemens Rdh100 Wireless Room Thermostat & Receiver",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600196",
+        "title": "Siemens RDE100.1RF 7 Day Wireless Programmable Thermostat and Receiver",
+        "score": 0.5882352941176471
+      }
+    ],
+    "ebayLabel": "BI-IUAT-0MP0",
+    "dupe": false
+  },
+  {
+    "item_id": "1df13bee-8ca4-48a8-881e-cf9a484233ae",
+    "deliveroo_title": "Siliphos Combimate Refill Balls 800G with O Ring Pack High Grade Combiphos",
+    "status": "MATCHED",
+    "sku": "900031",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "b9e4be82-bb2a-478d-be47-83bfc2044b93",
+    "deliveroo_title": "Smart Wifi Electric Underfloor Heating Thermostat App Controlled 16Amp Ufh",
+    "status": "UNMATCHED",
+    "sku": "",
+    "method": "",
+    "score": null,
+    "candidates": [
+      {
+        "sku": "600143",
+        "title": "NO - ProWarm ProTouch Electric WiFi (White) Thermostat for Electric Underfloor Heating",
+        "score": 0.5263157894736842
+      }
+    ],
+    "ebayLabel": "A_TRADEWIFISTATWHITE",
+    "dupe": false
+  },
+  {
+    "item_id": "9a303795-c5d5-43b6-8b73-6d80a2799fef",
+    "deliveroo_title": "Split Ring Compression Spanner 15Mm/22mm Plumbing Fittings",
+    "status": "MATCHED",
+    "sku": "2000012",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "5a8dfce1-afe0-455b-87b3-124217b2fd87",
+    "deliveroo_title": "Tck3 Cross Head Chrome Plated Tap Conversion Kit. Fits 1/2\" Taps",
+    "status": "MATCHED",
+    "sku": "1800026",
+    "method": "fuzzy",
+    "score": 0.9090909090909091,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "2587441c-d52d-46f9-8435-1a7a7374b580",
+    "deliveroo_title": "Thermostatic Radiator Valve Angled Trv & Lockshield 15Mm Trv15",
+    "status": "MATCHED",
+    "sku": "2100103",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "0d871fca-482a-4a66-bf8f-ec30c0b07688",
+    "deliveroo_title": "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor",
+    "status": "CHECK",
+    "sku": "TowelRailElements",
+    "method": "idf",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "dce37b78-ec51-4e93-a6ef-ab31e2afea14",
+    "deliveroo_title": "Ufh Pipe Clips 300 Pack - 60Mm Staples for 12-20Mm Heating Pipe",
+    "status": "MATCHED",
+    "sku": "NO - 900214",
+    "method": "ebay-fuzzy",
+    "score": 0.9565217391304348,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "eb518250-d16a-4eb1-8e00-20c45f03cc1f",
+    "deliveroo_title": "Ufh Pipe Clips 300 Pack - 60Mm Staples for 12-20Mm Heating Pipe (No)",
+    "status": "MATCHED",
+    "sku": "NO - 900214",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": true
+  },
+  {
+    "item_id": "176efb54-9af4-45f4-91ed-1f99ecbd7915",
+    "deliveroo_title": "Valogin Shower Fixing Plate Kit 15Mm to 1/2 Bsp Bar Mixer Valve 150Mm Centres",
+    "status": "MATCHED",
+    "sku": "1600081",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  },
+  {
+    "item_id": "79ea523f-da92-4c65-9e67-7254e166ecf0",
+    "deliveroo_title": "Washing Machine Inlet Hose Washers (Pack of 10)",
+    "status": "CHECK",
+    "sku": "1000020",
+    "method": "title+label-mismatch",
+    "score": 0.8,
+    "candidates": [],
+    "ebayLabel": "NO-WASHERS",
+    "dupe": false
+  },
+  {
+    "item_id": "2fa06069-2498-49ee-84c5-7d63bdc85da3",
+    "deliveroo_title": "Weld-on Solvent Cement for Abs & Pvc Plastic Plumbing Pipe Adhesive Glue 250Ml",
+    "status": "CHECK",
+    "sku": "900034",
+    "method": "title+label-mismatch",
+    "score": 0.9230769230769231,
+    "candidates": [],
+    "ebayLabel": "ED-CXZJ-5AVJ",
+    "dupe": false
+  },
+  {
+    "item_id": "7912c90b-93a1-43f1-9023-9f72066d4cfa",
+    "deliveroo_title": "White & Chrome Angled Thermostatic Radiator Valve Trv 15Mm with Lockshield",
+    "status": "MATCHED",
+    "sku": "2100123",
+    "method": "ebay-exact",
+    "score": 1,
+    "candidates": [],
+    "ebayLabel": "",
+    "dupe": false
+  }
+]
