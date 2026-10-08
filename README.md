@@ -123,7 +123,9 @@ See `.env.example`. Key ones:
   SKU map at startup, skipped by stock sync and restore-all.
 - `tools/build-sku-map.js` — SKU matcher (writes into the repo; test in a copy).
 - `tools/catalogue_apply.py` — local tool: catalogue review sheet → Deliveroo upload
-  files (see below).
+  files (see below; the first, pre-template format).
+- `tools/apply_link_pack.py` — applies a review's `link-pack.json` (new links, retired
+  listings) to `sku-map.json`, `sku-titles.json` and `retired-items.json`.
 
 ---
 
@@ -192,6 +194,24 @@ Apply the decisions:
 3. Commit and push: the deploy hides retired items for good.
 4. Upload both CSVs and the images in Catalogue Manager (Partner Hub). After new
    items appear, add their ids to `sku-map.json` so stock sync covers them.
+
+Since 8 Oct 2026 (review v4) the upload files follow Partner Hub's own bulk templates
+(Menu manager → Edit menu → Bulk management), made from the sheet's Google export:
+
+- `partner-hub-update-items.csv` — **Update items**: `item_id,item_name,item_description,
+  delivery_price,max_quantity,age_restricted,plu,barcodes,internal_name`, one row per listing
+  staying on the shop. PLU = Linnworks SKU on every row; titles, prices and descriptions per the
+  row's Decision. Tick the same attributes when uploading.
+- `partner-hub-delete-items.csv` — **Delete items**: `item_id,item_name`.
+- `category-changes.csv` — for **Update item category mapping** (fill that template from it).
+- `link-pack.json` — new links and deletions for this repo:
+  `python tools/apply_link_pack.py link-pack.json` adds the links to `sku-map.json` (one listing
+  per SKU, never a NO SKU), their titles to `sku-titles.json`, and the deletions to
+  `retired-items.json`. Commit and push: the deploy hides the retired listings, stock sync covers
+  the new links, and Linnworks auto-links the new SKUs from `/linnworks/products`.
+
+Partner Hub's Update items and Delete items need the user to click Upload file and Confirm;
+confirmed changes can't be undone. New photos take Deliveroo 2–3 days to review.
 
 Facts the sheet and the tool rely on (sources in the sheet):
 

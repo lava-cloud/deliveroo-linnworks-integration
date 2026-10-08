@@ -93,13 +93,22 @@ menu first.
   descriptions from lavastore.co.uk, listing standard.
 - [x] Deletes: `retired-items.json` keeps deleted items hidden for good (startup and
   hourly), out of the SKU map, and safe from restore-all.
-- [ ] Decisions made in the sheet (Products and Add products tabs).
-- [ ] `python tools/catalogue_apply.py …` → commit the retired items → deploy.
-- [ ] Upload `catalogue-update.csv` in Catalogue Manager. **Needed before real orders**:
-  it sets PLU = Linnworks SKU (orders otherwise sync as failed) and 20% VAT (236 items
-  are at 0% on Deliveroo).
-- [ ] Upload the images (1200 x 800) and `new-products.csv`; add the new item ids to
-  `sku-map.json`.
+- [x] PLU/VAT fix confirmed in Partner Hub (8 Oct 2026): all 205 items at 20% VAT, PLUs on
+  the 113 linked items. 36 listings deleted (241 → 205).
+- [x] Review v4 (8 Oct 2026): every listing has a decision. 92 had no SKU: 57 linked, 8
+  pointed at the newer model (the listed V2/Gen 2 is archived), 27 to delete (duplicates,
+  options listings, archived or not in Linnworks, not allowed). Prices follow the rules (30%
+  aim under the 35% cap, never below the webstore, 22% minimum even over the cap).
+- [ ] User approves the Link to Linnworks tab and the titles/categories.
+- [ ] `python tools/apply_link_pack.py link-pack.json` on branch `catalogue-links-v4` → merge
+  to main → deploy (stock sync then covers all 178 listings; Linnworks auto-links them).
+- [ ] Partner Hub: Update items (`partner-hub-update-items.csv`: PLU on all 178, titles,
+  prices, descriptions, age restricted / max quantity), Delete items (27), Update item
+  category mapping (26 moves). **PLUs are needed before real orders** for the 65 newly linked
+  listings, or their orders sync as failed.
+- [ ] Images (1200 x 800; Deliveroo reviews photos for 2–3 days) and new products (Add
+  products tab; the single SKUs replacing the options listings are at the top). Add the new
+  item ids to `sku-map.json`.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 

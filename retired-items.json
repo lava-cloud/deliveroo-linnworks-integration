@@ -250,5 +250,194 @@
     "title": "Radmag Internal Magnetic Filter for Towel Rail Radiators",
     "reason": "Not allowed: 40.5cm side in Linnworks (limit 40cm)",
     "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "43ee5bff-fed5-4ec1-b9f9-6941d7658bf1",
+    "sku": "",
+    "title": "27\" Backer Immersion Heater 3Kw Copper Element 2.25 Bsp Thermostat Uk Made",
+    "reason": "27in immersion (700005) is 72.5cm long in Linnworks: over Deliveroo's 40cm limit",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "c942694b-0a5c-4619-9c59-53e3b3810e1c",
+    "sku": "",
+    "title": "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate. Box of 8 X 500Ml",
+    "reason": "BoilerMag BM3 8-pack is not in Linnworks",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "e917345b-4797-413c-9740-14d64291bbd4",
+    "sku": "",
+    "title": "Boilermag Bm3 Central Heating Cleaner Liquid Concentrate 500Ml",
+    "reason": "BoilerMag BM3 is not in Linnworks",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "fd2b1438-8e05-4d07-94f8-4e138fbb7048",
+    "sku": "",
+    "title": "Calmag Water Filter Jug Purifier Dispenser 2 Litre Capacity Ideal for Fridge",
+    "reason": "Calmag jug is archived in Linnworks",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "b48f2795-393f-4585-94f3-f6a00a1d56e7",
+    "sku": "",
+    "title": "Engo E40-230 Wired Smart Thermostat Zigbee 3.0 Programmable",
+    "reason": "Colour options listing; relist 600526 (white) / 600528 (black) singly",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "e06fa03b-9f79-4a74-9a8c-d2841a5ce276",
+    "sku": "",
+    "title": "Heatmiser Neostat-e V2 Smart Thermostat for Electric Underfloor Heating",
+    "reason": "Colour options listing; white and black have their own listings",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "2f134fb1-3b38-42c7-acee-7febe994ab59",
+    "sku": "",
+    "title": "Heatmiser Neokit 1V2 - Black - Damaged Box",
+    "reason": "Damaged-box (returns) stock: not for Deliveroo",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "e4906cfe-abbf-42fd-a510-a297889f421c",
+    "sku": "",
+    "title": "Drayton 0707260 Trv4 Thermostatic Radiator Matching Lockshield Valve, 15Mm",
+    "reason": "Drayton 0707260 lockshield is archived",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "d75b77a3-694d-4fae-a1c5-db17b11caa40",
+    "sku": "",
+    "title": "Cross Head Chrome Plated Tap Conversion Kit, Silver, 0.5-Inch",
+    "reason": "Duplicate: SKU 1800026 is already linked to another listing",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "98862adf-45d4-416b-9394-cd1c5acb837a",
+    "sku": "",
+    "title": "Heatmiser Uh8 - 230V 8 Zone Wiring Centre",
+    "reason": "Duplicate: UH8 230V (600108) is already linked to another listing",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "2fa06069-2498-49ee-84c5-7d63bdc85da3",
+    "sku": "",
+    "title": "Weld-on Solvent Cement for Abs & Pvc Plastic Plumbing Pipe Adhesive Glue 250Ml",
+    "reason": "Duplicate of the approved 611 listing (same SKU 900034)",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "cc84b669-a9c0-4521-85b3-ab40a0495940",
+    "sku": "",
+    "title": "Heatmiser Wireless Air Sensor",
+    "reason": "Duplicate of the other Heatmiser RF air sensor listing (600116)",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "3f1c0e1d-a35e-484e-90c5-2787e1f148ff",
+    "sku": "",
+    "title": "Lavaplumb Pushfit Fittings 15Mm 22Mm Push Fit Plumbing",
+    "reason": "Fitting-type options listing; relist each pushfit pack singly if wanted",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "bb3e1f5d-e45a-49c0-8355-6b53123667b3",
+    "sku": "",
+    "title": "Heatmiser Neostat V2 Smart Thermostat - for Wet Underfloor Heating Only",
+    "reason": "Generic NeoStat V2 listing with no colour; colours have their own listings",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "14708db5-4917-454a-9aef-05a92f2bcdee",
+    "sku": "",
+    "title": "1/2\" Toilet Fill Valve Wras Approved Cistern Fill Valve Adjustable Inlet",
+    "reason": "Generic fill valve: no unique match (side entry is #30; bottom entry 1900070 is 45cm)",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "d9386919-7672-4558-9bfe-9e217fc650e4",
+    "sku": "",
+    "title": "Designer Thermostatic Radiator Valves Angled Corner Straight Trv Various Colours",
+    "reason": "Generic various-colours TRV listing; each colour has its own listing",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "2879ead0-127a-4463-92b8-50bc51e30e3c",
+    "sku": "",
+    "title": "Hemspan Inditherm Hemp Insulation 370Mm (50Mm Thick) 8 Batts",
+    "reason": "Hemspan batts are 119cm long and 8kg+: over Deliveroo's limits",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "b7bdb214-202e-433f-9f29-74206d04ae6b",
+    "sku": "",
+    "title": "Shower Fixing Plate Kit for Fast Secure Installation of Shower Bar Mixer Sho104s",
+    "reason": "Kartell SHO104SP shower plate is archived",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "57710bf6-f38c-49d5-83c0-fc08172c035b",
+    "sku": "",
+    "title": "Mdpe Blue Water Pipe P80 Underground Agriculture Polytunnel Tube",
+    "reason": "MDPE coil options listing: coils are over Deliveroo's 40cm/10kg limits",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "8d2a392d-b8e2-49e0-bdc1-ffae24158373",
+    "sku": "",
+    "title": "Heavy Duty Silicone Sealant Mastic Gun Upto 400Ml Cartridge",
+    "reason": "Mastic gun is not in Linnworks",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "d28d37d3-d792-4283-b95a-37375bdd8d86",
+    "sku": "",
+    "title": "Adjustable Toilet Dual Flush Valve Push Button Cable Flush System Replacement",
+    "reason": "NV dual flush valve (cable) only exists as NO / archived SKUs",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "771a8b3d-ff97-41a0-8faf-55ee4b55995e",
+    "sku": "",
+    "title": "Adjustable Toilet Dual Flush Valve Push Button Toilet Flush System Replacement",
+    "reason": "NV dual flush valve only exists as NO / archived SKUs",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "00b6c9df-b1a8-44c7-b013-fd9959eb1327",
+    "sku": "",
+    "title": "Heatmiser Neokit-e V2 Black Neostat-e Smart Electric Floor Heating Thermostat",
+    "reason": "Neokit-E V2 black is not in Linnworks (only white 600060)",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "c3ab0ced-5bde-457f-9893-e1dde4372065",
+    "sku": "",
+    "title": "Pe-x Barrier Pipe 15Mm X 25M Plastic Pushfit Plumbing White Wras Approved",
+    "reason": "PEX 25m coil is 46cm across in Linnworks: over Deliveroo's 40cm limit",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "0d871fca-482a-4a66-bf8f-ec30c0b07688",
+    "sku": "",
+    "title": "Thermostatic Towel Rail Radiator Warmer Element with Dual Fuel Adaptor",
+    "reason": "Power/colour options listing; relist each element SKU singly if wanted",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "2ec16ea8-5355-4781-84ed-b442d7b827fc",
+    "sku": "",
+    "title": "Midbrass Salvus Hob Mate Gas Hob Connecting Hose Kitemark 649380 Bsi Approved",
+    "reason": "Salvus HobMate only exists as a NO (returns) SKU",
+    "retired_on": "2026-10-08"
+  },
+  {
+    "item_id": "0a43ad40-a3e4-48fd-b859-64fa861c4bf1",
+    "sku": "",
+    "title": "Pit Bull Pvc Solvent Cement Pipe Glue for Plumbing",
+    "reason": "Size options listing (118ml/237ml); relist as single SKUs 900037/900038 if wanted",
+    "retired_on": "2026-10-08"
   }
 ]
