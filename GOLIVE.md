@@ -93,13 +93,25 @@ menu first.
   descriptions from lavastore.co.uk, listing standard.
 - [x] Deletes: `retired-items.json` keeps deleted items hidden for good (startup and
   hourly), out of the SKU map, and safe from restore-all.
-- [ ] Decisions made in the sheet (Products and Add products tabs).
-- [ ] `python tools/catalogue_apply.py …` → commit the retired items → deploy.
-- [ ] Upload `catalogue-update.csv` in Catalogue Manager. **Needed before real orders**:
-  it sets PLU = Linnworks SKU (orders otherwise sync as failed) and 20% VAT (236 items
-  are at 0% on Deliveroo).
-- [ ] Upload the images (1200 x 800) and `new-products.csv`; add the new item ids to
-  `sku-map.json`.
+- [x] PLU/VAT fix confirmed in Partner Hub (8 Oct 2026): all 205 items at 20% VAT, PLUs on
+  the 113 linked items. 36 listings deleted (241 → 205).
+- [x] Review v4 (8 Oct 2026): every listing has a decision. 92 had no SKU: 57 linked, 8
+  pointed at the newer model (the listed V2/Gen 2 is archived), 27 to delete (duplicates,
+  options listings, archived or not in Linnworks, not allowed). Prices follow the rules (30%
+  aim under the 35% cap, never below the webstore, 22% minimum even over the cap).
+- [x] Review v6 (14 Oct 2026): the user's decisions and edits (66 cells), fresh data, and
+  hand-written descriptions for the 74 listings whose generated text was broken or thin.
+  Final files in `deliveroo-uploads/2026-10-14 Product upload/`: 175 updates, 28 deletes,
+  20 new listings, 25 category moves. 2 listings held (Link #35, #31: no SKU given).
+- [ ] `catalogue-links-v6` (link pack applied: sku-map 175 SKUs, retired 64) → merge to main →
+  deploy (stock sync then covers all 175 listings; Linnworks auto-links them).
+- [ ] Partner Hub: Update items (`partner-hub-update-items.csv`: PLU on all 175, titles,
+  prices, descriptions, age restricted / max quantity), Delete items (28), Add items (20),
+  Update item category mapping (25 moves). **PLUs are needed before real orders** for the
+  newly linked listings, or their orders sync as failed.
+- [ ] After Add items: a short Update items file gives the 20 new listings their PLUs; add
+  their item ids to `sku-map.json`.
+- [ ] Images (1200 x 800; Deliveroo reviews photos for 2–3 days).
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
