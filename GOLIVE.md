@@ -101,15 +101,15 @@ menu first.
   aim under the 35% cap, never below the webstore, 22% minimum even over the cap).
 - [x] Review v6 (14 Oct 2026): the user's decisions and edits (66 cells), fresh data, and
   hand-written descriptions for the 74 listings whose generated text was broken or thin.
-  Final files in `deliveroo-uploads/2026-10-14 Product upload/`: 175 updates, 28 deletes,
-  20 new listings, 25 category moves. 2 listings held (Link #35, #31: no SKU given).
-- [ ] `catalogue-links-v6` (link pack applied: sku-map 175 SKUs, retired 64) → merge to main →
-  deploy (stock sync then covers all 175 listings; Linnworks auto-links them).
-- [ ] Partner Hub: Update items (`partner-hub-update-items.csv`: PLU on all 175, titles,
-  prices, descriptions, age restricted / max quantity), Delete items (28), Add items (20),
+  Final files in `deliveroo-uploads/2026-10-14 Product upload/`: 177 updates, 28 deletes,
+  21 new listings, 25 category moves (#35 → white E20i 600264, #31 → 1900070 on the user's answers).
+- [ ] `catalogue-links-v6` (link pack applied: sku-map 177 SKUs, retired 64) → merge to main →
+  deploy (stock sync then covers all 177 listings; Linnworks auto-links them).
+- [ ] Partner Hub: Update items (`partner-hub-update-items.csv`: PLU on all 177, titles,
+  prices, descriptions, age restricted / max quantity), Delete items (28), Add items (21),
   Update item category mapping (25 moves). **PLUs are needed before real orders** for the
   newly linked listings, or their orders sync as failed.
-- [ ] After Add items: a short Update items file gives the 20 new listings their PLUs; add
+- [ ] After Add items: a short Update items file gives the 21 new listings their PLUs; add
   their item ids to `sku-map.json`.
 - [ ] Images (1200 x 800; Deliveroo reviews photos for 2–3 days).
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
