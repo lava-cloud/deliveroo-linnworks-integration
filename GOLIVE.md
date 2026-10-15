@@ -103,15 +103,18 @@ menu first.
   hand-written descriptions for the 74 listings whose generated text was broken or thin.
   Final files in `deliveroo-uploads/2026-10-14 Product upload/`: 177 updates, 28 deletes,
   21 new listings, 25 category moves (#35 → white E20i 600264, #31 → 1900070 on the user's answers).
-- [ ] `catalogue-links-v6` (link pack applied: sku-map 177 SKUs, retired 64) → merge to main →
-  deploy (stock sync then covers all 177 listings; Linnworks auto-links them).
-- [ ] Partner Hub: Update items (`partner-hub-update-items.csv`: PLU on all 177, titles,
-  prices, descriptions, age restricted / max quantity), Delete items (28), Add items (21),
-  Update item category mapping (25 moves). **PLUs are needed before real orders** for the
-  newly linked listings, or their orders sync as failed.
-- [ ] After Add items: a short Update items file gives the 21 new listings their PLUs; add
-  their item ids to `sku-map.json`.
-- [ ] Images (1200 x 800; Deliveroo reviews photos for 2–3 days).
+- [x] `catalogue-links-v6` merged and deployed (cf5040a, 15 Oct 2026): stock sync covers the
+  177 kept listings; the 28 deletes were hidden until Partner Hub removed them.
+- [x] Partner Hub, 15 Oct 2026: Update items (PLU on all 177, titles, prices, descriptions,
+  age restricted / max quantity), Delete items (28) and Add items (21), all published. The
+  live menu was checked against the files: 198 listings, every field matches.
+  Publish refuses while a category is empty, so "Barrier Pipe" was deleted with its coils.
+- [x] The 21 new listings are in `sku-map.json` (198 SKUs = every listing on the live menu).
+  Menu Manager gives new items 12-character ids, not UUIDs.
+- [ ] PLU Update file for the 21 new listings: until it's uploaded, their orders sync as failed.
+- [ ] Update item category mapping (25 moves), then delete the emptied "Clearance" category.
+- [ ] Images: 166 uploaded 15 Oct ("Photo pending review", 2–3 days), plus the 21 new listings.
+  1000020 (washers) has no photo.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
