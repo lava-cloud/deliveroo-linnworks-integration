@@ -111,10 +111,16 @@ menu first.
   Publish refuses while a category is empty, so "Barrier Pipe" was deleted with its coils.
 - [x] The 21 new listings are in `sku-map.json` (198 SKUs = every listing on the live menu).
   Menu Manager gives new items 12-character ids, not UUIDs.
-- [ ] PLU Update file for the 21 new listings: until it's uploaded, their orders sync as failed.
-- [ ] Update item category mapping (25 moves), then delete the emptied "Clearance" category.
-- [ ] Images: 166 uploaded 15 Oct ("Photo pending review", 2–3 days), plus the 21 new listings.
-  1000020 (washers) has no photo.
+- [x] PLU Update file for the 21 new listings, uploaded and published (16 Oct 2026).
+- [x] Batch 2 (16 Oct 2026): the category moves (36, including the new fitting-type
+  categories) and 219 new listings, published; the emptied "Clearance" category was deleted.
+  Live menu: 417 listings, 26 categories. All 219 are in `sku-map.json` (417 SKUs = every
+  listing on the live menu); Linnworks links them on its next nightly products read.
+- [ ] PLU Update file for the 219 batch 2 listings
+  (`deliveroo-uploads/2026-10-16 Upload batch 2/4-plu-update.csv`): until it's uploaded and
+  published, their orders sync as failed.
+- [ ] Images: 187 uploaded 15 Oct ("Photo pending review", 2–3 days), plus the 219 batch 2
+  listings. 1000020 (washers) has no photo.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
