@@ -122,6 +122,14 @@ menu first.
   417/417 PLUs, each equal to the SKU that `sku-map.json` links to that item.
 - [ ] Images: 197 approved; 218 uploaded 16 Oct are "Photo pending review" (2–3 days). No
   photo yet: 1000020 (washers) and 1200148 (its only photo shows the wrong fitting).
+- [x] Batch 3 (17 Oct 2026): 86 new listings added through Bulk management → Add items
+  (`deliveroo-uploads/2026-10-17 Upload batch 3/`), plus 3 new categories (MDPE Fittings,
+  Solder Ring Fittings, Basins). The draft was checked against the file (every field
+  matches), PLUs entered (503/503, PLU = SKU) and 85 photos uploaded (1200040 has none).
+  All 86 are in `sku-map.json` (503 SKUs = every listing in the draft); ids not yet on the
+  live menu are skipped by stock sync until the draft is published.
+- [ ] Publish batch 3, then check the live menu: 503 listings, 29 categories, PLUs equal
+  to `sku-map.json`.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
