@@ -79,9 +79,10 @@ menu first.
   is a mapped item id. NO (customer returns) SKUs are never mapped.
 - [x] Linnworks Deliveroo channel enabled with inventory sync (8 Oct 2026); all 130 SKUs
   linked and stock flowing (`/debug/status` → `linnworksCalls`, token fingerprint 057302).
-- [ ] 30 rows were approved without a Final SKU: type the SKUs in the mapping sheet,
-  regenerate `sku-map.json`, deploy.
-- [ ] Check coverage (read-only): `GET /debug/menu/check`.
+- [x] 30 rows were approved without a Final SKU: superseded by the catalogue reviews (v4–v6)
+  and batch 2, which mapped every listing.
+- [x] Check coverage (read-only): `GET /debug/menu/check`. 17 Oct 2026: 417 listings, all
+  417 mapped and on the menu, 417 with a PLU.
 - [ ] Emergency undo if anything is hidden wrongly: `POST /debug/menu/restore-all`
   (makes every hidden/unavailable item orderable, except retired items).
 - [ ] Reject other tokens on the `/linnworks/*` endpoints now Linnworks' token is known.
@@ -116,11 +117,11 @@ menu first.
   categories) and 219 new listings, published; the emptied "Clearance" category was deleted.
   Live menu: 417 listings, 26 categories. All 219 are in `sku-map.json` (417 SKUs = every
   listing on the live menu); Linnworks links them on its next nightly products read.
-- [ ] PLU Update file for the 219 batch 2 listings
-  (`deliveroo-uploads/2026-10-16 Upload batch 2/4-plu-update.csv`): until it's uploaded and
-  published, their orders sync as failed.
-- [ ] Images: 187 uploaded 15 Oct ("Photo pending review", 2–3 days), plus the 219 batch 2
-  listings. 1000020 (washers) has no photo.
+- [x] PLUs on the 219 batch 2 listings, entered in Menu Manager's "Add Point of Sale IDs
+  (PLUs)" screen (no CSV needed) and published (17 Oct 2026). The live menu was checked:
+  417/417 PLUs, each equal to the SKU that `sku-map.json` links to that item.
+- [ ] Images: 197 approved; 218 uploaded 16 Oct are "Photo pending review" (2–3 days). No
+  photo yet: 1000020 (washers) and 1200148 (its only photo shows the wrong fitting).
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
