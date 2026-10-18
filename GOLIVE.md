@@ -162,6 +162,12 @@ menu first.
 - [x] 1200150 washing machine valve (18 Oct 2026, published 17:39 BST): Will confirmed the stock is the straight valve, so it is
   listed as `Washing Machine Isolation Valve 15mm x 3/4" Straight` with Navigator's straight-valve barcode 5037877011834. PLU and barcode
   were typed in Menu Manager (real keystrokes work while the Chrome window is visible). `sku-map.json` 540.
+- [x] Barcode clean-up (18 Oct 2026, published ~20:15 BST): four listings carried a sibling product's barcode, so
+  Will agreed to remove it: 1200144 (100-pack had the 50-pack's), 1200148 (had 1200147's), 1800090/A (had the
+  tank-only one) and 600048-G3 (had the Gen 2's). Barcodes are optional on Deliveroo, and Lava doesn't scan.
+- [ ] 1100011 outside tap: a duplicate of 110001-1, which holds the stock. Retired here (`retired-items.json`, out
+  of `sku-map.json`, now 539). Will deletes the listing in Menu Manager (Delete item is blocked for Claude), then
+  publishes.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 

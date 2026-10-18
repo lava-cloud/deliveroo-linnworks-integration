@@ -446,5 +446,12 @@
     "title": "Pit Bull Pvc Solvent Cement Pipe Glue for Plumbing",
     "reason": "Size options listing (118ml/237ml): relisted as single SKUs 900037 and 900038 (Add products, marked Yes)",
     "retired_on": "2026-10-14"
+  },
+  {
+    "item_id": "47290671-63dc-41d8-b404-374f09cfd73e",
+    "sku": "1100011",
+    "title": "Outside Tap 1/2\" Hose Pipe Bibtap WRAS Approved Double Check Outdoor Garden Tap",
+    "reason": "Duplicate of 110001-1 (same outside tap; the stock is on 110001-1)",
+    "retired_on": "2026-10-18"
   }
 ]
