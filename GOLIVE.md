@@ -17,7 +17,9 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
 
 ## 1. Hosting (do FIRST — everything depends on it)
 
-- [ ] 💰⚠️ **Upgrade Render web service to Starter (always-on, ~$7/mo).**
+- [x] 💰⚠️ **Upgrade Render web service to Starter (always-on, ~$7/mo).** Done 18 Oct
+  2026: compute plan 0.5c-512mb ($7/mo), and `KEEP_ALIVE=false` is set, so the self-ping
+  is off (no `[keep-alive]` line at startup).
   Evidence this is mandatory: Deliveroo's sandbox log showed
   `CatalogueWebhook … Client.Timeout exceeded` against our sleeping free-tier service,
   and in Oct 2026 Ashley's production test order hit the same timeout on
@@ -29,10 +31,11 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
   in-memory order store, and the free plan's 750 h/month only covers one always-on
   service. Set `KEEP_ALIVE=false` after upgrading. `/debug/status` shows
   `startedAt` / `uptimeMinutes` / `keepAlive` to confirm it's working.
-- [ ] 💰⚠️ **Persistent database** — either upgrade Render Postgres (~$7/mo) or create a
-  free [Neon](https://neon.tech) Postgres (doesn't expire like Render's free tier).
-  Then re-add `DATABASE_URL` in Render → Environment (External URL if Render DB).
-  Verify logs show `[db] Connected to Postgres; tables ready.`
+- [x] 💰⚠️ **Persistent database.** Done 18 Oct 2026: Render Postgres
+  `deliveroo-linnworks-db` (Oregon like the service, PostgreSQL 18, 0.1c-256mb, 1 GB,
+  $6.30/mo), with `DATABASE_URL` set in Render → Environment. The 11:25 BST deploy logged
+  `[db] Connected to Postgres; tables ready.` and `databaseReady: true`, so orders and
+  channel config now survive restarts and deploys.
 - [ ] **Uptime monitoring** — free UptimeRobot (or similar) pinging `GET /` every 5 min
   with email alerts. Contract SLA: respond in 30 min / resolve in 2 h for critical
   (orders not flowing). Know who gets the alert out of hours.
@@ -50,9 +53,12 @@ Work through the sections in order. Items marked 💰 cost money; ⚠️ are har
   The dashboard's "Testing guidance 0 / 4" page 404s on Deliveroo's side; nothing to do.
 - [x] Production logs (30 Sep – 8 Oct 2026): no failures since the keep-alive fix; the
   only failures were the 7 Oct cold-start timeout and our own 8 Oct API tests.
-- [ ] Copy the production secret into Render as `DELIV_WEBHOOK_SECRET` (user: secrets
-  aren't entered by Claude). Check `/debug/status` → `webhookSignatures.valid` rises on
-  the next order event, then set `DELIV_WEBHOOK_ENFORCE=true`.
+- [x] Copy the production secret into Render as `DELIV_WEBHOOK_SECRET` (done by the user,
+  18 Oct 2026; secrets aren't entered by Claude).
+- [ ] On the first real order event, check the logs show the `[webhook] <event> <order>`
+  line with no `[webhook] invalid signature` warning before it (or `/debug/status` →
+  `webhookSignatures.valid` rises). Then the user sets `DELIV_WEBHOOK_ENFORCE=true`:
+  Render env-var saves are blocked for Claude.
 - [ ] Sandbox credential `Lava_Catalogue_Scenario_Test` (created 8 Oct 2026 for
   Scenario 3) can be deleted; nothing in production uses it.
 
@@ -120,16 +126,23 @@ menu first.
 - [x] PLUs on the 219 batch 2 listings, entered in Menu Manager's "Add Point of Sale IDs
   (PLUs)" screen (no CSV needed) and published (17 Oct 2026). The live menu was checked:
   417/417 PLUs, each equal to the SKU that `sku-map.json` links to that item.
-- [ ] Images: 197 approved; 218 uploaded 16 Oct are "Photo pending review" (2–3 days). No
-  photo yet: 1000020 (washers) and 1200148 (its only photo shows the wrong fitting).
+- [ ] Images: all 500 photos were replaced with 1200×675 versions that keep the product
+  inside the central square (the customer menu crops every tile to a square), and
+  published on 17 Oct 2026 at 23:37. They are pending Deliveroo's review; customers see
+  the old approved photos until then. Check the public tiles around 20 Oct. No photo:
+  1000020 (washers), 1200148 (its only photo shows the wrong fitting), 1200040 (no
+  official photo).
 - [x] Batch 3 (17 Oct 2026): 86 new listings added through Bulk management → Add items
   (`deliveroo-uploads/2026-10-17 Upload batch 3/`), plus 3 new categories (MDPE Fittings,
   Solder Ring Fittings, Basins). The draft was checked against the file (every field
   matches), PLUs entered (503/503, PLU = SKU) and 85 photos uploaded (1200040 has none).
   All 86 are in `sku-map.json` (503 SKUs = every listing in the draft); ids not yet on the
   live menu are skipped by stock sync until the draft is published.
-- [ ] Publish batch 3, then check the live menu: 503 listings, 29 categories, PLUs equal
-  to `sku-map.json`.
+- [x] Batch 3 published (17 Oct 2026, evening): Menu Manager shows "All changes are
+  published" for the checked draft (503 listings, 29 categories, 503/503 PLUs equal to
+  `sku-map.json`), and the public page lists the 3 new categories. Linnworks linked all
+  503 SKUs to the right item ids overnight (18 Oct). The API cross-check
+  (`/debug/menu/check`) still needs `SYNC_SECRET`.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
@@ -146,8 +159,8 @@ menu first.
   in `/debug/status`; log-only until `DELIV_WEBHOOK_ENFORCE=true`.
 - [ ] **Rotate `SYNC_SECRET`** (current value was used throughout testing) and consider
   gating `/debug/*` endpoints behind `NODE_ENV`/flag or removing them for production.
-- [ ] **Re-test order persistence** once DB is live: send test order → restart service →
-  order still present.
+- [ ] **Re-test order persistence** now the DB is live (18 Oct 2026): with the first real
+  order, check it reaches Linnworks after a restart or deploy in between.
 - [ ] `DELIV_VALID_PLUS`: leave strict PLU checks OFF in production (default) until real
   SKU list is loaded; then optionally set to the Linnworks SKU list to enable
   missing/mismatch rejection with real data.
@@ -169,7 +182,9 @@ menu first.
   tablet = **Yes**, orders fulfilled by **partner** (raise with Ashley/TIM — sandbox site
   was created with tablet No / fulfilled by Deliveroo).
 - [ ] Staff briefed: accept orders on the tablet (SLA ~10 min or auto-reject); the
-  integration confirms ingestion + handles records/stock automatically.
+  integration confirms ingestion + handles records/stock automatically. The team SOP
+  (picking, packing, riders, Linnworks, cancellations, refunds, accounting) is the Claude
+  Doc "Deliveroo Orders SOP", written 18 Oct 2026.
 
 ## 7. Go-live smoke test (first live day)
 
