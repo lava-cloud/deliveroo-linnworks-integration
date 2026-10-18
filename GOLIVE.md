@@ -143,17 +143,22 @@ menu first.
   `sku-map.json`), and the public page lists the 3 new categories. Linnworks linked all
   503 SKUs to the right item ids overnight (18 Oct). The API cross-check
   (`/debug/menu/check`) still needs `SYNC_SECRET`.
-- [ ] Batch 4 (18 Oct 2026): 15 low-cost listings Will approved on the "Low-cost products (18 Oct)" tab
+- [x] Batch 4 (18 Oct 2026): 15 low-cost listings Will approved on the "Low-cost products (18 Oct)" tab
   (the 15mm press fit singles and others the old cost rule had dropped), added one at a time with Menu
   Manager's Add item form: photo, name, description, price, category, 20% VAT, substitution off. They are
   in `sku-map.json` (518). The form and the PLU dialog drop scripted barcodes and PLUs, so those go in
   with an Update items file (Bulk management -> Update items); then check the draft and publish.
-- [ ] Batch 5 (18 Oct 2026): the other 21 approved low-cost listings, which needed barcodes, photos and
+- [x] Batch 5 (18 Oct 2026): the other 21 approved low-cost listings, which needed barcodes, photos and
   some new titles and descriptions first, added the same way. A fresh read of the draft matched every
   field for all 36 batch 4 and 5 listings (539 in the draft, 539 in `sku-map.json`). One file sets the
   PLUs and barcodes for all 36: `deliveroo-uploads/2026-10-18 Upload batch 4/update-items-plu-barcodes-36.csv`
   (it replaces the 15-row `update-items-plu-barcodes.csv`). 1200150 (isolation valve) is held until
   the bin shows whether it is straight or angled.
+- [x] Batches 4 and 5 published (18 Oct 2026, 17:18 BST): Will uploaded the 36-row file and published;
+  the menu's last change (17:18:37) came just before the publish (17:18:44). On reload: 539 listings, every
+  one with a PLU, all 36 new ones with PLU = SKU and the right barcode, every other field unchanged, 29
+  categories with none empty. Linnworks links the 36 new SKUs on its overnight product read; 1200087 has
+  0 stock and is hidden from then.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
