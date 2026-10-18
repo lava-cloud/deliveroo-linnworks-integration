@@ -329,7 +329,13 @@ function makeSolidPng(width, height, r, g, b) {
   const idat = zlib.deflateSync(raw);
   return Buffer.concat([sig, chunk("IHDR", ihdr), chunk("IDAT", idat), chunk("IEND", Buffer.alloc(0))]);
 }
-const LOGO_PNG = makeSolidPng(120, 120, 0, 204, 188); // small square logo
+// Channel logo shown in Linnworks (the manifest's ChannelLogoURL points here): the
+// official Deliveroo app icon, 140x140, kept in the repo so no external host is needed.
+// Falls back to a plain Deliveroo-teal square if the file is missing.
+const LOGO_FILE = require("path").join(__dirname, "assets", "channel-logo.png");
+const LOGO_PNG = require("fs").existsSync(LOGO_FILE)
+  ? require("fs").readFileSync(LOGO_FILE)
+  : makeSolidPng(120, 120, 0, 204, 188);
 const IMG_1920 = makeSolidPng(1920, 1080, 0, 204, 188); // 16:9 catalogue image
 app.get("/logo.png", (req, res) => {
   res.set("Content-Type", "image/png");
