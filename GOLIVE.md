@@ -157,8 +157,10 @@ menu first.
 - [x] **Webhook signature verification** using `DELIV_WEBHOOK_SECRET`: hex HMAC-SHA256
   of "<sequence guid> <raw body>", checked on the order and catalogue webhooks, counted
   in `/debug/status`; log-only until `DELIV_WEBHOOK_ENFORCE=true`.
-- [ ] **Rotate `SYNC_SECRET`** (current value was used throughout testing) and consider
-  gating `/debug/*` endpoints behind `NODE_ENV`/flag or removing them for production.
+- [x] **Rotate `SYNC_SECRET`** (the old value was used throughout testing). The user
+  generated a new one in Render on 18 Oct 2026; it is stored only there.
+- [ ] Consider gating `/debug/*` endpoints behind `NODE_ENV`/flag or removing them for
+  production.
 - [ ] **Re-test order persistence** now the DB is live (18 Oct 2026): with the first real
   order, check it reaches Linnworks after a restart or deploy in between.
 - [ ] `DELIV_VALID_PLUS`: leave strict PLU checks OFF in production (default) until real
