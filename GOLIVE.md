@@ -159,6 +159,9 @@ menu first.
   one with a PLU, all 36 new ones with PLU = SKU and the right barcode, every other field unchanged, 29
   categories with none empty. Linnworks links the 36 new SKUs on its overnight product read; 1200087 has
   0 stock and is hidden from then.
+- [ ] 1200150 washing machine valve (18 Oct 2026): Will confirmed the stock is the straight valve, so it is
+  listed as `Washing Machine Isolation Valve 15mm x 3/4" Straight` with Navigator's straight-valve barcode 5037877011834. PLU and barcode
+  were typed in Menu Manager (real keystrokes work while the Chrome window is visible). `sku-map.json` 540.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
