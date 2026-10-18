@@ -143,6 +143,12 @@ menu first.
   `sku-map.json`), and the public page lists the 3 new categories. Linnworks linked all
   503 SKUs to the right item ids overnight (18 Oct). The API cross-check
   (`/debug/menu/check`) still needs `SYNC_SECRET`.
+- [ ] Batch 4 (18 Oct 2026): 15 low-cost listings Will approved on the "Low-cost products (18 Oct)" tab
+  (the 15mm press fit singles and others the old cost rule had dropped), added one at a time with Menu
+  Manager's Add item form: photo, name, description, price, category, 20% VAT, substitution off. They are
+  in `sku-map.json` (518). The form and the PLU dialog drop scripted barcodes and PLUs, so those go in
+  with `deliveroo-uploads/2026-10-18 Upload batch 4/update-items-plu-barcodes.csv` (Bulk management ->
+  Update items); then check the draft and publish.
 - [ ] Email the Deliveroo account manager 3 days before changes or withdrawals
   (Core Service Pack 7.1.6).
 
