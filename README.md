@@ -21,6 +21,13 @@ mechanism for a sales-channel connector and the foundation for the App Store goa
   → we forward availability to Deliveroo.
 - **Orders:** Linnworks polls `/linnworks/orders` (~every 10–15 min) → we return
   stored Deliveroo orders in Linnworks' schema.
+  - Reference = Deliveroo order `id`. Secondary reference = `display_id` (the short
+    number staff, riders and customers see). External reference = `order_number`.
+  - The customer name is "Deliveroo #<display_id>". No customer contact details or
+    address are sent or stored.
+  - Lines are 20% VAT, with prices including VAT.
+  - The poll interval means an order can reach Linnworks up to ~15 minutes after it was
+    accepted. Pick from the Deliveroo device, not from Linnworks.
 - **Auth:** `/linnworks/add-new-user` issues an `AuthorizationToken` that Linnworks
   sends on every later call. (No permanent token needed — that's a different app type.)
 

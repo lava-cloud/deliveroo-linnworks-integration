@@ -203,26 +203,34 @@ function money(m) {
   return 0;
 }
 
+// Every Deliveroo item is standard-rated and its price includes VAT. The order
+// payload carries no tax fields, so the rate is set here.
+const VAT_RATE = "20";
+
 function toLinnworksOrder(row) {
   const raw = row.raw || {};
   // Real Deliveroo orders nest under body.order.
   const order = (raw.body && raw.body.order) || raw.order || raw;
   const orderId =
     order.id || raw.id || raw.order_id || row.order_id;
+  // display_id is the short number on the tablet, the rider's app and the
+  // customer's app; order_number is Deliveroo's full order ID.
+  const displayId = String(order.display_id || "").replace(/^#/, "");
+  const orderNumber = String(order.order_number || "");
 
   const itemsArray = Array.isArray(order.items) ? order.items : [];
   const OrderItems = [];
   let lineNo = 0;
   const pushLine = (sku, title, qty, price) =>
     OrderItems.push({
-      UseChannelTax: false,
+      UseChannelTax: true,
       TaxCostInclusive: true,
       IsService: false,
       OrderLineNumber: String(++lineNo),
       SKU: sku || "",
       PricePerUnit: String(price),
       Qty: String(qty),
-      TaxRate: "0",
+      TaxRate: VAT_RATE,
       LinePercentDiscount: "0",
       ItemTitle: title || "Item",
       Options: [],
@@ -236,26 +244,22 @@ function toLinnworksOrder(row) {
     }
   }
 
-  const cust = order.customer || {};
-  const custName =
-    cust.name ||
-    [cust.first_name, cust.last_name].filter(Boolean).join(" ") ||
-    "Deliveroo Customer";
-  const addr =
-    (order.fulfillment && order.fulfillment.delivery_address) || cust.address || {};
+  // No customer details go to Linnworks: the contract stops us keeping them,
+  // and a Deliveroo rider delivers. The order number is all the shop needs.
+  const custName = displayId ? `Deliveroo #${displayId}` : "Deliveroo customer";
   const address = {
     FullName: custName,
     Company: "",
-    Address1: addr.line1 || addr.address1 || "",
-    Address2: addr.line2 || addr.address2 || "",
+    Address1: "",
+    Address2: "",
     Address3: "",
-    Town: addr.town || addr.city || "",
-    Region: addr.region || "",
-    PostCode: addr.postcode || addr.post_code || "",
-    Country: addr.country || "United Kingdom",
-    CountryCode: addr.country_code || "GB",
-    PhoneNumber: cust.phone_number || cust.contact_number || "",
-    EmailAddress: cust.email || "",
+    Town: "",
+    Region: "",
+    PostCode: "",
+    Country: "United Kingdom",
+    CountryCode: "GB",
+    PhoneNumber: "",
+    EmailAddress: "",
   };
 
   const noteText = order.note_to_customer || order.notes || "";
@@ -265,7 +269,8 @@ function toLinnworksOrder(row) {
 
   return {
     ReferenceNumber: String(orderId),
-    ExternalReference: String(orderId),
+    SecondaryReferenceNumber: displayId || null,
+    ExternalReference: orderNumber || String(orderId),
     Site: "Deliveroo",
     ChannelBuyerName: custName,
     Currency: (order.total_price && order.total_price.currency_code) || "GBP",
@@ -708,6 +713,24 @@ app.get("/debug/cat/state", (req, res) => {
 
 // --- Deliveroo order webhook ----------------------------------------------
 
+// A copy of the event without the customer's details (name, contact number,
+// address), for our database. The contract stops us keeping them, and nothing
+// downstream needs them.
+function withoutCustomerDetails(raw) {
+  const copy = JSON.parse(JSON.stringify(raw || {}));
+  const order = (copy.body && copy.body.order) || copy.order || copy;
+  if (order && typeof order === "object") {
+    delete order.customer;
+    if (order.fulfillment && typeof order.fulfillment === "object") {
+      delete order.fulfillment.delivery_address;
+    }
+    if (order.delivery && typeof order.delivery === "object") {
+      delete order.delivery.address;
+    }
+  }
+  return copy;
+}
+
 app.post("/deliveroo/order-webhook", async (req, res) => {
   if (!checkDeliverooSignature(req)) return res.status(401).send("Bad signature");
   const raw = req.body || {};
@@ -732,7 +755,7 @@ app.post("/deliveroo/order-webhook", async (req, res) => {
   if (recentEvents.length > 30) recentEvents.pop();
 
   try {
-    await db.saveOrder(orderId, raw, status);
+    await db.saveOrder(orderId, withoutCustomerDetails(raw), status);
     console.log(`[webhook] ${event || "(no event)"} ${orderId} status=${status}`);
 
     // On the "accepted" event, send a sync status: succeeded if we can fulfil

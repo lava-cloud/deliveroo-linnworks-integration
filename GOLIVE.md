@@ -197,7 +197,19 @@ menu first.
 - [x] **SKU mapping**: Linnworks auto-linked all 130 SKUs from our Products endpoint
   (Reference = Deliveroo item id), 8 Oct 2026.
 - [ ] Confirm Linnworks polls `/linnworks/orders` and imports a test order end-to-end
-  (order lines, prices, customer name; modifiers arrive as separate lines).
+  (order lines, prices; modifiers arrive as separate lines).
+- [ ] On that test order, check the fields set on 19 Oct 2026:
+  - Secondary reference = Deliveroo's short order number (`display_id`, e.g. 2387), the
+    one on the tablet, the rider's app and the customer's app.
+  - External reference = Deliveroo's full order number (`order_number`). The reference
+    stays Deliveroo's order `id` (used for de-duplication and despatch).
+  - Customer name reads "Deliveroo #<number>", with no phone, email or address. The
+    contract stops us keeping customer details, so our database copy drops
+    `order.customer` and any delivery address too.
+  - Every line is 20% VAT, price includes VAT (`UseChannelTax` true, `TaxRate` 20). The
+    order payload has no tax fields, and every item on the menu is standard-rated.
+  - The "Deliveroo VAT receipt" invoice template (condition Source='DELIVEROO') prints the
+    short number, 20% VAT and the right total.
 - [x] Linnworks stock changes hit `/linnworks/inventory-update` and flip availability on
   Deliveroo (21 zero-stock items hidden on 8 Oct 2026).
 - [ ] Confirm despatch flow: dispatching in Linnworks calls `/linnworks/despatch` (we
