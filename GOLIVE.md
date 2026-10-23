@@ -196,16 +196,20 @@ menu first.
 
 - [x] **SKU mapping**: Linnworks auto-linked all 130 SKUs from our Products endpoint
   (Reference = Deliveroo item id), 8 Oct 2026.
-- [ ] Confirm Linnworks polls `/linnworks/orders` and imports a test order end-to-end
-  (order lines, prices; modifiers arrive as separate lines).
+- [x] Confirm Linnworks polls `/linnworks/orders` and imports a test order end-to-end
+  (order lines, prices; modifiers arrive as separate lines). First live order #6063 on 23 Oct:
+  placed 16:20:16, accepted 16:20:41, sync_status 200, in Linnworks (343354) at 16:27,
+  delivered 16:58. Signatures all valid, so `DELIV_WEBHOOK_ENFORCE=true` was set (live 17:14).
 - [ ] On that test order, check the fields set on 19 Oct 2026:
   - Secondary reference = Deliveroo's short order number (`display_id`, e.g. 2387), the
     one on the tablet, the rider's app and the customer's app.
   - External reference = Deliveroo's full order number (`order_number`). The reference
     stays Deliveroo's order `id` (used for de-duplication and despatch).
-  - Customer name reads "Deliveroo #<number>", with no phone, email or address. The
-    contract stops us keeping customer details, so our database copy drops
-    `order.customer` and any delivery address too.
+  - Customer name reads "Deliveroo #<number>", with no phone, email or address (checked
+    on the first live order, 23 Oct). From 23 Oct it is "<first name> (Deliveroo #<number>)":
+    Will wants the first name to match callers to orders, and Schedule 2 of the contract
+    allows it for complaints and record keeping. Our database copy keeps only
+    `customer.first_name`; contact number, access code and any address are dropped.
   - Every line is 20% VAT, price includes VAT (`UseChannelTax` true, `TaxRate` 20). The
     order payload has no tax fields, and every item on the menu is standard-rated.
   - The "Deliveroo VAT receipt" invoice template (condition Source='DELIVEROO') prints the

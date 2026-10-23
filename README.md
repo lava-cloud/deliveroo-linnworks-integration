@@ -23,8 +23,9 @@ mechanism for a sales-channel connector and the foundation for the App Store goa
   stored Deliveroo orders in Linnworks' schema.
   - Reference = Deliveroo order `id`. Secondary reference = `display_id` (the short
     number staff, riders and customers see). External reference = `order_number`.
-  - The customer name is "Deliveroo #<display_id>". No customer contact details or
-    address are sent or stored.
+  - The customer name is "<first name> (Deliveroo #<display_id>)". Deliveroo gives no
+    surname or address for rider-delivered orders; its contact number is a temporary
+    relay, so it is not sent or stored.
   - Lines are 20% VAT, with prices including VAT.
   - The poll interval means an order can reach Linnworks up to ~15 minutes after it was
     accepted. Pick from the Deliveroo device, not from Linnworks.

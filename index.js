@@ -244,9 +244,14 @@ function toLinnworksOrder(row) {
     }
   }
 
-  // No customer details go to Linnworks: the contract stops us keeping them,
-  // and a Deliveroo rider delivers. The order number is all the shop needs.
-  const custName = displayId ? `Deliveroo #${displayId}` : "Deliveroo customer";
+  // Only the customer's first name goes to Linnworks, so the shop can match a
+  // caller to their order. The contract (Schedule 2) allows customer data for
+  // handling complaints and record keeping, not longer than needed. Deliveroo
+  // gives no surname or address for rider-delivered orders, and its contact
+  // number is a temporary relay, so neither is kept.
+  const firstName = String((order.customer && order.customer.first_name) || "").trim();
+  const orderLabel = displayId ? `Deliveroo #${displayId}` : "Deliveroo customer";
+  const custName = firstName ? `${firstName} (${orderLabel})` : orderLabel;
   const address = {
     FullName: custName,
     Company: "",
@@ -713,14 +718,16 @@ app.get("/debug/cat/state", (req, res) => {
 
 // --- Deliveroo order webhook ----------------------------------------------
 
-// A copy of the event without the customer's details (name, contact number,
-// address), for our database. The contract stops us keeping them, and nothing
-// downstream needs them.
+// A copy of the event for our database, keeping only the customer's first name
+// (contact number, access code and any address are dropped). The first name is
+// what Linnworks shows against the order.
 function withoutCustomerDetails(raw) {
   const copy = JSON.parse(JSON.stringify(raw || {}));
   const order = (copy.body && copy.body.order) || copy.order || copy;
   if (order && typeof order === "object") {
+    const firstName = order.customer && order.customer.first_name;
     delete order.customer;
+    if (firstName) order.customer = { first_name: String(firstName) };
     if (order.fulfillment && typeof order.fulfillment === "object") {
       delete order.fulfillment.delivery_address;
     }
